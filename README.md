@@ -1,4 +1,4 @@
-# CotuTalks 📞
+# CotuTalk 📞
 O projeto se baseia em uma rede social exclusiva para os alunos do Cotuca, na qual os alunos criam seu perfil com o email do colégio permitindo que só exista uma conta por pessoa e ela obrigatoriamente seja da escola. 
 
 A partir dessa conta cada usuário pode criar e participar de grupos e fóruns, por exemplo, se um aluno teve uma dúvida em certo exercício de matemática, ele pode criar um fórum dentro de um grupo de matemática falando sobre sua dúvida, e os outros alunos podem ajudá-lo a resolver a questão. 
