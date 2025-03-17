@@ -40,8 +40,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    CotuTalk_ProgramTheme {
-        Greeting("Android")
+fun Post() {
+    Column(){
+
+        Row(){
+            Image()
+            Text()
+        }
+        Text()
     }
 }
