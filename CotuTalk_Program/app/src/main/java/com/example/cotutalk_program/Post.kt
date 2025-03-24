@@ -19,7 +19,7 @@ class Post(val nome : String, val foto : String, val dataHorario : String, val m
     fun obterDadosJson() : Map<String, String> {
         var dados = mapOf(
             "nome" to nome,
-            "foto" to foto,
+            "foto" to foto.toString(),
             "data" to dataHorario,
             "message" to message,
             "curtidas" to curtidas.toString(),
