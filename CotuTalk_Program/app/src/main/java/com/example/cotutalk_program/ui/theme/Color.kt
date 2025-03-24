@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 
 val cinza = Color(0xFFA4A4A4)
 
+val branco = Color(0xFFFFFFFF)
+
 // do mais escuro pro mais claro
 val roxo80 = Color(0xFF130519)
 val roxo70 = Color(0xFF38104C)
