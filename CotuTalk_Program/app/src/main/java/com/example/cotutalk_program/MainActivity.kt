@@ -7,14 +7,25 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import java.time.LocalDateTime
-
-
+import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,10 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CotuTalk_ProgramTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    PreviewPost()
                 }
             }
         }
@@ -54,18 +61,35 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+
 @Composable
 fun PostUI(post: Post) {
+    val context = LocalContext.current
+    val resourceId = context.resources.getIdentifier(post.foto, "drawable", context.packageName)
+
+    // Fallback to a default profile image if the dynamic resource is not found
+    val imagePainter = if (resourceId != 0) {
+        painterResource(id = resourceId)
+    } else {
+        painterResource(id = R.drawable.defaultprofile) // Use a default image if not found
+    }
+
     Column(modifier = Modifier
-        .padding(8.dp)
-        .width(300.dp)
+        .fillMaxWidth()
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         // Primeira linha: foto e nome
         Row(
             modifier = Modifier.padding(bottom = 8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = imagePainter,
                 contentDescription = "Post Foto",
                 modifier = Modifier
                     .size(30.dp)
@@ -86,46 +110,70 @@ fun PostUI(post: Post) {
             color = Color.White,
             modifier = Modifier.padding(start = 8.dp)
         )
-        
+
         Row(
             modifier = Modifier.padding(start = 8.dp, top = 8.dp)
         )  {
             Text(post.curtidas.toString(), color = Color.LightGray)
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Curtidas",
+                tint = Color.LightGray,
+                modifier = Modifier
+                    .size(18.dp)
+                    .padding(start = 2.dp)
+            )
+            Spacer(modifier = Modifier.width(40.dp))
+            Text(post.comentarios.size.toString(), color = Color.LightGray)
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = "Comentários",
+                tint = Color.LightGray,
+                modifier = Modifier
+                    .size(18.dp)
+                    .padding(start = 2.dp)
+            )
         }
+        Spacer(modifier = Modifier.height(20.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
     }
-
-
-    // Exibindo a mensagem do post
-//    Row(modifier = Modifier.padding(8.dp)) {
-//        Text(text = post.message)
-//    }
-//
-//    // Exibindo curtidas e comentários
-//    Row(modifier = Modifier.padding(8.dp)) {
-//        Column(modifier = Modifier.weight(1f)) {
-//            //Button(onClick = { post.curtidas++ }) {
-//                //Text(text = "Curtir")
-//            //}
-//            Text(text = "Curtidas: ${post.curtidas}")
-//        }
-//
-//        Column(modifier = Modifier.weight(1f)) {
-//            //Button(onClick = { /* Adicionar lógica para comentar */ }) {
-//                //Text(text = "Comentar")
-//            //}
-//        }
-//    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun PreviewPost() {
-    val post = Post(
+    val post1 = Post(
         "rafael.faZion",
-        "foto_joao.jpg",
+        "fazion",
         "${LocalDateTime.now()}",
         "Rpzd o que fazer após ver meu time perder pro yuri alberto?"
     )
-    PostUI(post = post)
+    val post2 = Post(
+        "gui.OProfeta",
+        "profeta",
+        "${LocalDateTime.now()}",
+        "As extensões de porno do pornhub estão fora de ar há 1 semana, ja estou ficando louco!!!"
+    )
+    val post3 = Post(
+        "rafa.Vasco",
+        "vasco",
+        "${LocalDateTime.now()}",
+        "É só substituir do pornhub pelas do redtube, meu saco ja esta ficando vazio!"
+    )
+    for (i in 0 until 43) {
+        post2.adicionarCurtida()
+        post2.adicionarCurtida()
+        post1.removerCurtida()
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        PostUI(post = post1)
+        PostUI(post = post2)
+        PostUI(post = post3)
+    }
 }
