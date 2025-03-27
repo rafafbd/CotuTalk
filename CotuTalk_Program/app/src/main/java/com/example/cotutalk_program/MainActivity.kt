@@ -144,6 +144,38 @@ fun PostUI(post: Post) {
     }
 }
 
+@Composable
+fun BottomNavigationBar(navController: NavController) {
+    BottomNavigation(
+        backgroundColor = Color.Black,
+        contentColor = Color.Gray
+    ) {
+        val items = listOf(
+            BottomNavItem("Home", , "home"),
+            BottomNavItem("Search", Icons.Default.Search, "search"),
+            BottomNavItem("Notifications", Icons.Default.Notifications, "notifications"),
+            BottomNavItem("Profile", Icons.Default.Person, "profile")
+        )
+
+        items.forEach { item ->
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.label,
+                        tint = Color.Gray
+                    )
+                },
+                selected = false, // Pode ser alterado para exibir o item selecionado
+                onClick = { navController.navigate(item.route) }
+            )
+        }
+    }
+}
+
+data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
