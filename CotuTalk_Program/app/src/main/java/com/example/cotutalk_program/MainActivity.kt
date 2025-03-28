@@ -177,6 +177,7 @@ data class BottomNavItem(val label: String, val icon: ImageVector, val route: St
 
 
 @RequiresApi(Build.VERSION_CODES.O)
+//@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun PreviewPost() {
