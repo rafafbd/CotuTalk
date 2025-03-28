@@ -80,7 +80,7 @@ fun Login(email: String, senha: String){
 
 @Preview
 @Composable
-fun paginaLogin(){
+fun paginaLogin() {
 
     Column(
         modifier = Modifier
@@ -104,7 +104,8 @@ fun CaixaLogin(){
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
-        Modifier.fillMaxSize(0.85f)
+        Modifier
+            .fillMaxSize(0.85f)
             .clip(RoundedCornerShape(16.dp))
     ){
         Column(
@@ -134,7 +135,8 @@ fun CaixaLogin(){
                         focusedTextColor = branco,
                         unfocusedTextColor = branco
                     ),
-                    modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
                         .fillMaxWidth(0.9f)
                 )
 
@@ -160,7 +162,8 @@ fun CaixaLogin(){
                     focusedTextColor = branco,
                     unfocusedTextColor = branco
                 ),
-                modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
                     .border(
                         BorderStroke(0.dp, Color.Black), // Border color and thickness
                         shape = RectangleShape
@@ -183,7 +186,8 @@ fun CaixaLogin(){
                     color = branco,
                     textDecoration = TextDecoration.Underline,
                     fontSize = 20.sp,
-                    modifier = Modifier.clickable { levaAoSignUp() }
+                    modifier = Modifier
+                        .clickable { levaAoSignUp() }
                         .padding(start = 10.dp)
                 )
             }
@@ -202,7 +206,8 @@ fun BotaoEstilizado(texto: String, click: () -> Unit){
             contentColor = branco
         ),
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .height(60.dp)
     ){
         Text(text = texto, fontSize = 22.sp)
