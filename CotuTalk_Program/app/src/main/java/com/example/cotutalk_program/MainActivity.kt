@@ -69,9 +69,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CotuTalk_ProgramTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PreviewPost()
-                }
+                PreviewPost()
             }
         }
     }
