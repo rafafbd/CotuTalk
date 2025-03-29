@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -166,37 +167,45 @@ fun PostUI(post: Post) {
     }
 }
 
-//@Composable
-//fun BottomNavigationBar(navController: NavController) {
-//    BottomNavigation(
-//        backgroundColor = Color.Black,
-//        contentColor = Color.Gray
-//    ) {
-//        val items = listOf(
-//            BottomNavItem("Home", , "home"),
-//            BottomNavItem("Search", Icons.Default.Search, "search"),
-//            BottomNavItem("Notifications", Icons.Default.Notifications, "notifications"),
-//            BottomNavItem("Profile", Icons.Default.Person, "profile")
-//        )
-//
-//        items.forEach { item ->
-//            BottomNavigationItem(
-//                icon = {
-//                    Icon(
-//                        imageVector = item.icon,
-//                        contentDescription = item.label,
-//                        tint = Color.Gray
-//                    )
-//                },
-//                selected = false, // Pode ser alterado para exibir o item selecionado
-//                onClick = { navController.navigate(item.route) }
-//            )
-//        }
-//    }
-//}
-//
-//data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
-//
+@Composable
+fun BottomNavigationBar() {
+    BottomAppBar(
+        containerColor = roxo80,
+        contentColor = Color.White
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_home),
+                contentDescription = "Home",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.icon_search),
+                contentDescription = "Search",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.icon_notification),
+                contentDescription = "Notifications",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.icon_profile),
+                contentDescription = "Profile",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+}
+
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 //@RequiresApi(Build.VERSION_CODES.O)
