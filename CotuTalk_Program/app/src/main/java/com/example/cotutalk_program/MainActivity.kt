@@ -240,7 +240,7 @@ fun PreviewPost() {
     }
 }
 
-@Preview
+//@Preview
 @Composable
 fun paginaRegistrar() {
 
@@ -390,7 +390,7 @@ fun CaixaRegistrar(){
 
 }
 
-@Preview
+//@Preview
 @Composable
 fun paginaVerificar() {
 
@@ -521,9 +521,8 @@ fun paginaConfigurar() {
 
 @Composable
 fun CaixaConfigurar(){
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var confiSenha by remember { mutableStateOf("") }
+    var nome by remember { mutableStateOf("") }
+    var biografia by remember { mutableStateOf("") }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -538,21 +537,29 @@ fun CaixaConfigurar(){
 
             ){
 //            Spacer(Modifier.height(50.dp))
-            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
+            Box (modifier = Modifier.fillMaxWidth(1f)) {
                 Text(
                     "Bem-vindo ao cotutalk!",
                     color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
+                    modifier = Modifier.padding(start = 8.dp, bottom = 100.dp),
+                    fontSize = 30.sp
                 )
             }
 
+            Spacer(Modifier.height(22.dp))
+
+        
+            Image(
+                painter = painterResource(id = R.drawable.icon_camera),
+                contentDescription = "foto do perfil",
+                modifier = Modifier.size(200.dp)
+            )
 
 
-            Spacer(Modifier.height(50.dp))
+            Spacer(Modifier.height(22.dp))
 
             Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Código de verificação:",
+                Text("Nome:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
@@ -560,8 +567,39 @@ fun CaixaConfigurar(){
             }
 
             TextField(
-                value = senha,
-                onValueChange = { senha = it },
+                value = nome,
+                onValueChange = { nome = it },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = roxo70,
+                    unfocusedContainerColor = roxo70,
+                    focusedTextColor = branco,
+                    unfocusedTextColor = branco
+                ),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .border(
+                        BorderStroke(0.dp, Color.Black), // Border color and thickness
+                        shape = RectangleShape
+                    )
+                    .shadow(4.dp, RectangleShape)
+                    .fillMaxWidth(0.9f)
+            )
+
+            Spacer(Modifier.height(22.dp))
+
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text("Biografia:",
+                    color = branco,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 22.sp
+                )
+            }
+
+            TextField(
+                value = biografia,
+                onValueChange = { biografia = it },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.colors(
@@ -581,24 +619,16 @@ fun CaixaConfigurar(){
             )
 
 
-            Spacer(Modifier.height(150.dp))
+            Spacer(Modifier.height(100.dp))
 
             Column (Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
                 BotaoEstilizado(
-                    texto = "Confirmar",
-                    click = { Login(email, senha) }
+                    texto = "Criar conta",
+                    click = { Login(nome, biografia) }
                 )
-                Text(
-                    text = "Voltar",
-                    color = branco,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        //       .clickable { configurar() }
-                        .padding(start = 10.dp)
-                )
+
             }
 
         }
