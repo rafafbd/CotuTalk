@@ -207,7 +207,7 @@ fun BottomNavigationBar() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 //@RequiresApi(Build.VERSION_CODES.O)
-@Preview
+//@Preview
 @Composable
 fun PreviewPost() {
     val post1 = Post(
@@ -264,6 +264,7 @@ fun paginaRegistrar() {
 fun CaixaRegistrar(){
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    var confiSenha by remember { mutableStateOf("") }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -333,8 +334,118 @@ fun CaixaRegistrar(){
                     .fillMaxWidth(0.9f)
             )
 
+            Spacer(Modifier.height(22.dp))
+
             Box (modifier = Modifier.fillMaxWidth(0.9f),){
                 Text("Confirmar senha:",
+                    color = branco,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 22.sp
+                )
+            }
+
+            TextField(
+                value = confiSenha,
+                onValueChange = { confiSenha = it },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = roxo70,
+                    unfocusedContainerColor = roxo70,
+                    focusedTextColor = branco,
+                    unfocusedTextColor = branco
+                ),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .border(
+                        BorderStroke(0.dp, Color.Black), // Border color and thickness
+                        shape = RectangleShape
+                    )
+                    .shadow(4.dp, RectangleShape)
+                    .fillMaxWidth(0.9f)
+            )
+
+            Spacer(Modifier.height(150.dp))
+
+            Column (Modifier.fillMaxWidth(0.9f),
+                horizontalAlignment = Alignment.Start
+            ) {
+                BotaoEstilizado(
+                    texto = "Registrar",
+                    click = { Login(email, senha) }
+                )
+                Text(
+                    text = "Login",
+                    color = branco,
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .clickable { levaAoSignUp() }
+                        .padding(start = 10.dp)
+                )
+            }
+
+        }
+    }
+
+}
+
+@Preview
+@Composable
+fun paginaVerificar() {
+
+    Column(
+        modifier = Modifier
+            .background(color = roxo80)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo do app",
+            modifier = Modifier.size(200.dp)
+        )
+        CaixaVerificar()
+    }
+}
+
+@Composable
+fun CaixaVerificar(){
+    var email by remember { mutableStateOf("") }
+    var senha by remember { mutableStateOf("") }
+    var confiSenha by remember { mutableStateOf("") }
+    Box (
+        Modifier
+            .fillMaxSize(0.85f)
+            .clip(RoundedCornerShape(16.dp))
+    ){
+        Column(
+            Modifier
+                .background(color = roxo60)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+
+            ){
+//            Spacer(Modifier.height(50.dp))
+            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
+                Text(
+                    "Cotutalk enviou um código de verificação para o seu email " +
+                            "(cc24159@g.unicamp.br) digite o código no campo abaixo para " +
+                            "prosseguir",
+                    color = branco,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 22.sp
+                )
+            }
+
+
+
+            Spacer(Modifier.height(50.dp))
+
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text("Código de verificação:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
@@ -362,27 +473,134 @@ fun CaixaRegistrar(){
                     .fillMaxWidth(0.9f)
             )
 
-            Spacer(Modifier.height(180.dp))
+
+            Spacer(Modifier.height(150.dp))
 
             Column (Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
                 BotaoEstilizado(
-                    texto = "Registrar",
+                    texto = "Confirmar",
                     click = { Login(email, senha) }
                 )
                 Text(
-                    text = "Login",
+                    text = "Voltar",
                     color = branco,
                     textDecoration = TextDecoration.Underline,
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .clickable { levaAoSignUp() }
+                 //       .clickable { configurar() }
                         .padding(start = 10.dp)
                 )
             }
 
         }
     }
+}
 
+
+@Preview
+@Composable
+fun paginaConfigurar() {
+
+    Column(
+        modifier = Modifier
+            .background(color = roxo80)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo do app",
+            modifier = Modifier.size(200.dp)
+        )
+        CaixaConfigurar()
+    }
+}
+
+@Composable
+fun CaixaConfigurar(){
+    var email by remember { mutableStateOf("") }
+    var senha by remember { mutableStateOf("") }
+    var confiSenha by remember { mutableStateOf("") }
+    Box (
+        Modifier
+            .fillMaxSize(0.85f)
+            .clip(RoundedCornerShape(16.dp))
+    ){
+        Column(
+            Modifier
+                .background(color = roxo60)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+
+            ){
+//            Spacer(Modifier.height(50.dp))
+            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
+                Text(
+                    "Bem-vindo ao cotutalk!",
+                    color = branco,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 22.sp
+                )
+            }
+
+
+
+            Spacer(Modifier.height(50.dp))
+
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text("Código de verificação:",
+                    color = branco,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 22.sp
+                )
+            }
+
+            TextField(
+                value = senha,
+                onValueChange = { senha = it },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = roxo70,
+                    unfocusedContainerColor = roxo70,
+                    focusedTextColor = branco,
+                    unfocusedTextColor = branco
+                ),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .border(
+                        BorderStroke(0.dp, Color.Black), // Border color and thickness
+                        shape = RectangleShape
+                    )
+                    .shadow(4.dp, RectangleShape)
+                    .fillMaxWidth(0.9f)
+            )
+
+
+            Spacer(Modifier.height(150.dp))
+
+            Column (Modifier.fillMaxWidth(0.9f),
+                horizontalAlignment = Alignment.Start
+            ) {
+                BotaoEstilizado(
+                    texto = "Confirmar",
+                    click = { Login(email, senha) }
+                )
+                Text(
+                    text = "Voltar",
+                    color = branco,
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        //       .clickable { configurar() }
+                        .padding(start = 10.dp)
+                )
+            }
+
+        }
+    }
 }
