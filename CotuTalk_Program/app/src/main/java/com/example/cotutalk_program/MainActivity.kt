@@ -55,7 +55,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.CaixaLogin
 import com.example.cotutalk_program.ui.theme.Login
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.levaAoSignUp
@@ -76,28 +75,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Composable
 fun PostUI(post: Post) {
     val context = LocalContext.current
     val resourceId = context.resources.getIdentifier(post.foto, "drawable", context.packageName)
 
-    // Fallback to a default profile image if the dynamic resource is not found
-    val imagePainter = if (resourceId != 0) {
-        painterResource(id = resourceId)
-    } else {
-        painterResource(id = R.drawable.defaultprofile) // Use a default image if not found
-    }
+    // Fallback para uma imagem de perfil padrão (default) se o recurso dinâmico não for encontrado
+    val imagePainter = painterResource(id = R.drawable.defaultprofile)
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -105,10 +90,9 @@ fun PostUI(post: Post) {
                 .background(Color.Gray)
         )
         Spacer(modifier = Modifier.height(20.dp))
+
         // Primeira linha: foto e nome
-        Row(
-            modifier = Modifier.padding(bottom = 8.dp)
-        ) {
+        Row(modifier = Modifier.padding(bottom = 8.dp)) {
             Image(
                 painter = imagePainter,
                 contentDescription = "Post Foto",
@@ -132,9 +116,7 @@ fun PostUI(post: Post) {
             modifier = Modifier.padding(start = 8.dp)
         )
 
-        Row(
-            modifier = Modifier.padding(start = 8.dp, top = 8.dp)
-        )  {
+        Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
             Text(post.curtidas.toString(), color = Color.LightGray)
             Icon(
                 imageVector = Icons.Default.Favorite,
@@ -155,13 +137,48 @@ fun PostUI(post: Post) {
                     .padding(start = 2.dp)
             )
         }
+
         Spacer(modifier = Modifier.height(20.dp))
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color.Gray)
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewPost() {
+    val post1 = Post(
+        "rafael.faZion",
+        "fazion",
+        "${LocalDateTime.now()}",
+        "Rpzd o que fazer após ver meu time perder pro yuri alberto?"
+    )
+    val post2 = Post(
+        "gui.OProfeta",
+        "profeta",
+        "${LocalDateTime.now()}",
+        "Estou enfrentando dificuldades para entender uma matéria de matemática, alguém pode me ajudar?"
+    )
+    val post3 = Post(
+        "rafa.Vasco",
+        "vasco",
+        "${LocalDateTime.now()}",
+        "Quais dicas vocês têm para melhorar meu caminhão de bombeiro de papelão?"
+    )
+    for (i in 0 until 43) {
+        post2.adicionarCurtida()
+        post2.adicionarCurtida()
+        post1.removerCurtida()
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        PostUI(post = post1)
+        PostUI(post = post2)
+        PostUI(post = post3)
     }
 }
 
@@ -203,434 +220,3 @@ fun BottomNavigationBar() {
     }
 }
 
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-//@RequiresApi(Build.VERSION_CODES.O)
-//@Preview
-@Composable
-fun PreviewPost() {
-    val post1 = Post(
-        "rafael.faZion",
-        "fazion",
-        "${LocalDateTime.now()}",
-        "Rpzd o que fazer após ver meu time perder pro yuri alberto?"
-    )
-    val post2 = Post(
-        "gui.OProfeta",
-        "profeta",
-        "${LocalDateTime.now()}",
-        "As extensões de porno do pornhub estão fora de ar há 1 semana, ja estou ficando louco!!!"
-    )
-    val post3 = Post(
-        "rafa.Vasco",
-        "vasco",
-        "${LocalDateTime.now()}",
-        "É só substituir do pornhub pelas do redtube, meu saco ja esta ficando vazio!"
-    )
-    for (i in 0 until 43) {
-        post2.adicionarCurtida()
-        post2.adicionarCurtida()
-        post1.removerCurtida()
-    }
-    Column(modifier = Modifier.fillMaxSize()) {
-        PostUI(post = post1)
-        PostUI(post = post2)
-        PostUI(post = post3)
-    }
-}
-
-//@Preview
-@Composable
-fun paginaRegistrar() {
-
-    Column(
-        modifier = Modifier
-            .background(color = roxo80)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo do app",
-            modifier = Modifier.size(200.dp)
-        )
-        CaixaRegistrar()
-    }
-}
-
-@Composable
-fun CaixaRegistrar(){
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var confiSenha by remember { mutableStateOf("") }
-    Box (
-        Modifier
-            .fillMaxSize(0.85f)
-            .clip(RoundedCornerShape(16.dp))
-    ){
-        Column(
-            Modifier
-                .background(color = roxo60)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-
-            ){
-//            Spacer(Modifier.height(50.dp))
-            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
-                Text(
-                    "Email:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                singleLine = true,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(0.9f)
-            )
-
-
-            Spacer(Modifier.height(22.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Senha:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-            TextField(
-                value = senha,
-                onValueChange = { senha = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-
-            Spacer(Modifier.height(22.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Confirmar senha:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-            TextField(
-                value = confiSenha,
-                onValueChange = { confiSenha = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-
-            Spacer(Modifier.height(150.dp))
-
-            Column (Modifier.fillMaxWidth(0.9f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                BotaoEstilizado(
-                    texto = "Registrar",
-                    click = { Login(email, senha) }
-                )
-                Text(
-                    text = "Login",
-                    color = branco,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .clickable { levaAoSignUp() }
-                        .padding(start = 10.dp)
-                )
-            }
-
-        }
-    }
-
-}
-
-//@Preview
-@Composable
-fun paginaVerificar() {
-
-    Column(
-        modifier = Modifier
-            .background(color = roxo80)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo do app",
-            modifier = Modifier.size(200.dp)
-        )
-        CaixaVerificar()
-    }
-}
-
-@Composable
-fun CaixaVerificar(){
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
-    var confiSenha by remember { mutableStateOf("") }
-    Box (
-        Modifier
-            .fillMaxSize(0.85f)
-            .clip(RoundedCornerShape(16.dp))
-    ){
-        Column(
-            Modifier
-                .background(color = roxo60)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-
-            ){
-//            Spacer(Modifier.height(50.dp))
-            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
-                Text(
-                    "Cotutalk enviou um código de verificação para o seu email " +
-                            "(cc24159@g.unicamp.br) digite o código no campo abaixo para " +
-                            "prosseguir",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-
-
-            Spacer(Modifier.height(50.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Código de verificação:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-            TextField(
-                value = senha,
-                onValueChange = { senha = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-
-
-            Spacer(Modifier.height(150.dp))
-
-            Column (Modifier.fillMaxWidth(0.9f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                BotaoEstilizado(
-                    texto = "Confirmar",
-                    click = { Login(email, senha) }
-                )
-                Text(
-                    text = "Voltar",
-                    color = branco,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                 //       .clickable { configurar() }
-                        .padding(start = 10.dp)
-                )
-            }
-
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun paginaConfigurar() {
-
-    Column(
-        modifier = Modifier
-            .background(color = roxo80)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo do app",
-            modifier = Modifier.size(200.dp)
-        )
-        CaixaConfigurar()
-    }
-}
-
-@Composable
-fun CaixaConfigurar(){
-    var nome by remember { mutableStateOf("") }
-    var biografia by remember { mutableStateOf("") }
-    Box (
-        Modifier
-            .fillMaxSize(0.85f)
-            .clip(RoundedCornerShape(16.dp))
-    ){
-        Column(
-            Modifier
-                .background(color = roxo60)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-
-            ){
-//            Spacer(Modifier.height(50.dp))
-            Box (modifier = Modifier.fillMaxWidth(1f)) {
-                Text(
-                    "Bem-vindo ao cotutalk!",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 100.dp),
-                    fontSize = 30.sp
-                )
-            }
-
-            Spacer(Modifier.height(22.dp))
-
-        
-            Image(
-                painter = painterResource(id = R.drawable.icon_camera),
-                contentDescription = "foto do perfil",
-                modifier = Modifier.size(200.dp)
-            )
-
-
-            Spacer(Modifier.height(22.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Nome:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-            TextField(
-                value = nome,
-                onValueChange = { nome = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-
-            Spacer(Modifier.height(22.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Biografia:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-            }
-
-            TextField(
-                value = biografia,
-                onValueChange = { biografia = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-
-
-            Spacer(Modifier.height(100.dp))
-
-            Column (Modifier.fillMaxWidth(0.9f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                BotaoEstilizado(
-                    texto = "Criar conta",
-                    click = { Login(nome, biografia) }
-                )
-
-            }
-
-        }
-    }
-}
