@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -93,16 +94,10 @@ fun PostUI(post: Post) {
 
         // Primeira linha: foto e nome
         Row(modifier = Modifier.padding(bottom = 8.dp)) {
-            Image(
-                painter = imagePainter,
-                contentDescription = "Post Foto",
-                modifier = Modifier
-                    .size(30.dp)
-                    .clip(RoundedCornerShape(30.dp))
-            )
             Text(
                 text = "@" + post.nome,
                 color = Color.White,
+                fontSize = 20.sp,  // Aumentando o tamanho da fonte
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = 8.dp)
@@ -113,6 +108,7 @@ fun PostUI(post: Post) {
         Text(
             text = post.message,
             color = Color.White,
+            fontSize = 17.sp,  // Aumentando o tamanho da fonte
             modifier = Modifier.padding(start = 8.dp)
         )
 
@@ -155,19 +151,19 @@ fun PreviewPost() {
     val post1 = Post(
         "rafael.faZion",
         "fazion",
-        "${LocalDateTime.now()}",
+        "{LocalDateTime.now()}",
         "Rpzd o que fazer após ver meu time perder pro yuri alberto?"
     )
     val post2 = Post(
         "gui.OProfeta",
         "profeta",
-        "${LocalDateTime.now()}",
+        "{LocalDateTime.now()}",
         "Estou enfrentando dificuldades para entender uma matéria de matemática, alguém pode me ajudar?"
     )
     val post3 = Post(
         "rafa.Vasco",
         "vasco",
-        "${LocalDateTime.now()}",
+        "{LocalDateTime.now()}",
         "Quais dicas vocês têm para melhorar meu caminhão de bombeiro de papelão?"
     )
     for (i in 0 until 43) {
@@ -175,48 +171,96 @@ fun PreviewPost() {
         post2.adicionarCurtida()
         post1.removerCurtida()
     }
-    Column(modifier = Modifier.fillMaxSize()) {
-        PostUI(post = post1)
-        PostUI(post = post2)
-        PostUI(post = post3)
-    }
-}
 
-@Composable
-fun BottomNavigationBar() {
-    BottomAppBar(
-        containerColor = roxo80,
-        contentColor = Color.White
+    Scaffold(
+        modifier = Modifier.background(roxo80),
+        bottomBar = {
+            BottomNavigationBar(
+                onHomeClick = { },
+                onSearchClick = { },
+                onNotificationsClick = { },
+                onProfileClick = { }
+            )
+        }
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(roxo80)
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_home),
-                contentDescription = "Home",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
+            Image(
+                painter = painterResource(id = R.drawable.logo2),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .width(620.dp)
+                    .padding(16.dp)  // Adicionando padding à imagem
             )
-            Icon(
-                painter = painterResource(id = R.drawable.icon_search),
-                contentDescription = "Search",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.icon_notification),
-                contentDescription = "Notifications",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.icon_profile),
-                contentDescription = "Profile",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
+            PostUI(post = post1)
+            PostUI(post = post2)
+            PostUI(post = post3)
         }
     }
 }
 
+@Composable
+fun BottomNavigationBar(
+    onHomeClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onNotificationsClick: () -> Unit,
+    onProfileClick: () -> Unit
+) {
+    Column {
+        // Borda superior
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
+
+        // BottomAppBar com a barra de navegação
+        BottomAppBar(
+            modifier = Modifier.height(62.dp),
+            containerColor = roxo80,
+            contentColor = Color.White,
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                IconButton(onClick = onHomeClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_home),
+                        contentDescription = "Home",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                IconButton(onClick = onSearchClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_search),
+                        contentDescription = "Search",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                IconButton(onClick = onNotificationsClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_notification),
+                        contentDescription = "Notifications",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                IconButton(onClick = onProfileClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_profile),
+                        contentDescription = "Profile",
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+        }
+    }
+}
