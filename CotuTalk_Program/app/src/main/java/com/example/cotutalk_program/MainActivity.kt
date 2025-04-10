@@ -149,10 +149,10 @@ fun PostUI(post: Post) {
 @Composable
 fun PreviewPost() {
     val post1 = Post(
-        "rafael.faZion",
-        "fazion",
+        "vini.guep",
+        "Vini",
         "{LocalDateTime.now()}",
-        "Rpzd o que fazer após ver meu time perder pro yuri alberto?"
+        "Rpzd o que fazer com a minha vida?"
     )
     val post2 = Post(
         "gui.OProfeta",
@@ -182,11 +182,12 @@ fun PreviewPost() {
                 onProfileClick = { }
             )
         }
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(roxo80)
+                .padding(innerPadding)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo2),
@@ -201,6 +202,7 @@ fun PreviewPost() {
         }
     }
 }
+
 
 @Composable
 fun BottomNavigationBar(

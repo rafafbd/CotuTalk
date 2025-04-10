@@ -52,6 +52,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cotutalk_program.BottomNavigationBar
 import com.example.cotutalk_program.Post
 import com.example.cotutalk_program.PostUI
 import com.example.cotutalk_program.R
@@ -80,48 +81,61 @@ fun postarResposta(resposta: String){
 @Composable
 fun responder(){
     var resposta by remember { mutableStateOf("") }
-    Column(Modifier
-        .background(roxo80)
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PostUI(
-            Post("Vini.guep",
-                "defaultprofile",
-                "",
-                "Como eu faço herança em C#???")
-        )
-        Column(modifier = Modifier.padding(bottom = 10.dp).
-        drawBehind {
-            drawLine(
-                color = branco, // Border color
-                start = Offset(0f, 0f), // Start from the top-left
-                end = Offset(size.width, 0f), // End at the top-right
-                strokeWidth = 1.dp.toPx() // Thickness of the border
+    Scaffold (
+        bottomBar = { BottomNavigationBar(
+            onHomeClick = { },
+            onSearchClick = { },
+            onNotificationsClick = { },
+            onProfileClick = { }
+        ) }
+    ) { innerPadding ->
+        Column(
+            Modifier
+                .background(roxo80)
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            PostUI(
+                Post(
+                    "Vini.guep",
+                    "defaultprofile",
+                    "",
+                    "Como eu faço herança em C#???"
+                )
             )
 
-        }){
+            Spacer(Modifier.height(25.dp))
 
-            TextField(
-                value = resposta,
-                onValueChange = { resposta = it },
-                singleLine = false,
-                minLines = 10,
-                placeholder = {
-                    Text("Escreva sua resposta aqui...", color = branco)},
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo50,
-                    unfocusedContainerColor = roxo50,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .fillMaxWidth(0.9f)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(bottom = 10.dp)) {
 
-            BotaoEstilizado("Responder") { postarResposta(resposta) }
+                TextField(
+                    value = resposta,
+                    onValueChange = { resposta = it },
+                    singleLine = false,
+                    minLines = 20,
+                    placeholder = {
+                        Text("Escreva sua resposta aqui...", color = branco)
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = roxo50,
+                        unfocusedContainerColor = roxo50,
+                        focusedTextColor = branco,
+                        unfocusedTextColor = branco
+                    ),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .fillMaxWidth(0.9f)
+                )
+
+                Spacer(Modifier.height(25.dp))
+
+                Box (Modifier.fillMaxWidth(0.9f)){
+                    BotaoEstilizado("Responder") { postarResposta(resposta) }
+                }
+            }
         }
     }
-
 }
