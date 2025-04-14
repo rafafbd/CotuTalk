@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
@@ -80,8 +81,13 @@ fun PostUI(post: Post) {
     val context = LocalContext.current
     val resourceId = context.resources.getIdentifier(post.foto, "drawable", context.packageName)
 
-    // Fallback para uma imagem de perfil padrão (default) se o recurso dinâmico não for encontrado
-    val imagePainter = painterResource(id = R.drawable.defaultprofile)
+    val imagePainter = if (resourceId != 0) {
+        painterResource(id = resourceId)
+    } else {
+        painterResource(id = R.drawable.defaultprofile)
+    }
+
+
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -94,6 +100,13 @@ fun PostUI(post: Post) {
 
         // Primeira linha: foto e nome
         Row(modifier = Modifier.padding(bottom = 8.dp)) {
+            Image (
+                painter = imagePainter,
+                contentDescription = "Foto de perfil",
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(CircleShape)
+            )
             Text(
                 text = "@" + post.nome,
                 color = Color.White,
@@ -149,7 +162,7 @@ fun PostUI(post: Post) {
 @Composable
 fun PreviewPost() {
     val post1 = Post(
-        "vini.guep",
+        "viniguep",
         "Vini",
         "{LocalDateTime.now()}",
         "Rpzd o que fazer com a minha vida?"

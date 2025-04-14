@@ -82,10 +82,18 @@ fun CaixaLogin3(){
             verticalArrangement = Arrangement.Center,
 
             ){
+            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
+                Text(
+                    "Enviamos um código de verificação para o email u24159@g.unicamp.br, insira o código no campo a baixo para prosseguir com a recuperação de senha",
+                    color = branco,
+                    fontSize = 19.sp
+                )
+                Spacer(Modifier.height(180.dp))
+            }
 //            Spacer(Modifier.height(50.dp))
             Box (modifier = Modifier.fillMaxWidth(0.9f)) {
                 Text(
-                    "Enviamos um código no seu email, digite-o aqui:",
+                    "Código de verificação:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp

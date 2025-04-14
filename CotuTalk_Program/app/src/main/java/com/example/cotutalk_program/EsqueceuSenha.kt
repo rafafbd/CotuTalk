@@ -113,7 +113,7 @@ fun CaixaLogin2(){
                 horizontalAlignment = Alignment.Start
             ) {
                 BotaoEstilizado(
-                    texto = "Enviar código de recuperação",
+                    texto = "Enviar código",
                     click = { Login(email, senha) }
                 )
 

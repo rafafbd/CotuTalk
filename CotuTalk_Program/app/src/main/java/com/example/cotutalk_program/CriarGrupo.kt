@@ -102,7 +102,7 @@ fun PaginaCriarGrupo(){
 
             Text("Nome do grupo:",
                 color = branco,
-                fontSize = 15.sp)
+                fontSize = 16.sp)
 
             TextField(
                 value = nomeGrupo,
@@ -123,7 +123,7 @@ fun PaginaCriarGrupo(){
 
             Text("Descrição do grupo:",
                 color = branco,
-                fontSize = 15.sp
+                fontSize = 16.sp
                 )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -155,7 +155,7 @@ fun PaginaCriarGrupo(){
                     )
                     Text("Privado",
                         color = branco,
-                        fontSize = 15.sp)
+                        fontSize = 16.sp)
                 }
 
 
