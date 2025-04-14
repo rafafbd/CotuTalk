@@ -46,7 +46,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun paginaLogin() {
+fun EmailRecuperacao() {
 
     Column(
         modifier = Modifier
@@ -60,13 +60,13 @@ fun paginaLogin() {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin()
+        CaixaLogin3()
     }
 }
 
 
 @Composable
-fun CaixaLogin(){
+fun CaixaLogin3(){
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -85,7 +85,7 @@ fun CaixaLogin(){
 //            Spacer(Modifier.height(50.dp))
             Box (modifier = Modifier.fillMaxWidth(0.9f)) {
                 Text(
-                    "Email:",
+                    "Enviamos um código no seu email, digite-o aqui:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
@@ -106,49 +106,6 @@ fun CaixaLogin(){
                     .fillMaxWidth(0.9f)
             )
 
-
-            Spacer(Modifier.height(22.dp))
-
-            Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Senha:",
-                    color = branco,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
-                    fontSize = 22.sp
-                )
-
-
-            }
-
-            TextField(
-                value = senha,
-                onValueChange = { senha = it },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = roxo70,
-                    unfocusedContainerColor = roxo70,
-                    focusedTextColor = branco,
-                    unfocusedTextColor = branco
-                ),
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(0.dp, Color.Black), // Border color and thickness
-                        shape = RectangleShape
-                    )
-                    .shadow(4.dp, RectangleShape)
-                    .fillMaxWidth(0.9f)
-            )
-            Text(
-                text = "Esqueceu senha",
-                color = branco,
-                textDecoration = TextDecoration.Underline,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .clickable { levaAoSignUp() }
-                    .padding(end = 140.dp)
-            )
-
             Spacer(Modifier.height(180.dp))
 
             Column (
@@ -156,17 +113,8 @@ fun CaixaLogin(){
                 horizontalAlignment = Alignment.Start
             ) {
                 BotaoEstilizado(
-                    texto = "Entrar",
+                    texto = "Verificar",
                     click = { Login(email, senha) }
-                )
-                Text(
-                    text = "Criar conta",
-                    color = branco,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .clickable { levaAoSignUp() }
-                        .padding(start = 10.dp)
                 )
             }
 

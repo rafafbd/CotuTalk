@@ -46,7 +46,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun paginaLogin() {
+fun NovaSenha() {
 
     Column(
         modifier = Modifier
@@ -60,13 +60,13 @@ fun paginaLogin() {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin()
+        CaixaLogin4()
     }
 }
 
 
 @Composable
-fun CaixaLogin(){
+fun CaixaLogin4(){
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -85,7 +85,7 @@ fun CaixaLogin(){
 //            Spacer(Modifier.height(50.dp))
             Box (modifier = Modifier.fillMaxWidth(0.9f)) {
                 Text(
-                    "Email:",
+                    "Nova Senha:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
@@ -110,13 +110,11 @@ fun CaixaLogin(){
             Spacer(Modifier.height(22.dp))
 
             Box (modifier = Modifier.fillMaxWidth(0.9f),){
-                Text("Senha:",
+                Text("Repitir a nova senha:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
                 )
-
-
             }
 
             TextField(
@@ -139,15 +137,6 @@ fun CaixaLogin(){
                     .shadow(4.dp, RectangleShape)
                     .fillMaxWidth(0.9f)
             )
-            Text(
-                text = "Esqueceu senha",
-                color = branco,
-                textDecoration = TextDecoration.Underline,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .clickable { levaAoSignUp() }
-                    .padding(end = 140.dp)
-            )
 
             Spacer(Modifier.height(180.dp))
 
@@ -156,17 +145,8 @@ fun CaixaLogin(){
                 horizontalAlignment = Alignment.Start
             ) {
                 BotaoEstilizado(
-                    texto = "Entrar",
+                    texto = "Concluído",
                     click = { Login(email, senha) }
-                )
-                Text(
-                    text = "Criar conta",
-                    color = branco,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 20.sp,
-                    modifier = Modifier
-                        .clickable { levaAoSignUp() }
-                        .padding(start = 10.dp)
                 )
             }
 
