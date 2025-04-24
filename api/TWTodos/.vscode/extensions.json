@@ -1,0 +1,24 @@
+{
+    "recommendations": [
+      "ms-dotnettools.csharp",             // Suporte ao C# e .NET
+      "ms-dotnettools.vscode-dotnet-pack",// Ferramentas do .NET SDK
+      "ms-azuretools.vscode-docker",      // Caso use containers para DevContainer ou SQLite
+      "esbenp.prettier-vscode",           // Formatador de código
+      "eamodio.gitlens",                  // Git avançado
+      "mhutchie.git-graph",               // Visualização do Git
+      "visualstudioexptteam.vscodeintellicode", // IntelliCode com sugestões de AI
+      "xyz.local-history",                // Histórico local dos arquivos
+      "bierner.markdown-preview-github-styles", // Melhor preview de Markdown (docs, README)
+      
+      // Extras para design/modelagem
+      "hediet.vscode-drawio",             // Diagrama de caso de uso direto no VS Code
+      "zhuangtongfa.Material-theme",      // Tema Material (estilo Figma / Android)
+      "gruntfuggly.todo-tree",            // Destaca TODOs no código
+      
+      // Se for usar Android Studio junto, não no VS Code, não precisa de Android-specific aqui
+      // Mas caso queira manipular arquivos Java/Kotlin aqui:
+      "vscjava.vscode-java-pack",         // Suporte Java (Android)
+      "k--kato.intellij-idea-keybindings" // Atalhos do IntelliJ/Android Studio no VS Code
+    ]
+  }
+  
