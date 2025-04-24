@@ -8,10 +8,11 @@ public class AppDbContext : DbContext
     {
         optionsBuilder.UseSqlite("twapi.sqlite3");
     }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        //modelBuilder.ApplyConfiguration<Usuario> (new)
-    }
 
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Grupo> grupos { get; set; }
+    public DbSet<Postagem> Postagens { get; set; }
+    public DbSet<Membro> membros { get; set; }
+    public DbSet<Resposta> respostas { get; set; }
+    public DbSet<Curtida> curtidas { get; set; }
 }
