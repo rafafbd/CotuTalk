@@ -11,14 +11,16 @@ public class MembroEntityConfig : IEntityTypeConfiguration<Membro>
         builder.HasKey(m => m.IdMembro);
 
         builder.HasOne(m => m.Usuario)
-            .WithMany(u => u.Membro)             
+            .WithMany(u => u.Membros)             
             .HasForeignKey(m => m.IdUsuario)        
             .OnDelete(DeleteBehavior.Cascade);     
 
 
         builder.HasOne(m => m.Grupo)
-            .WithMany(g => g.Membro)
+            .WithMany(g => g.Membros)
             .HasForeignKey(m => m.IdUsuario)  
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(m => m.DataDeEntrada).IsRequired();
     }
 }
