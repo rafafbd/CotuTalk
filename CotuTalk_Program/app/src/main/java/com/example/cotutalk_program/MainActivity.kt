@@ -56,10 +56,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.Login
+import com.example.cotutalk_program.ui.theme.PaginaCriarGrupo
+import com.example.cotutalk_program.ui.theme.PaginaResponder
 import com.example.cotutalk_program.ui.theme.branco
-import com.example.cotutalk_program.ui.theme.levaAoSignUp
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
@@ -70,11 +74,46 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CotuTalk_ProgramTheme {
-                PreviewPost()
+                val navController = rememberNavController()
+
+                NavHost(navController = navController, startDestination = "login"){
+                    composable(route = "login"){
+                        paginaLogin(navController)
+                    }
+                    composable(route = "registrar"){
+                        paginaRegistrar(navController)
+                    }
+                    composable(route = "EsqueceuSenha"){
+                        EsqueceuSenha(navController)
+                    }
+                    composable(route = "EmailRecuperacao"){
+                        EmailRecuperacao(navController)
+                    }
+                    composable(route = "NovaSenha"){
+                        NovaSenha(navController)
+                    }
+                    composable(route = "Config"){
+                        paginaConfigurar(navController)
+                    }
+                    composable(route = "Pesquisa"){
+                        Search(navController)
+                    }
+                    composable(route = "Resposta"){
+                        PaginaResponder(navController)
+                    }
+                    composable(route = "Verificar"){
+                        paginaVerificar(navController)
+                    }
+                    composable(route = "criarGrupo"){
+                        PaginaCriarGrupo(navController)
+                    }
+
+
             }
         }
     }
 }
+
 
 @Composable
 fun PostUI(post: Post) {
@@ -158,7 +197,7 @@ fun PostUI(post: Post) {
     }
 }
 
-@Preview
+
 @Composable
 fun PreviewPost() {
     val post1 = Post(
@@ -278,4 +317,5 @@ fun BottomNavigationBar(
             }
         }
     }
+}
 }

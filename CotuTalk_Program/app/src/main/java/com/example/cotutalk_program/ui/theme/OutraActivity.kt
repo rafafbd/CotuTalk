@@ -67,15 +67,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun levaAoSignUp(){
-    // função que não faz nada e vai ser apagada posteriormente
-}
 
-fun Login(email: String, senha: String){
-    // consulta api
-    // se o login estiver certo, vai à página principal
-    // caso contrário, volta à página de login
-}
 
 @Composable
 fun BotaoEstilizado(texto: String, click: () -> Unit){
