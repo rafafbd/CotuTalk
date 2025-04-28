@@ -61,6 +61,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
+import com.example.cotutalk_program.ui.theme.PaginaCriarGrupo
+import com.example.cotutalk_program.ui.theme.PaginaResponder
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
@@ -78,6 +80,35 @@ class MainActivity : ComponentActivity() {
                     composable(route = "login"){
                         paginaLogin(navController)
                     }
+                    composable(route = "registrar"){
+                        paginaRegistrar(navController)
+                    }
+                    composable(route = "EsqueceuSenha"){
+                        EsqueceuSenha(navController)
+                    }
+                    composable(route = "EmailRecuperacao"){
+                        EmailRecuperacao(navController)
+                    }
+                    composable(route = "NovaSenha"){
+                        NovaSenha(navController)
+                    }
+                    composable(route = "Config"){
+                        paginaConfigurar(navController)
+                    }
+                    composable(route = "Pesquisa"){
+                        Search(navController)
+                    }
+                    composable(route = "Resposta"){
+                        PaginaResponder(navController)
+                    }
+                    composable(route = "Verificar"){
+                        paginaVerificar(navController)
+                    }
+                    composable(route = "criarGrupo"){
+                        PaginaCriarGrupo(navController)
+                    }
+
+
             }
         }
     }
