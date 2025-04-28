@@ -35,18 +35,30 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.Login
 import com.example.cotutalk_program.ui.theme.branco
-import com.example.cotutalk_program.ui.theme.levaAoSignUp
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
 
-@Preview
+fun loginOk(email: String, senha: String): Boolean{
+    return true
+}
+
+fun levaAoSignUp(){
+    // função que não faz nada e vai ser apagada posteriormente
+}
+
+fun Login(email: String, senha: String){
+    if (loginOk(email, senha)){
+
+    }
+}
+
 @Composable
-fun paginaLogin() {
+fun paginaLogin(navController: NavController) {
 
     Column(
         modifier = Modifier
