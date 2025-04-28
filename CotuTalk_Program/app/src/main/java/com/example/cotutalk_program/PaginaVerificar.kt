@@ -34,8 +34,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.Login
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
@@ -44,7 +44,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun paginaVerificar() {
+fun paginaVerificar(navController: NavHostController) {
 
     Column(
         modifier = Modifier
