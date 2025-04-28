@@ -7,12 +7,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-//rota raiz
+// Rota raiz
 app.MapGet("/", () => "Hello World!");
 
-
-//USUARIO
-//adicionar um usuario
+// USUARIO
+// Adicionar um usuario
 app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
 {
     db.Usuarios.Add(usuario);
@@ -20,16 +19,15 @@ app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
     return Results.Created($"/usuarios/{usuario.IdUsuario}", usuario);
 });
 
-//listar usuarios
+// Listar usuarios
 app.MapGet("/usuarios", async (AppDbContext db) =>
 {
     var usuarios = await db.Usuarios.ToListAsync();
     return Results.Ok(usuarios);
 });
 
-
-//POSTAGEM
-//adicionar um novo post
+// POSTAGEM
+// Adicionar um novo post
 app.MapPost("/postagens", async (Postagem postagem, AppDbContext db) => 
 {
     db.Postagens.Add(postagem);
@@ -37,14 +35,14 @@ app.MapPost("/postagens", async (Postagem postagem, AppDbContext db) =>
     return Results.Created($"/postagens/{postagem.IdPostagem}", postagem);
 });
 
-//listar posts
-app.MapGet("/postagens", async (Postagem postagem, AppDbContext db) => 
+// Listar posts
+app.MapGet("/postagens", async (AppDbContext db) => 
 {
     var postagens = await db.Postagens.ToListAsync();
     return Results.Ok(postagens);
 });
 
-//posts de usuario
+// Posts de usuario
 app.MapGet("/postagens/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
     var postagens = await db.Postagens
@@ -55,18 +53,17 @@ app.MapGet("/postagens/{IdUsuario:int}", async (int idUsuario, AppDbContext db) 
         : Results.NotFound($"Nenhuma postagem encontrada para o usuário {idUsuario}");
 });
 
-
-//GRUPO
-//adicionar um grupo
+// GRUPO
+// Adicionar um grupo
 app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) => 
 {
-    
+    db.Grupos.Add(grupo);
+    await db.SaveChangesAsync();
+    return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
 });
-//MEMBRO
 
-
-//CURTIDA   
-//adicionar curtida
+// CURTIDA   
+// Adicionar curtida
 app.MapPost("/curtidas", async (Curtida curtida, AppDbContext db) => 
 {
     db.Curtidas.Add(curtida);
@@ -74,14 +71,14 @@ app.MapPost("/curtidas", async (Curtida curtida, AppDbContext db) =>
     return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
 });
 
-//listar curtidas 
-app.MapGet("/curtidas", async (Curtida curtida, AppDbContext db) =>
+// Listar curtidas 
+app.MapGet("/curtidas", async (AppDbContext db) =>
 {
-    var curtidas = db.Curtidas.ToListAsync();
+    var curtidas = await db.Curtidas.ToListAsync();
     return Results.Ok(curtidas);
 });
 
-//curtidas de um usuario
+// Curtidas de um usuario
 app.MapGet("/curtidasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
     var curtidas = await db.Curtidas
@@ -89,11 +86,11 @@ app.MapGet("/curtidasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContex
                             .ToListAsync();
     var qtsCurtidas = curtidas.Count();
     return curtidas.Any()
-        ? Results.Ok(new {qtsCurtidas, curtidas})
+        ? Results.Ok(new { qtsCurtidas, curtidas })
         : Results.NotFound($"Nenhuma curtida encontrada para o usuario {idUsuario}");
 });
 
-//curtidas de um post
+// Curtidas de um post
 app.MapGet("/curtidasPostagem/{idPostagem:int}", async (int idPostagem, AppDbContext db) => 
 {
     var curtidas = await db.Curtidas
@@ -101,13 +98,12 @@ app.MapGet("/curtidasPostagem/{idPostagem:int}", async (int idPostagem, AppDbCon
                             .ToListAsync();
     var qtsCurtidas = curtidas.Count();
     return curtidas.Any()
-        ? Results.Ok(new {qtsCurtidas, curtidas})
-        : Results.NotFound($"Nenhuma curtida encontrada para o usuario {idPostagem}");
+        ? Results.Ok(new { qtsCurtidas, curtidas })
+        : Results.NotFound($"Nenhuma curtida encontrada para o post {idPostagem}");
 });
 
-
-//RESPOSTA
-//adicionar resposta
+// RESPOSTA
+// Adicionar resposta
 app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) => 
 {
     db.Respostas.Add(resposta);
@@ -115,36 +111,35 @@ app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) =>
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
 
-//listar respostas 
-app.MapGet("/respostas", async (Resposta resposta, AppDbContext db) =>
+// Listar respostas
+app.MapGet("/respostas", async (AppDbContext db) =>
 {
-    var respostas = db.Respostas.ToListAsync();
+    var respostas = await db.Respostas.ToListAsync();
     return Results.Ok(respostas);
 });
 
-//respostas de um usuario
+// Respostas de um usuario
 app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
     var respostas = await db.Respostas
                             .Where(c => c.IdUsuario == idUsuario)
                             .ToListAsync();
-    var qtsrespostas = respostas.Count();
+    var qtsRespostas = respostas.Count();
     return respostas.Any()
-        ? Results.Ok(new {qtsrespostas, respostas})
-        : Results.NotFound($"Nenhuma resposta encontrada para o usuario {idUsuario}");
+        ? Results.Ok(new { qtsRespostas, respostas })
+        : Results.NotFound($"Nenhuma resposta encontrada para o usuário {idUsuario}");
 });
 
-//respostas de um post
-app.MapGet("/respostasresposta/{idresposta:int}", async (int idresposta, AppDbContext db) => 
+// Respostas de uma postagem
+app.MapGet("/respostasPostagem/{idPostagem:int}", async (int idPostagem, AppDbContext db) => 
 {
     var respostas = await db.Respostas
-                            .Where(c => c.IdResposta == idresposta)
+                            .Where(c => c.IdPostagem == idPostagem)
                             .ToListAsync();
-    var qtsrespostas = respostas.Count();
+    var qtsRespostas = respostas.Count();
     return respostas.Any()
-        ? Results.Ok(new {qtsrespostas, respostas})
-        : Results.NotFound($"Nenhuma resposta encontrada para o usuario {idresposta}");
+        ? Results.Ok(new { qtsRespostas, respostas })
+        : Results.NotFound($"Nenhuma resposta encontrada para o post {idPostagem}");
 });
-
 
 app.Run();
