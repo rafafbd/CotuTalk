@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.Login
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
@@ -43,7 +42,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun paginaConfigurar() {
+fun paginaConfigurar(navController: Any) {
 
     Column(
         modifier = Modifier

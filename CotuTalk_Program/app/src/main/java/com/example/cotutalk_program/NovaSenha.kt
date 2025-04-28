@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,14 +30,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
-import com.example.cotutalk_program.ui.theme.Login
 import com.example.cotutalk_program.ui.theme.branco
-import com.example.cotutalk_program.ui.theme.levaAoSignUp
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
@@ -46,7 +42,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun NovaSenha() {
+fun NovaSenha(navController: Any) {
 
     Column(
         modifier = Modifier
