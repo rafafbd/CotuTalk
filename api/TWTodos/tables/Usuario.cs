@@ -8,4 +8,5 @@ public class Usuario
     public ICollection<Membro> Membros { get; set; } = new List<Membro>();
     public ICollection<Postagem> Postagens { get; set; } = new List<Postagem>();
     public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
+    public ICollection<Resposta> Respostas { get; set; } = new List<Resposta>();
 }
