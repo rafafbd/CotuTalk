@@ -6,13 +6,26 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("twapi.sqlite3");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite("Data Source=twapi.sqlite3");
+        }
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new CurtidaEntityConfig());
+        modelBuilder.ApplyConfiguration(new GrupoEntityConfig());
+        modelBuilder.ApplyConfiguration(new MembroEntityConfig());
+        modelBuilder.ApplyConfiguration(new PostagemEntityConfig());
+        modelBuilder.ApplyConfiguration(new RespostaEntityConfig());
+        modelBuilder.ApplyConfiguration(new UsuarioEntityConfig());
     }
 
     public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<Grupo> grupos { get; set; }
+    public DbSet<Grupo> Grupos { get; set; }
     public DbSet<Postagem> Postagens { get; set; }
-    public DbSet<Membro> membros { get; set; }
-    public DbSet<Resposta> respostas { get; set; }
-    public DbSet<Curtida> curtidas { get; set; }
+    public DbSet<Membro> Membros { get; set; }
+    public DbSet<Resposta> Respostas { get; set; }
+    public DbSet<Curtida> Curtidas { get; set; }
 }
