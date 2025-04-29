@@ -10,6 +10,7 @@ var app = builder.Build();
 // Rota raiz
 app.MapGet("/", () => "Hello World!");
 
+
 // USUARIO
 // Adicionar um usuario
 app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
@@ -24,6 +25,21 @@ app.MapGet("/usuarios", async (AppDbContext db) =>
 {
     var usuarios = await db.Usuarios.ToListAsync();
     return Results.Ok(usuarios);
+});
+
+// Verifiar login
+app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
+    var usuarios = await db.Usuarios.ToArrayAsync();
+    bool validacao = false;
+    foreach (var user in usuarios) 
+    {
+        if (user.Nome == login.Nome && user.Senha == login.Senha)
+        {
+            validacao = true;
+            break;
+        }
+    }
+    return Results.Ok(new {validacao});
 });
 
 // POSTAGEM
@@ -43,7 +59,7 @@ app.MapGet("/postagens", async (AppDbContext db) =>
 });
 
 // Posts de usuario
-app.MapGet("/postagens/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
+app.MapGet("/postagensUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
     var postagens = await db.Postagens
                             .Where(p => p.IdUsuario == idUsuario)
@@ -51,6 +67,17 @@ app.MapGet("/postagens/{IdUsuario:int}", async (int idUsuario, AppDbContext db) 
     return postagens.Any()
         ? Results.Ok(postagens)
         : Results.NotFound($"Nenhuma postagem encontrada para o usuário {idUsuario}");
+});
+
+// Posts de grupo
+app.MapGet("/postagensGrupo/{IdGrupo:int}", async (int idGrupo, AppDbContext db) => 
+{
+    var postagens = await db.Postagens
+                            .Where (p => p.IdGrupo == idGrupo)
+                            .ToListAsync();
+    return postagens.Any()
+        ? Results.Ok(postagens)
+        : Results.NotFound($"Nenhuma postagem encontrada para o grupo {idGrupo}");
 });
 
 // GRUPO
@@ -61,6 +88,15 @@ app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
 });
+
+app.MapGet("/grupos", async (AppDbContext db) => 
+{
+    var grupos = await db.Curtidas.ToListAsync();
+    return Results.Ok(grupos);
+});
+
+//MEMBRO
+
 
 // CURTIDA   
 // Adicionar curtida

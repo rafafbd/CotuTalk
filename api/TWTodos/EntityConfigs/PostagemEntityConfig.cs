@@ -18,6 +18,11 @@ public class PostagemEntityConfig : IEntityTypeConfiguration<Postagem>
             .WithMany(u => u.Postagens)             // diz que o usuario pode ter n postagens, rel 1 - N
             .HasForeignKey(p => p.IdUsuario)        // define foreign key
             .OnDelete(DeleteBehavior.Cascade);     // delete cascade
-               
+
+        // -> não esta funcionando:
+        // builder.HasOne(p => p.Grupo)
+        //     .WithMany(u => u.Postagens)
+        //     .HasForeignKey(p => p.IdGrupo)
+        //     .OnDelete(DeleteBehavior.Cascade);
     }
 }
