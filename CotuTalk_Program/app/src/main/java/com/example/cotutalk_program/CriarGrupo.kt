@@ -49,7 +49,7 @@ class CriarGrupo : ComponentActivity() {
     }
 }
 
-@Preview
+
 @Composable
 fun PaginaCriarGrupo(navController: NavHostController) {
     var nomeGrupo by remember { mutableStateOf("") }

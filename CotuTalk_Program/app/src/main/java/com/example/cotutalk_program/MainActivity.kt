@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
@@ -51,11 +52,11 @@ class MainActivity : ComponentActivity() {
             CotuTalk_ProgramTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "login"){
-                    composable(route = "login"){
+                NavHost(navController = navController, startDestination = "Login"){
+                    composable(route = "Login"){
                         paginaLogin(navController)
                     }
-                    composable(route = "registrar"){
+                    composable(route = "Registrar"){
                         paginaRegistrar(navController)
                     }
                     composable(route = "EsqueceuSenha"){
@@ -202,12 +203,7 @@ fun PreviewPost() {
     Scaffold(
         modifier = Modifier.background(roxo80),
         bottomBar = {
-            BottomNavigationBar(
-                onHomeClick = { },
-                onSearchClick = { },
-                onNotificationsClick = { },
-                onProfileClick = { }
-            )
+            //BottomNavigationBar()
         }
     ) { innerPadding ->
         Column(
@@ -232,12 +228,7 @@ fun PreviewPost() {
 
 
 @Composable
-fun BottomNavigationBar(
-    onHomeClick: () -> Unit,
-    onSearchClick: () -> Unit,
-    onNotificationsClick: () -> Unit,
-    onProfileClick: () -> Unit
-) {
+fun BottomNavigationBar(navController: NavHostController) {
     Column {
         // Borda superior
         Box(
@@ -257,7 +248,7 @@ fun BottomNavigationBar(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                IconButton(onClick = onHomeClick) {
+                IconButton(onClick = {navController.navigate("Principal")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_home),
                         contentDescription = "Home",
@@ -265,7 +256,7 @@ fun BottomNavigationBar(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                IconButton(onClick = onSearchClick) {
+                IconButton(onClick = {navController.navigate("Pesquisa")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_search),
                         contentDescription = "Search",
@@ -273,7 +264,7 @@ fun BottomNavigationBar(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                IconButton(onClick = onNotificationsClick) {
+                IconButton(onClick = {navController.navigate("Notificacao")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_notification),
                         contentDescription = "Notifications",
@@ -281,7 +272,7 @@ fun BottomNavigationBar(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                IconButton(onClick = onProfileClick) {
+                IconButton(onClick = {navController.navigate("Usuario")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_profile),
                         contentDescription = "Profile",

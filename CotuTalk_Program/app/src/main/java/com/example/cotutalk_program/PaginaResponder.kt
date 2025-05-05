@@ -50,17 +50,12 @@ fun postarResposta(resposta: String){
     //
 }
 
-@Preview
+
 @Composable
 fun responder(navController: NavHostController) {
     var resposta by remember { mutableStateOf("") }
     Scaffold (
-        bottomBar = { BottomNavigationBar(
-            onHomeClick = { },
-            onSearchClick = { },
-            onNotificationsClick = { },
-            onProfileClick = { }
-        ) }
+        bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
         Column(
             Modifier
