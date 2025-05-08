@@ -35,7 +35,7 @@ import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
 
-@Preview
+
 @Composable
 fun Search(navController: Any) {
     var pesquisa by remember { mutableStateOf("") }
@@ -85,12 +85,7 @@ fun Search(navController: Any) {
             fillMaxSize(0.7f)
         )
 
-        BottomNavigationBar(
-            onHomeClick = { },
-            onSearchClick = { },
-            onNotificationsClick = { },
-            onProfileClick = { }
-        )
+        BottomNavigationBar(navController)
     }
 }
 

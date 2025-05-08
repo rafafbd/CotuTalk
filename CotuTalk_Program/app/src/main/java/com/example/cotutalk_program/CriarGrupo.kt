@@ -1,4 +1,4 @@
-package com.example.cotutalk_program.ui.theme
+package com.example.cotutalk_program
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -34,20 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.cotutalk_program.BottomNavigationBar
 import com.example.cotutalk_program.R
-
-class CriarGrupo : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CotuTalk_ProgramTheme {
-
-            }
-        }
-    }
-}
+import com.example.cotutalk_program.BottomNavigationBar
+import com.example.cotutalk_program.ui.theme.BotaoEstilizado
+import com.example.cotutalk_program.ui.theme.branco
+import com.example.cotutalk_program.ui.theme.roxo50
+import com.example.cotutalk_program.ui.theme.roxo70
+import com.example.cotutalk_program.ui.theme.roxo80
 
 
 @Composable
@@ -56,12 +49,7 @@ fun PaginaCriarGrupo(navController: NavHostController) {
     var descGrupo by remember { mutableStateOf("") }
     var ehPrivado by remember { mutableStateOf(false) }
     Scaffold (
-        bottomBar = { BottomNavigationBar(
-            onHomeClick = { },
-            onSearchClick = { },
-            onNotificationsClick = { },
-            onProfileClick = { }
-        ) }
+        bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
         Column(
             Modifier

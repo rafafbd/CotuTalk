@@ -40,7 +40,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
-import com.example.cotutalk_program.ui.theme.PaginaCriarGrupo
+import com.example.cotutalk_program.PaginaCriarGrupo
 import com.example.cotutalk_program.ui.theme.responder
 import com.example.cotutalk_program.ui.theme.roxo80
 
@@ -52,39 +52,40 @@ class MainActivity : ComponentActivity() {
             CotuTalk_ProgramTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "Login"){
-                    composable(route = "Login"){
+                NavHost(navController = navController, startDestination = "Login") {
+                    composable(route = "Login") {
                         paginaLogin(navController)
                     }
-                    composable(route = "Registrar"){
+                    composable(route = "Registrar") {
                         paginaRegistrar(navController)
                     }
-                    composable(route = "EsqueceuSenha"){
+                    composable(route = "EsqueceuSenha") {
                         EsqueceuSenha(navController)
                     }
-                    composable(route = "EmailRecuperacao"){
+                    composable(route = "EmailRecuperacao") {
                         EmailRecuperacao(navController)
                     }
-                    composable(route = "NovaSenha"){
+                    composable(route = "NovaSenha") {
                         NovaSenha(navController)
                     }
-                    composable(route = "Config"){
+                    composable(route = "Config") {
                         paginaConfigurar(navController)
                     }
-                    composable(route = "Pesquisa"){
+                    composable(route = "Pesquisa") {
                         Search(navController)
                     }
-                    composable(route = "Resposta"){
+                    composable(route = "Resposta") {
                         responder(navController)
                     }
-                    composable(route = "Verificar"){
+                    composable(route = "Verificar") {
                         paginaVerificar(navController)
                     }
-                    composable(route = "criarGrupo"){
+                    composable(route = "criarGrupo") {
                         PaginaCriarGrupo(navController)
                     }
 
 
+                }
             }
         }
     }
@@ -284,4 +285,4 @@ fun BottomNavigationBar(navController: NavHostController) {
         }
     }
 }
-}
+
