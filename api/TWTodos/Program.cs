@@ -84,19 +84,18 @@ app.MapGet("/postagensGrupo/{IdGrupo:int}", async (int idGrupo, AppDbContext db)
 // Adicionar um grupo
 app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) => 
 {
+    grupo.DataCriacao = DateTime.UtcNow; 
     db.Grupos.Add(grupo);
     await db.SaveChangesAsync();
     return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
 });
 
+// Listar grupos
 app.MapGet("/grupos", async (AppDbContext db) => 
 {
     var grupos = await db.Curtidas.ToListAsync();
     return Results.Ok(grupos);
 });
-
-//MEMBRO
-
 
 // CURTIDA   
 // Adicionar curtida
