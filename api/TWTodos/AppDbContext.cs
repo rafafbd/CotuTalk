@@ -28,4 +28,5 @@ public class AppDbContext : DbContext
     public DbSet<Membro> Membros { get; set; }
     public DbSet<Resposta> Respostas { get; set; }
     public DbSet<Curtida> Curtidas { get; set; }
+    public DbSet<CodigoVerificacao> CodigosVerificacao { get; set; }
 }

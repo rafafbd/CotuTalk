@@ -1,4 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +16,89 @@ var app = builder.Build();
 app.MapGet("/", () => "Hello World!");
 
 
+// VERIFICACAO POR EMAIL
+//Mandar email de verificacao
+app.MapPost("/enviar-email", async (EmailRequest email, AppDbContext db) =>
+{
+    var mensagem = new MimeMessage();
+    
+    mensagem.From.Add(new MailboxAddress("Cotutalk Suporte", "cotutalk@gmail.com"));
+    mensagem.To.Add(new MailboxAddress("Usuário de Destino", email.email));
+
+    if (!Regex.IsMatch(email.email, @"^cc.{5}@g\.unicamp\.br$"))
+        return Results.BadRequest("Email não pertence ao cotuca.");
+
+    var random = new Random();
+    var codigo = random.Next(1000000);
+    var codigoFormatado = codigo.ToString("D6");
+    
+    mensagem.Subject = "Confirmação de envio - Cotutalk";
+    mensagem.Body = new TextPart("plain") {
+        Text = $@"
+Olá,
+
+Você solicitou um código de verificação para concluir sua ação no Cotutalk.
+
+Seu código de verificação é:
+{codigo}
+
+Esse código é válido por 10 minutos. Não compartilhe o código com ninguém. Se não foi você quem solicitou esse código, por favor, ignore esta mensagem.
+
+Atenciosamente,
+Equipe Cotutalk
+        "
+    };
+
+    var codigoDeVerificacao =  new CodigoVerificacao {
+        Email = email.email, 
+        Codigo = codigoFormatado,
+        DataDeGeracao = DateTime.Now,
+        DataDeExpiracao = DateTime.Now.AddMinutes(10)
+    };
+    db.CodigosVerificacao.Add(codigoDeVerificacao);
+    await db.SaveChangesAsync();
+
+    using var smtp = new SmtpClient();
+
+    try
+    {
+        await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+        await smtp.AuthenticateAsync("cotutalk@gmail.com", "mbvz mriz skff bioy");
+        await smtp.SendAsync(mensagem);
+        await smtp.DisconnectAsync(true);
+
+        return Results.Ok("E-mail enviado com sucesso!");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Erro ao enviar e-mail: {ex.Message}");
+    }
+});
+
+//ver codigos de verificacao enviados
+app.MapGet("/codigos-de-verificacao", async (AppDbContext db) => 
+{
+    var codigos = await db.CodigosVerificacao.ToListAsync();
+    return Results.Ok(codigos);
+});
+
+//validar codigo
+app.MapPost("/validar-codigo", async (ValidarCodigoRequest validacao, AppDbContext db) => 
+{
+    var codigoVerificacao = await db.CodigosVerificacao.FirstOrDefaultAsync(c => c.Email == validacao.Email && c.Codigo == validacao.CodigoInserido);
+    if (codigoVerificacao is null)
+        return Results.NotFound("Código inválido ou não encontrado.");
+    if (codigoVerificacao.DataDeExpiracao < DateTime.Now)
+        return Results.BadRequest("O código expirou.");
+    else
+        return Results.Ok("Código validado com sucesso!");
+});
+
 // USUARIO
 // Adicionar um usuario
 app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
 {
+    usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
     db.Usuarios.Add(usuario);
     await db.SaveChangesAsync();
     return Results.Created($"/usuarios/{usuario.IdUsuario}", usuario);
@@ -27,19 +111,48 @@ app.MapGet("/usuarios", async (AppDbContext db) =>
     return Results.Ok(usuarios);
 });
 
+// Deletar um usuario por ID
+app.MapDelete("/usuarios/{id}", async (int id, AppDbContext db) =>
+{
+    var usuario = await db.Usuarios.FindAsync(id);
+    if (usuario is null)
+    {
+        return Results.NotFound();
+    }
+    db.Usuarios.Remove(usuario);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// Atualizar um usuario por ID
+app.MapPut("/usuarios/{id}", async (int id, Usuario usuarioAtualizado, AppDbContext db) =>
+{
+    var usuario = await db.Usuarios.FindAsync(id);
+    if (usuario is null)
+    {
+        return Results.NotFound();
+    }
+    
+    usuario.Nome = usuarioAtualizado.Nome;
+    usuario.Email = usuarioAtualizado.Email;
+    if (!string.IsNullOrWhiteSpace(usuarioAtualizado.Senha))
+    {
+        usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuarioAtualizado.Senha);
+    }
+
+    await db.SaveChangesAsync();
+    return Results.Ok(usuario);
+});
+
 // Verifiar login
 app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
-    var usuarios = await db.Usuarios.ToArrayAsync();
-    bool validacao = false;
-    foreach (var user in usuarios) 
-    {
-        if (user.Nome == login.Nome && user.Senha == login.Senha)
-        {
-            validacao = true;
-            break;
-        }
-    }
-    return Results.Ok(new {validacao});
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Nome == login.Nome);
+    if (usuario is null)
+        return Results.Unauthorized();
+    bool validacao = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
+    return validacao 
+        ? Results.Ok(new { validacao })
+        : Results.Unauthorized();
 });
 
 // POSTAGEM
@@ -57,6 +170,35 @@ app.MapGet("/postagens", async (AppDbContext db) =>
     var postagens = await db.Postagens.ToListAsync();
     return Results.Ok(postagens);
 });
+
+// Deletar um post por ID
+app.MapDelete("/postagens/{id}", async (int id, AppDbContext db) =>
+{
+    var postagem = await db.Postagens.FindAsync(id);
+    if (postagem is null)
+    {
+        return Results.NotFound();
+    }
+    db.Postagens.Remove(postagem);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// Atualizar um post por ID
+app.MapPut("/postagens/{id}", async (int id, Postagem postagemAtualizado, AppDbContext db) =>
+{
+    var postagem = await db.Postagens.FindAsync(id);
+    if (postagem is null)
+    {
+        return Results.NotFound();
+    }
+    
+    postagem.Conteudo = postagemAtualizado.Conteudo;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(postagem);
+});
+
 
 // Posts de usuario
 app.MapGet("/postagensUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
@@ -93,9 +235,39 @@ app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) =>
 // Listar grupos
 app.MapGet("/grupos", async (AppDbContext db) => 
 {
-    var grupos = await db.Curtidas.ToListAsync();
+    var grupos = await db.Grupos.ToListAsync();
     return Results.Ok(grupos);
 });
+
+// Deletar um grupo por ID
+app.MapDelete("/grupos/{id}", async (int id, AppDbContext db) =>
+{
+    var grupo = await db.Grupos.FindAsync(id);
+    if (grupo is null)
+    {
+        return Results.NotFound();
+    }
+    db.Grupos.Remove(grupo);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// Atualizar um grupo por ID
+app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db) =>
+{
+    var grupo = await db.Grupos.FindAsync(id);
+    if (grupo is null)
+    {
+        return Results.NotFound();
+    }
+
+    grupo.Nome = grupoAtualizado.Nome;
+    grupo.Descricao = grupoAtualizado.Descricao;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(grupo);
+});
+
 
 // CURTIDA   
 // Adicionar curtida
@@ -111,6 +283,19 @@ app.MapGet("/curtidas", async (AppDbContext db) =>
 {
     var curtidas = await db.Curtidas.ToListAsync();
     return Results.Ok(curtidas);
+});
+
+// Deletar uma curtida por usuario
+app.MapDelete("/curtidas/usuario/{usuario}", async (int usuario, AppDbContext db) =>
+{
+    var curtida = await db.Curtidas.FirstOrDefaultAsync(c => c.IdUsuario == usuario);
+    if (curtida is null)
+    {
+        return Results.NotFound();
+    }
+    db.Curtidas.Remove(curtida);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
 });
 
 // Curtidas de um usuario
@@ -151,6 +336,32 @@ app.MapGet("/respostas", async (AppDbContext db) =>
 {
     var respostas = await db.Respostas.ToListAsync();
     return Results.Ok(respostas);
+});
+
+// Deletar uma resposta por ID
+app.MapDelete("/respostas/{id}", async (int id, AppDbContext db) =>
+{
+    var resposta = await db.Respostas.FindAsync(id);
+    if (resposta is null)
+    {
+        return Results.NotFound();
+    }
+    db.Respostas.Remove(resposta);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// Atualizar uma resposta por ID
+app.MapPut("/respostas/{id}", async (int id, Resposta respostaAtualizado, AppDbContext db) =>
+{
+    var resposta = await db.Respostas.FindAsync(id);
+    if (resposta is null)
+    {
+        return Results.NotFound();
+    }
+    resposta.Conteudo = respostaAtualizado.Conteudo;
+    await db.SaveChangesAsync();
+    return Results.Ok(resposta);
 });
 
 // Respostas de um usuario
