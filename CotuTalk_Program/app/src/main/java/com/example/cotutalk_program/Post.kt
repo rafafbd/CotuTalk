@@ -20,7 +20,7 @@ class Post(val nome : String, val foto : String, val dataHorario : String, val m
         var dados = mapOf(
             "nome" to nome,
             "foto" to foto.toString(),
-            "data" to dataHorario,
+            "com/example/cotutalk_program/AcessoAPI/data" to dataHorario,
             "message" to message,
             "curtidas" to curtidas.toString(),
             "comentarios" to comentarios.joinToString(";")
