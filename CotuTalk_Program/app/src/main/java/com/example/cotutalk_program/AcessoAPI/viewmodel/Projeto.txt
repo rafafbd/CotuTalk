@@ -1,0 +1,19 @@
+
+Nós temos 6 tabelas no nosso projeto.
+Dentre elas, Usuario, Postagem e Grupo precisam de um view model dedicado
+
+A tabela de curtidas pode ser tratada no view model de postagem
+
+A tabela Membro (acho que) não vai precisar de um view model, mas vai precisar ser tratada dentro do
+view model de usuário ou grupo (ou ambos)
+
+A tabela de comentários eu também ainda tenho dúvidas quanto a se é preciso um view model dedicado somente
+a ele ou se vai ser melhor deixar dentro do view model de postagem, então acho melhor deixar esse por
+último de modo que a gente já saiba exatamente o que fazer.
+
+
+Prioridades:
+Primeiro fazer a versão inicial dos view models de Usuario, Postagem e Grupo
+Depois integrar as Curtidas à Postagem
+Em seguida avaliar a decisão sobre o Membro e já programar o que for decidido
+Por fim, avaliar a tabela de Comentario e programar o que for decidido
