@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.navigation.NavHostController
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
@@ -37,7 +38,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 
 @Composable
-fun Search(navController: Any) {
+fun Search(navController: NavHostController) {
     var pesquisa by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
