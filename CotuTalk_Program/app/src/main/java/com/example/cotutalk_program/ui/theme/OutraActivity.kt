@@ -85,98 +85,98 @@ fun BotaoEstilizado(texto: String, click: () -> Unit){
         Text(text = texto, fontSize = 22.sp)
     }
 
-    @Composable
-    fun AppDrawer(
-        drawerState: DrawerState,
-        navController: NavHostController,
-        currentRoute: String?
-    ) {
-        val scope = rememberCoroutineScope()
-
-        ModalDrawerSheet(
-            drawerContainerColor = roxo80,
-            drawerContentColor = Color.White,
-            modifier = Modifier.fillMaxHeight()
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 24.dp)
-            ) {
-                DrawerItem(
-                    iconId = R.drawable.icon_home,
-                    label = "Início",
-                    destination = "Principal",
-                    navController = navController,
-                    currentRoute = currentRoute,
-                    closeDrawer = { scope.launch { drawerState.close() } }
-                )
-                DrawerItem(
-                    iconId = R.drawable.icon_search,
-                    label = "Pesquisa",
-                    destination = "Pesquisa",
-                    navController = navController,
-                    currentRoute = currentRoute,
-                    closeDrawer = { scope.launch { drawerState.close() } }
-                )
-                DrawerItem(
-                    iconId = R.drawable.icon_notification,
-                    label = "Notificações",
-                    destination = "Notificacao",
-                    navController = navController,
-                    currentRoute = currentRoute,
-                    closeDrawer = { scope.launch { drawerState.close() } }
-                )
-                DrawerItem(
-                    iconId = R.drawable.icon_profile,
-                    label = "Usuário",
-                    destination = "Usuario",
-                    navController = navController,
-                    currentRoute = currentRoute,
-                    closeDrawer = { scope.launch { drawerState.close() } }
-                )
-            }
-        }
-    }
-
-    @Composable
-    fun DrawerItem(
-        iconId: Int,
-        label: String,
-        destination: String,
-        navController: NavHostController,
-        currentRoute: String?,
-        closeDrawer: () -> Unit
-    ) {
-        val isSelected = currentRoute == destination
-
-        val backgroundColor = if (isSelected) roxo40 else Color.Transparent
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    if (!isSelected) {
-                        navController.navigate(destination) {
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                    closeDrawer()
-                }
-                .background(backgroundColor)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = iconId),
-                contentDescription = label,
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(text = label, fontSize = 16.sp, color = Color.White)
-        }
-    }
-
+//    @Composable
+//    fun AppDrawer(
+//        drawerState: DrawerState,
+//        navController: NavHostController,
+//        currentRoute: String?
+//    ) {
+//        val scope = rememberCoroutineScope()
+//
+//        ModalDrawerSheet(
+//            drawerContainerColor = roxo80,
+//            drawerContentColor = Color.White,
+//            modifier = Modifier.fillMaxHeight()
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 24.dp)
+//            ) {
+//                DrawerItem(
+//                    iconId = R.drawable.icon_home,
+//                    label = "Início",
+//                    destination = "Principal",
+//                    navController = navController,
+//                    currentRoute = currentRoute,
+//                    closeDrawer = { scope.launch { drawerState.close() } }
+//                )
+//                DrawerItem(
+//                    iconId = R.drawable.icon_search,
+//                    label = "Pesquisa",
+//                    destination = "Pesquisa",
+//                    navController = navController,
+//                    currentRoute = currentRoute,
+//                    closeDrawer = { scope.launch { drawerState.close() } }
+//                )
+//                DrawerItem(
+//                    iconId = R.drawable.icon_notification,
+//                    label = "Notificações",
+//                    destination = "Notificacao",
+//                    navController = navController,
+//                    currentRoute = currentRoute,
+//                    closeDrawer = { scope.launch { drawerState.close() } }
+//                )
+//                DrawerItem(
+//                    iconId = R.drawable.icon_profile,
+//                    label = "Usuário",
+//                    destination = "Usuario",
+//                    navController = navController,
+//                    currentRoute = currentRoute,
+//                    closeDrawer = { scope.launch { drawerState.close() } }
+//                )
+//            }
+//        }
+//    }
+//
+//    @Composable
+//    fun DrawerItem(
+//        iconId: Int,
+//        label: String,
+//        destination: String,
+//        navController: NavHostController,
+//        currentRoute: String?,
+//        closeDrawer: () -> Unit
+//    ) {
+//        val isSelected = currentRoute == destination
+//
+//        val backgroundColor = if (isSelected) roxo40 else Color.Transparent
+//
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .clickable {
+//                    if (!isSelected) {
+//                        navController.navigate(destination) {
+//                            launchSingleTop = true
+//                            restoreState = true
+//                        }
+//                    }
+//                    closeDrawer()
+//                }
+//                .background(backgroundColor)
+//                .padding(horizontal = 16.dp, vertical = 12.dp)
+//        ) {
+//            Icon(
+//                painter = painterResource(id = iconId),
+//                contentDescription = label,
+//                tint = Color.White,
+//                modifier = Modifier.size(24.dp)
+//            )
+//            Spacer(modifier = Modifier.width(16.dp))
+//            Text(text = label, fontSize = 16.sp, color = Color.White)
+//        }
+//    }
+//
 }
