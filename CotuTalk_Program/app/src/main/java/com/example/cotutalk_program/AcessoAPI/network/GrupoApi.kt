@@ -1,7 +1,7 @@
 package com.example.cotutalk_program.AcessoAPI.network
 
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
-import com.example.cotutalk_program.AcessoAPI.data.Usuario
+import com.example.cotutalk_program.AcessoAPI.data.Grupo
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.Response
@@ -10,13 +10,14 @@ import retrofit2.http.Body
 import retrofit2.http.PUT
 import retrofit2.http.DELETE
 
+//grupos não esta terminado
 
-interface PostagemApi {
-    @GET("/postagens")
-    suspend fun listarPostagens(): List<Postagem>
+interface GrupoApi {
+    @GET("/grupos")
+    suspend fun listarGrupos(): List<Grupo>
 
-    @POST("/postagens")
-    suspend fun adicionarPostagens(@Body postagem: Postagem) : Response<Postagem>
+    @POST("/grupos")
+    suspend fun adicionarGrupos(@Body grupo: Grupo) : Response<Postagem>
 
     @DELETE("/postens/{id}")
     suspend fun deletarPostagens(@Path("id") id : Int) : Response<String>

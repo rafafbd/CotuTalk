@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
@@ -51,9 +52,9 @@ fun levaAoSignUp(){
     // função que não faz nada e vai ser apagada posteriormente
 }
 
-fun Login(email: String, senha: String){
+fun Login(email: String, senha: String, navController: NavController){
     if (loginOk(email, senha)){
-
+        navController.navigate("principal")
     }
 }
 
@@ -72,13 +73,13 @@ fun paginaLogin(navController: NavController) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin()
+        CaixaLogin(navController)
     }
 }
 
 
 @Composable
-fun CaixaLogin(){
+fun CaixaLogin(navController: NavController){
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -157,7 +158,7 @@ fun CaixaLogin(){
                 textDecoration = TextDecoration.Underline,
                 fontSize = 20.sp,
                 modifier = Modifier
-                    .clickable { levaAoSignUp() }
+                    .clickable { navController.navigate("EsqueceuSenha") }
                     .padding(end = 140.dp)
             )
 
@@ -177,7 +178,7 @@ fun CaixaLogin(){
                     textDecoration = TextDecoration.Underline,
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .clickable { levaAoSignUp() }
+                        .clickable { navController.navigate("Registrar") }
                         .padding(start = 10.dp)
                 )
             }

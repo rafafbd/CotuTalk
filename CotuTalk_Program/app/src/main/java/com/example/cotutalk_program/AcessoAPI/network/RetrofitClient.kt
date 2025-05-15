@@ -23,6 +23,10 @@ object RetrofitClient {
         val postagemInstance: PostagemApi by lazy {
             retrofit.create(PostagemApi::class.java)
         }
+
+        val verificaoInstance: VerificacaoApi by lazy {
+            retrofit.create(VerificacaoApi::class.java)
+        }
     }
 
 }

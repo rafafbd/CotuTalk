@@ -111,6 +111,15 @@ app.MapGet("/usuarios", async (AppDbContext db) =>
     return Results.Ok(usuarios);
 });
 
+// Buscar usuario por ID
+app.MapGet("/usuarios/{id}", async (int id, AppDbContext db) => 
+{
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);
+    if (usuario is null)
+        return Results.NotFound();
+    return Results.Ok(usuario);
+});
+
 // Deletar um usuario por ID
 app.MapDelete("/usuarios/{id}", async (int id, AppDbContext db) =>
 {
@@ -268,6 +277,7 @@ app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db
     return Results.Ok(grupo);
 });
 
+// Adicionar membro
 
 // CURTIDA   
 // Adicionar curtida
