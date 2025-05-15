@@ -1,4 +1,4 @@
-package com.example.clienteapp.network
+package com.example.cotutalk_program.AcessoAPI.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

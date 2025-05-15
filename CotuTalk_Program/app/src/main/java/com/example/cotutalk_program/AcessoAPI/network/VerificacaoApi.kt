@@ -1,9 +1,8 @@
-package com.example.clienteapp.network
+package com.example.cotutalk_program.AcessoAPI.network
 
 import com.example.cotutalk_program.AcessoAPI.data.EmailRequest
 import com.example.cotutalk_program.AcessoAPI.data.ValidarCodigoRequest
 import com.example.cotutalk_program.AcessoAPI.data.CodigoDeVerificacao
-
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.Response

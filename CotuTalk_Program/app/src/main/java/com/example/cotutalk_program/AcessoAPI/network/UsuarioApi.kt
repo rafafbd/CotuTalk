@@ -1,8 +1,6 @@
-
-package com.example.clienteapp.network
+package com.example.cotutalk_program.AcessoAPI.network
 
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
-
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.POST
