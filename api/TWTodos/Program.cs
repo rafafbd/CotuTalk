@@ -278,6 +278,38 @@ app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db
 });
 
 // Adicionar membro
+app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
+{
+    var usuario = await db.Usuarios.FindAsync(membro.IdUsuario);
+    if (usuario == null)
+        return Results.NotFound("Usuário não encontrado.");
+    var grupo = await db.Grupos.FindAsync(membro.Idgrupo);
+    if (grupo == null)
+        return Results.NotFound("Grupo não encontrado.");
+
+    membro.Usuario = usuario;
+    membro.Grupo = grupo;
+    membro.DataDeEntrada = DateTime.UtcNow;
+
+    db.Membros.Add(membro);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/membros/{membro.IdMembro}", membro);
+});
+
+// Remover membro
+app.MapDelete("/deletarMembro", async (Membro membroDeletado, AppDbContext db) => 
+{
+    var membro = await db.Membros.FirstOrDefaultAsync(m => m.Idgrupo == membroDeletado.Idgrupo && m.IdUsuario == membroDeletado.IdUsuario);
+    if (membro is null)
+        return Results.NotFound("Membro não encontrado!");
+    
+    db.Membros.Remove(membro);
+    await db.SaveChangesAsync();
+
+    return Results.Ok("Membro deletado com sucesso!"); 
+});
+
 
 // CURTIDA   
 // Adicionar curtida
