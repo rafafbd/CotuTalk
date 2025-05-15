@@ -1,6 +1,7 @@
 package com.example.clienteapp.network
 
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.Usuario
 
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,7 +14,7 @@ import retrofit2.http.DELETE
 interface PostagemApi {
     @GET("/postagens")
     suspend fun listarPostagens(): List<Postagem>
-/*
+
     @GET("/usuarios/{id}")
     suspend fun buscarUsuario(@Path("id") id: Int): Usuario?
 
@@ -25,5 +26,4 @@ interface PostagemApi {
 
     @DELETE("/usuarios/{id}")
     suspend fun deletarUsuario(@Path("id") id: Int): retrofit2.Response<Unit>
-    */
 }
