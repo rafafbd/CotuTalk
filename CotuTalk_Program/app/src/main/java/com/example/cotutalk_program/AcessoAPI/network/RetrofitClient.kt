@@ -24,6 +24,22 @@ object RetrofitClient {
             retrofit.create(PostagemApi::class.java)
         }
 
+        val curtidaInstance: CurtidaApi by lazy {
+            retrofit.create(CurtidaApi::class.java)
+        }
+
+        val grupoInstance: GrupoApi by lazy {
+            retrofit.create(GrupoApi::class.java)
+        }
+
+//        val membroInstance: MembroApi by lazy {
+//            retrofit.create(MembroApi::class.java)
+//        }
+//
+//        val respostaInstance: RespostaApi by lazy {
+//            retrofit.create(RespostaApi::class.java)
+//        }
+
         val verificaoInstance: VerificacaoApi by lazy {
             retrofit.create(VerificacaoApi::class.java)
         }

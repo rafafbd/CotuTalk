@@ -21,7 +21,7 @@ interface UsuarioApi {
     suspend fun buscarUsuario(@Path("id") id: Int): Usuario?
 
     @POST("/usuarios")
-    suspend fun criarUsuario(@Body usuario: Usuario): Usuario
+    suspend fun adicionarUsuario(@Body usuario: Usuario): Usuario
 
     @PUT("/usuarios/{id}")
     suspend fun atualizarUsuario(@Path("id") id: Int, @Body usuario: Usuario): Response<String>
@@ -30,5 +30,5 @@ interface UsuarioApi {
     suspend fun deletarUsuario(@Path("id") id: Int): Response<String>
 
     @POST("/login")
-    suspend fun login(@Body login : LoginRequest) : Response<Response<LoginResponse>>
+    suspend fun login(@Body login : LoginRequest) : Response<LoginResponse>
 }

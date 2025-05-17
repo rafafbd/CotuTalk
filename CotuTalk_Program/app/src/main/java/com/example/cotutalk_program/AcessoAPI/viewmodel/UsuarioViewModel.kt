@@ -3,6 +3,9 @@ package com.example.cotutalk_program.AcessoAPI.viewmodel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.cotutalk_program.AcessoAPI.data.Curtida
+import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.network.RetrofitClient.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +23,11 @@ class UsuarioViewModel : ViewModel() {
     val mensagem: State<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
 
+    private val _curtidasUsuario = mutableStateOf<List<Curtida>>(emptyList())
+    val curtidasUsuario: State<List<Curtida>> = _curtidasUsuario
+
+
+    // CRUD
     fun listarUsuarios() {
         coroutineScope.launch {
             try {
@@ -43,11 +51,11 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun criarUsuario(nome: String, email: String, senha: String) {
+    fun adicionarUsuario(nome: String, email: String, senha: String) {
         coroutineScope.launch {
             try {
                 val novoUsuario = Usuario(IdUsuario = 0, Nome = nome, Email = email, Senha = senha)
-                val usuarioCriado = RetrofitClient.usuarioInstance.criarUsuario(novoUsuario)
+                val usuarioCriado = RetrofitClient.usuarioInstance.adicionarUsuario(novoUsuario)
                 _usuarios.value = _usuarios.value + usuarioCriado
                 _mensagem.value = "Usuário criado com ID ${usuarioCriado.IdUsuario}"
             } catch (e: Exception) {
@@ -93,5 +101,57 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    var mensagemerro = _mensagem
+    //LOGIN
+    fun fazerLogin(username: String, senha: String, navController: NavController){
+        coroutineScope.launch {
+            try {
+                val loginReq = LoginRequest(username, senha)
+                val response = RetrofitClient.usuarioInstance.login(loginReq)
+                if (response.isSuccessful){
+                    // alguma linha de codigo para guardar no env os dados do usuario
+                    var usuarioLogaldo = response.body() // supoem-se que o body da response tem o Usuario
+                    navController.navigate("Principal")
+                }
+                else{
+                    _mensagem.value = "Usuário ou senha inválidos"
+                }
+            }
+            catch (e: Exception){
+                _mensagem.value = "Erro no login: ${e.message}"
+            }
+        }
+    }
+
+    //HANDLER CURTIDA
+    fun buscarCurtidasPorUsuario(idUsuario: Int) {
+        coroutineScope.launch {
+            try {
+                val curtidas = RetrofitClient.curtidaInstance.buscarCurtidasPorUsuario(idUsuario)
+                _mensagem.value = if (curtidas.isNotEmpty()) {
+                    "Curtidas encontradas para o usuário $idUsuario."
+                } else {
+                    "Nenhuma curtida encontrada para o usuário $idUsuario."
+                }
+                _curtidasUsuario.value = curtidas
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao buscar curtidas do usuário: ${e.message}"
+            }
+        }
+    }
+
+    fun deletarCurtidaPorUsuario(idUsuario: Int) {
+        coroutineScope.launch {
+            try {
+                val response = RetrofitClient.curtidaInstance.deletarCurtidaPorUsuario(idUsuario)
+                if (response.isSuccessful) {
+                    _mensagem.value = "Curtida do usuário $idUsuario removida com sucesso."
+                    _curtidasUsuario.value = _curtidasUsuario.value.filter { it.IdUsuario != idUsuario }
+                } else {
+                    _mensagem.value = "Erro ao deletar curtida: código ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao deletar curtida do usuário: ${e.message}"
+            }
+        }
+    }
 }

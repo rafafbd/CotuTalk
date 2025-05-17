@@ -69,6 +69,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "NovaSenha") {
                         NovaSenha(navController)
                     }
+                    composable(route = "Principal"){
+                        Search(navController)
+                    }
                     composable(route = "Config") {
                         paginaConfigurar(navController)
                     }

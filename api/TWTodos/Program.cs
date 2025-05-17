@@ -346,9 +346,8 @@ app.MapGet("/curtidasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContex
     var curtidas = await db.Curtidas
                             .Where(c => c.IdUsuario == idUsuario)
                             .ToListAsync();
-    var qtsCurtidas = curtidas.Count();
     return curtidas.Any()
-        ? Results.Ok(new { qtsCurtidas, curtidas })
+        ? Results.Ok(curtidas)
         : Results.NotFound($"Nenhuma curtida encontrada para o usuario {idUsuario}");
 });
 
@@ -358,9 +357,8 @@ app.MapGet("/curtidasPostagem/{idPostagem:int}", async (int idPostagem, AppDbCon
     var curtidas = await db.Curtidas
                             .Where(c => c.IdPostagem == idPostagem)
                             .ToListAsync();
-    var qtsCurtidas = curtidas.Count();
     return curtidas.Any()
-        ? Results.Ok(new { qtsCurtidas, curtidas })
+        ? Results.Ok(curtidas)
         : Results.NotFound($"Nenhuma curtida encontrada para o post {idPostagem}");
 });
 
