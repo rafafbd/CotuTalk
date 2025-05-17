@@ -32,9 +32,9 @@ object RetrofitClient {
             retrofit.create(GrupoApi::class.java)
         }
 
-//        val membroInstance: MembroApi by lazy {
-//            retrofit.create(MembroApi::class.java)
-//        }
+        val membroInstance: MembroApi by lazy {
+            retrofit.create(MembroApi::class.java)
+        }
 //
 //        val respostaInstance: RespostaApi by lazy {
 //            retrofit.create(RespostaApi::class.java)
