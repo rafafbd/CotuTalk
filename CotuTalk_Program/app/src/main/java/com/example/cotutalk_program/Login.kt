@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
@@ -80,6 +81,7 @@ fun paginaLogin(navController: NavController) {
 
 @Composable
 fun CaixaLogin(navController: NavController){
+    val viewmodel = UsuarioViewModel()
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -170,7 +172,7 @@ fun CaixaLogin(navController: NavController){
             ) {
                 BotaoEstilizado(
                     texto = "Entrar",
-                    click = { Login(email, senha) }
+                    click = { viewmodel.fazerLogin(username = email, senha = senha, navController = navController) }
                 )
                 Text(
                     text = "Criar conta",
