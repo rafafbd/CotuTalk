@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -298,7 +299,7 @@ app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
 });
 
 // Remover membro
-app.MapDelete("/deletarMembro", async (Membro membroDeletado, AppDbContext db) => 
+app.MapDelete("/deletarMembro", async ([FromBody] Membro membroDeletado, AppDbContext db) => 
 {
     var membro = await db.Membros.FirstOrDefaultAsync(m => m.Idgrupo == membroDeletado.Idgrupo && m.IdUsuario == membroDeletado.IdUsuario);
     if (membro is null)
