@@ -134,7 +134,7 @@ fun CaixaVerificar(){
             ) {
                 BotaoEstilizado(
                     texto = "Confirmar",
-                    click = { Login(email, senha) }
+                    click = { }
                 )
                 Text(
                     text = "Voltar",

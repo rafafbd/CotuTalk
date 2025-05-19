@@ -114,7 +114,7 @@ fun CaixaLogin3(){
             ) {
                 BotaoEstilizado(
                     texto = "Verificar",
-                    click = { viewModel.fazerLogin(email, senha, na) }
+                    click = {  }
                 )
             }
 

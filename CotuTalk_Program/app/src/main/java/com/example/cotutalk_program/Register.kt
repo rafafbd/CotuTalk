@@ -174,7 +174,7 @@ fun CaixaRegistrar(){
             ) {
                 BotaoEstilizado(
                     texto = "Registrar",
-                    click = { Login(email, senha) }
+                    click = { }
                 )
                 Text(
                     text = "Login",

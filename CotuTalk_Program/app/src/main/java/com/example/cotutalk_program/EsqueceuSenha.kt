@@ -104,7 +104,7 @@ fun CaixaLogin2(){
             ) {
                 BotaoEstilizado(
                     texto = "Enviar código",
-                    click = { Login(email, senha) }
+                    click = {  }
                 )
 
             }

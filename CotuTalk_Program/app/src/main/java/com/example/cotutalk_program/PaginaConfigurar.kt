@@ -170,7 +170,7 @@ fun CaixaConfigurar(){
             ) {
                 BotaoEstilizado(
                     texto = "Criar conta",
-                    click = { Login(nome, biografia) }
+                    click = { }
                 )
 
             }
