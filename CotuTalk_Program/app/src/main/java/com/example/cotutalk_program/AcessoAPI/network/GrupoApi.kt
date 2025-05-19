@@ -30,11 +30,11 @@ interface GrupoApi {
 
     // HANDLE MEMBRO - relação N-N com Usuario
 
-    @POST("/adicionarMembro")
-    suspend fun adicionarMembro(@Body membro: Membro): Membro
-
-    @HTTP(method = "DELETE", path = "/deletarMembro", hasBody = true) // nao da pra chamar o @delete com body, entao tem que usar http
-    suspend fun deletarMembro(@Body membro: Membro): Response<String>
+//    @POST("/adicionarMembro")
+//    suspend fun adicionarMembro(@Body membro: Membro): Membro
+//
+//    @HTTP(method = "DELETE", path = "/deletarMembro", hasBody = true) // nao da pra chamar o @delete com body, entao tem que usar http
+//    suspend fun deletarMembro(@Body membro: Membro): Response<String>
 
     // essas rotas comentadas já são inclusas em PostagemApi. São, portanto, obsoletas
 
