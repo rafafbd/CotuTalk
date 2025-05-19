@@ -24,14 +24,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,12 +51,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.Usuario
+import com.example.cotutalk_program.AcessoAPI.network.ApiService
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.R
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import java.time.LocalDateTime
@@ -66,7 +78,87 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun Post(postagem: Postagem){
+    val context = LocalContext.current
 
+    val userModel = remember { UsuarioViewModel() }
+    val usuario by userModel.usuarioDetalhe.collectAsState()
+
+    LaunchedEffect(postagem.IdUsuario) {
+        userModel.buscarUsuario(postagem.IdUsuario)
+    }
+
+    val imagePainter = painterResource(id = R.drawable.defaultprofile)
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Primeira linha: foto e nome
+        Row(modifier = Modifier.padding(bottom = 8.dp)) {
+            Image (
+                painter = imagePainter,
+                contentDescription = "Foto de perfil",
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(CircleShape)
+            )
+            Text(
+                text = "@" + usuario.Nome,
+                color = Color.White,
+                fontSize = 20.sp,  // Aumentando o tamanho da fonte
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 8.dp)
+            )
+        }
+
+        // Segunda linha: mensagem do post
+        Text(
+            text = post.message,
+            color = Color.White,
+            fontSize = 17.sp,  // Aumentando o tamanho da fonte
+            modifier = Modifier.padding(start = 8.dp)
+        )
+
+        Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
+            Text(post.curtidas.toString(), color = Color.LightGray)
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Curtidas",
+                tint = Color.LightGray,
+                modifier = Modifier
+                    .size(18.dp)
+                    .padding(start = 2.dp)
+            )
+            Spacer(modifier = Modifier.width(40.dp))
+            Text(post.comentarios.size.toString(), color = Color.LightGray)
+            Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = "Comentários",
+                tint = Color.LightGray,
+                modifier = Modifier
+                    .size(18.dp)
+                    .padding(start = 2.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+        )
+    }
+}
 
 
 @Composable

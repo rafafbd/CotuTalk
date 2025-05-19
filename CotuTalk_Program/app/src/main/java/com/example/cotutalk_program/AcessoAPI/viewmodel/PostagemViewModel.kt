@@ -1,7 +1,5 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
@@ -9,26 +7,28 @@ import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
 
 class PostagemViewModel : ViewModel() {
-    private val _postagens = mutableStateOf<List<Postagem>>(emptyList())
-    val postagens: State<List<Postagem>> = _postagens
+    private val _postagens = MutableStateFlow<List<Postagem>>(emptyList())
+    val postagens: StateFlow<List<Postagem>> = _postagens
 
-    private val _postagemDetalhe = mutableStateOf<Postagem?>(null)
-    val usuarioDetalhe: State<Postagem?> = _postagemDetalhe
+    private val _postagemDetalhe = MutableStateFlow<Postagem?>(null)
+    val usuarioDetalhe: StateFlow<Postagem?> = _postagemDetalhe
 
-    private val _mensagem = mutableStateOf("")
-    val mensagem: State<String> = _mensagem
+    private val _mensagem = MutableStateFlow("")
+    val mensagem: StateFlow<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
 
-    private val _curtidasPostagem = mutableStateOf<List<Curtida>>(emptyList())
-    val curtidasPostagem: State<List<Curtida>> = _curtidasPostagem
+    private val _curtidasPostagem = MutableStateFlow<List<Curtida>>(emptyList())
+    val curtidasPostagem: StateFlow<List<Curtida>> = _curtidasPostagem
 
-    private val _respostasPostagem = mutableStateOf<List<Resposta>>(emptyList())
-    val respostasPostagem: State<List<Resposta>> = _respostasPostagem
+    private val _respostasPostagem = MutableStateFlow<List<Resposta>>(emptyList())
+    val respostasPostagem: StateFlow<List<Resposta>> = _respostasPostagem
 
     fun listarPostagens() {
         coroutineScope.launch {

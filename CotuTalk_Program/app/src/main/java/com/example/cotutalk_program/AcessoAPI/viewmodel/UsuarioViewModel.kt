@@ -1,7 +1,5 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
@@ -13,28 +11,30 @@ import com.example.cotutalk_program.AcessoAPI.data.ValidarCodigoRequest
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 class UsuarioViewModel : ViewModel() {
-    private val _usuarios = mutableStateOf<List<Usuario>>(emptyList())
-    val usuarios: State<List<Usuario>> = _usuarios
+    private val _usuarios = MutableStateFlow<List<Usuario>>(emptyList())
+    val usuarios: StateFlow<List<Usuario>> = _usuarios
 
-    private val _usuarioDetalhe = mutableStateOf<Usuario?>(null)
-    val usuarioDetalhe: State<Usuario?> = _usuarioDetalhe
+    private val _usuarioDetalhe = MutableStateFlow<Usuario?>(null)
+    val usuarioDetalhe: StateFlow<Usuario?> = _usuarioDetalhe
 
-    private val _mensagem = mutableStateOf("")
-    val mensagem: State<String> = _mensagem
+    private val _mensagem = MutableStateFlow("")
+    val mensagem: StateFlow<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
 
-    private val _curtidasUsuario = mutableStateOf<List<Curtida>>(emptyList())
-    val curtidasUsuario: State<List<Curtida>> = _curtidasUsuario
+    private val _curtidasUsuario = MutableStateFlow<List<Curtida>>(emptyList())
+    val curtidasUsuario: StateFlow<List<Curtida>> = _curtidasUsuario
 
-    private val _respostasUsuario = mutableStateOf<List<Resposta>>(emptyList())
-    val respostasUsuario: State<List<Resposta>> = _respostasUsuario
+    private val _respostasUsuario = MutableStateFlow<List<Resposta>>(emptyList())
+    val respostasUsuario: StateFlow<List<Resposta>> = _respostasUsuario
 
-    private val _respostaAtualizada = mutableStateOf<Resposta?>(null)
-    val respostaAtualizada: State<Resposta?> = _respostaAtualizada
+    private val _respostaAtualizada = MutableStateFlow<Resposta?>(null)
+    val respostaAtualizada: StateFlow<Resposta?> = _respostaAtualizada
 
 
 

@@ -1,22 +1,22 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Grupo
 import com.example.cotutalk_program.AcessoAPI.data.Membro
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class GrupoViewModel : ViewModel() {
-    private val _grupos = mutableStateOf<List<Grupo>>(emptyList())
-    val grupos: State<List<Grupo>> = _grupos
+    private val _grupos = MutableStateFlow<List<Grupo>>(emptyList())
+    val grupos: StateFlow<List<Grupo>> = _grupos
 
-    private val _mensagem = mutableStateOf("")
-    val mensagem: State<String> = _mensagem
+    private val _mensagem = MutableStateFlow("")
+    val mensagem: StateFlow<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
 
     fun listarGrupos() {
