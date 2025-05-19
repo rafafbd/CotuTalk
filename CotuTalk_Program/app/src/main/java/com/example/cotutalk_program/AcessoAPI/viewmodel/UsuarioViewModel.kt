@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.EmailRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
+import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.data.ValidarCodigoRequest
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
@@ -28,6 +29,13 @@ class UsuarioViewModel : ViewModel() {
 
     private val _curtidasUsuario = mutableStateOf<List<Curtida>>(emptyList())
     val curtidasUsuario: State<List<Curtida>> = _curtidasUsuario
+
+    private val _respostasUsuario = mutableStateOf<List<Resposta>>(emptyList())
+    val respostasUsuario: State<List<Resposta>> = _respostasUsuario
+
+    private val _respostaAtualizada = mutableStateOf<Resposta?>(null)
+    val respostaAtualizada: State<Resposta?> = _respostaAtualizada
+
 
 
     // CRUD
@@ -187,6 +195,53 @@ class UsuarioViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao deletar curtida do usuário: ${e.message}"
+            }
+        }
+    }
+
+    //HANDLE RESPOSTA
+    fun buscarRespostasPorUsuario(idUsuario: Int) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.respostaInstance.buscarRespostasPorUsuario(idUsuario)
+                if (response.isSuccessful) {
+                    _respostasUsuario.value = response.body() ?: emptyList()
+                } else {
+                    _mensagem.value = "Erro ao buscar respostas do usuário"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção: ${e.message}"
+            }
+        }
+    }
+
+    fun atualizarResposta(id: Int, novaResposta: Resposta) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.respostaInstance.atualizarResposta(id, novaResposta)
+                if (response.isSuccessful) {
+                    _respostaAtualizada.value = response.body()
+                    _mensagem.value = "Resposta atualizada com sucesso"
+                } else {
+                    _mensagem.value = "Erro ao atualizar resposta"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção: ${e.message}"
+            }
+        }
+    }
+
+    fun deletarResposta(id: Int) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.respostaInstance.deletarResposta(id)
+                if (response.isSuccessful) {
+                    _mensagem.value = "Resposta deletada com sucesso"
+                } else {
+                    _mensagem.value = "Erro ao deletar resposta"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção: ${e.message}"
             }
         }
     }

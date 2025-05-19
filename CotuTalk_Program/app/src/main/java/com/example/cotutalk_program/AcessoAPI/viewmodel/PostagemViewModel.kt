@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,9 @@ class PostagemViewModel : ViewModel() {
 
     private val _curtidasPostagem = mutableStateOf<List<Curtida>>(emptyList())
     val curtidasPostagem: State<List<Curtida>> = _curtidasPostagem
+
+    private val _respostasPostagem = mutableStateOf<List<Resposta>>(emptyList())
+    val respostasPostagem: State<List<Resposta>> = _respostasPostagem
 
     fun listarPostagens() {
         coroutineScope.launch {
@@ -136,6 +140,22 @@ class PostagemViewModel : ViewModel() {
                 _curtidasPostagem.value = curtidas
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao buscar curtidas do post: ${e.message}"
+            }
+        }
+    }
+
+    //HANDLE RESPOSTA
+    fun buscarRespostasPorPostagem(idPostagem: Int) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.respostaInstance.buscarRespostasPorPostagem(idPostagem)
+                if (response.isSuccessful) {
+                    _respostasPostagem.value = response.body() ?: emptyList()
+                } else {
+                    _mensagem.value = "Erro ao buscar respostas da postagem"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção: ${e.message}"
             }
         }
     }

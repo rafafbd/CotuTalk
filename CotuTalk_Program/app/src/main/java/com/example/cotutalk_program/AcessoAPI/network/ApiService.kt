@@ -32,10 +32,10 @@ object ApiService {
     val membroInstance: MembroApi by lazy {
         retrofit.create(MembroApi::class.java)
     }
-//
-//        val respostaInstance: RespostaApi by lazy {
-//            retrofit.create(RespostaApi::class.java)
-//        }
+
+    val respostaInstance: RespostaApi by lazy {
+        retrofit.create(RespostaApi::class.java)
+    }
 
     val verificaoInstance: VerificacaoApi by lazy {
         retrofit.create(VerificacaoApi::class.java)

@@ -413,7 +413,7 @@ app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbConte
                             .ToListAsync();
     var qtsRespostas = respostas.Count();
     return respostas.Any()
-        ? Results.Ok(new { qtsRespostas, respostas })
+        ? Results.Ok(respostas)
         : Results.NotFound($"Nenhuma resposta encontrada para o usuário {idUsuario}");
 });
 
@@ -425,7 +425,7 @@ app.MapGet("/respostasPostagem/{idPostagem:int}", async (int idPostagem, AppDbCo
                             .ToListAsync();
     var qtsRespostas = respostas.Count();
     return respostas.Any()
-        ? Results.Ok(new { qtsRespostas, respostas })
+        ? Results.Ok(respostas)
         : Results.NotFound($"Nenhuma resposta encontrada para o post {idPostagem}");
 });
 
