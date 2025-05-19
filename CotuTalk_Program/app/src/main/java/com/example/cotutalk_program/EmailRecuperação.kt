@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
@@ -34,7 +35,6 @@ import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
 
-@Preview
 @Composable
 fun EmailRecuperacao(navController: Any) {
 
@@ -57,6 +57,8 @@ fun EmailRecuperacao(navController: Any) {
 
 @Composable
 fun CaixaLogin3(){
+    val viewModel = UsuarioViewModel()
+
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -112,7 +114,7 @@ fun CaixaLogin3(){
             ) {
                 BotaoEstilizado(
                     texto = "Verificar",
-                    click = { Login(email, senha) }
+                    click = { viewModel.fazerLogin(email, senha, na) }
                 )
             }
 

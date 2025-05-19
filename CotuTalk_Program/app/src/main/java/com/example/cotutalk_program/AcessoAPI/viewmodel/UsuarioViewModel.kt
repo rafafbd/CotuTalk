@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
-import com.example.cotutalk_program.AcessoAPI.network.RetrofitClient.RetrofitClient
+import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class UsuarioViewModel : ViewModel() {
     fun listarUsuarios() {
         coroutineScope.launch {
             try {
-                _usuarios.value = RetrofitClient.usuarioInstance.listarUsuarios()
+                _usuarios.value = ApiService.usuarioInstance.listarUsuarios()
                 _mensagem.value = "Usuários carregados com sucesso."
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao carregar usuários: ${e.message}"
@@ -42,7 +42,7 @@ class UsuarioViewModel : ViewModel() {
     fun buscarUsuario(id: Int) {
         coroutineScope.launch {
             try {
-                _usuarioDetalhe.value = RetrofitClient.usuarioInstance.buscarUsuario(id)
+                _usuarioDetalhe.value = ApiService.usuarioInstance.buscarUsuario(id)
                 _mensagem.value =
                     if (_usuarioDetalhe.value != null) "Usuário encontrado." else "Usuário não encontrado."
             } catch (e: Exception) {
@@ -55,7 +55,7 @@ class UsuarioViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val novoUsuario = Usuario(IdUsuario = 0, Nome = nome, Email = email, Senha = senha)
-                val usuarioCriado = RetrofitClient.usuarioInstance.adicionarUsuario(novoUsuario)
+                val usuarioCriado = ApiService.usuarioInstance.adicionarUsuario(novoUsuario)
                 _usuarios.value = _usuarios.value + usuarioCriado
                 _mensagem.value = "Usuário criado com ID ${usuarioCriado.IdUsuario}"
             } catch (e: Exception) {
@@ -68,7 +68,7 @@ class UsuarioViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val usuarioAtualizado = Usuario(IdUsuario = id, Nome = nome, Email = email, Senha = senha)
-                val response = RetrofitClient.usuarioInstance.atualizarUsuario(id, usuarioAtualizado)
+                val response = ApiService.usuarioInstance.atualizarUsuario(id, usuarioAtualizado)
                 if (response.isSuccessful) {
                     _usuarios.value = _usuarios.value.map {
                         if (it.IdUsuario == id) usuarioAtualizado else it
@@ -87,7 +87,7 @@ class UsuarioViewModel : ViewModel() {
     fun deletarUsuario(id: Int) {
         coroutineScope.launch {
             try {
-                val response = RetrofitClient.usuarioInstance.deletarUsuario(id)
+                val response = ApiService.usuarioInstance.deletarUsuario(id)
                 if (response.isSuccessful) {
                     _usuarios.value = _usuarios.value.filter { it.IdUsuario != id }
                     _mensagem.value = "Usuário $id deletado."
@@ -106,7 +106,7 @@ class UsuarioViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val loginReq = LoginRequest(username, senha)
-                val response = RetrofitClient.usuarioInstance.login(loginReq)
+                val response = ApiService.usuarioInstance.login(loginReq)
                 if (response.isSuccessful){
                     // alguma linha de codigo para guardar no env os dados do usuario
                     var usuarioLogaldo = response.body() // supoem-se que o body da response tem o Usuario
@@ -126,7 +126,7 @@ class UsuarioViewModel : ViewModel() {
     fun buscarCurtidasPorUsuario(idUsuario: Int) {
         coroutineScope.launch {
             try {
-                val curtidas = RetrofitClient.curtidaInstance.buscarCurtidasPorUsuario(idUsuario)
+                val curtidas = ApiService.curtidaInstance.buscarCurtidasPorUsuario(idUsuario)
                 _mensagem.value = if (curtidas.isNotEmpty()) {
                     "Curtidas encontradas para o usuário $idUsuario."
                 } else {
@@ -142,7 +142,7 @@ class UsuarioViewModel : ViewModel() {
     fun deletarCurtidaPorUsuario(idUsuario: Int) {
         coroutineScope.launch {
             try {
-                val response = RetrofitClient.curtidaInstance.deletarCurtidaPorUsuario(idUsuario)
+                val response = ApiService.curtidaInstance.deletarCurtidaPorUsuario(idUsuario)
                 if (response.isSuccessful) {
                     _mensagem.value = "Curtida do usuário $idUsuario removida com sucesso."
                     _curtidasUsuario.value = _curtidasUsuario.value.filter { it.IdUsuario != idUsuario }

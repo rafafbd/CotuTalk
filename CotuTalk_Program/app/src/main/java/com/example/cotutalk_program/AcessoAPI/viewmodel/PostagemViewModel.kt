@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
-import com.example.cotutalk_program.AcessoAPI.network.RetrofitClient.RetrofitClient
+import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ class PostagemViewModel : ViewModel() {
     fun listarPostagens() {
         coroutineScope.launch {
             try {
-                _postagens.value = RetrofitClient.postagemInstance.listarPostagens()
+                _postagens.value = ApiService.postagemInstance.listarPostagens()
                 _mensagem.value = "Usuários carregados com sucesso."
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao carregar usuários: ${e.message}"
@@ -40,7 +40,7 @@ class PostagemViewModel : ViewModel() {
     fun buscarPostagem(id: Int) {
         coroutineScope.launch {
             try {
-                _postagemDetalhe.value = RetrofitClient.postagemInstance.buscarPostagem(id)
+                _postagemDetalhe.value = ApiService.postagemInstance.buscarPostagem(id)
                 _mensagem.value =
                     if (_postagemDetalhe.value != null) "Usuário encontrado." else "Usuário não encontrado."
             } catch (e: Exception) {
@@ -53,7 +53,7 @@ class PostagemViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val novaPostagem = Postagem(IdPostagem = idp, IdUsuario = idu, IdGrupo = idg, Conteudo = conteudo)
-                val postagemAtualizada = RetrofitClient.postagemInstance.adicionarPostagem(novaPostagem)
+                val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
                 _postagens.value = _postagens.value + postagemAtualizada
                 _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
             } catch (e: Exception) {
@@ -66,7 +66,7 @@ class PostagemViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 val postagemAtualizada = Postagem(IdPostagem = idp, IdUsuario = idu, IdGrupo = idg, Conteudo = conteudo)
-                val response = RetrofitClient.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
+                val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
                 if (response.isSuccessful) {
                     _postagens.value = _postagens.value.map {
                         if (it.IdPostagem == idp) postagemAtualizada else it
@@ -85,7 +85,7 @@ class PostagemViewModel : ViewModel() {
     fun deletarPostagem(id: Int) {
         coroutineScope.launch {
             try {
-                val response = RetrofitClient.postagemInstance.deletarPostagem(id)
+                val response = ApiService.postagemInstance.deletarPostagem(id)
                 if (response.isSuccessful) {
                     _postagens.value = _postagens.value.filter { it.IdPostagem != id }
                     _mensagem.value = "Postagem $id deletada."
@@ -108,7 +108,7 @@ class PostagemViewModel : ViewModel() {
                     IdUsuario = idUsuario,
                     IdPostagem = idPostagem
                 )
-                val curtidaCriada = RetrofitClient.curtidaInstance.adicionarCurtida(novaCurtida)
+                val curtidaCriada = ApiService.curtidaInstance.adicionarCurtida(novaCurtida)
                 _mensagem.value = "Curtida adicionada com sucesso (ID ${curtidaCriada.IdCurtida})"
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao adicionar curtida: ${e.message}"
@@ -119,7 +119,7 @@ class PostagemViewModel : ViewModel() {
     fun listarCurtidas() {
         coroutineScope.launch {
             try {
-                val curtidas = RetrofitClient.curtidaInstance.listarCurtidas()
+                val curtidas = ApiService.curtidaInstance.listarCurtidas()
                 _mensagem.value = "Curtidas carregadas com sucesso (${curtidas.size})"
                 _curtidasPostagem.value = curtidas
             } catch (e: Exception) {
@@ -131,7 +131,7 @@ class PostagemViewModel : ViewModel() {
     fun buscarCurtidasPorPostagem(idPostagem: Int) {
         coroutineScope.launch {
             try {
-                val curtidas = RetrofitClient.curtidaInstance.buscarCurtidasPorPostagem(idPostagem)
+                val curtidas = ApiService.curtidaInstance.buscarCurtidasPorPostagem(idPostagem)
                 _mensagem.value = "Curtidas encontradas para o post $idPostagem: ${curtidas.size}"
                 _curtidasPostagem.value = curtidas
             } catch (e: Exception) {
