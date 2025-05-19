@@ -41,7 +41,7 @@ Olá,
 Você solicitou um código de verificação para concluir sua ação no Cotutalk.
 
 Seu código de verificação é:
-{codigo}
+{codigoFormatado}
 
 Esse código é válido por 10 minutos. Não compartilhe o código com ninguém. Se não foi você quem solicitou esse código, por favor, ignore esta mensagem.
 

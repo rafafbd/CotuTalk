@@ -35,15 +35,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
-@Preview
+
 @Composable
-fun paginaRegistrar(navController: Any) {
+fun paginaRegistrar(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -57,12 +59,14 @@ fun paginaRegistrar(navController: Any) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaRegistrar()
+        CaixaRegistrar(navController)
     }
 }
 
 @Composable
-fun CaixaRegistrar(){
+fun CaixaRegistrar(navController: NavController){
+    val viewmodel = UsuarioViewModel()
+    var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var confiSenha by remember { mutableStateOf("") }
@@ -79,15 +83,16 @@ fun CaixaRegistrar(){
             verticalArrangement = Arrangement.Center,
 
             ){
-//            Spacer(Modifier.height(50.dp))
-            Box (modifier = Modifier.fillMaxWidth(0.9f)) {
-                Text(
-                    "Email:",
+            Spacer(Modifier.height(50.dp))
+
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text("Email:",
                     color = branco,
                     modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
                     fontSize = 22.sp
                 )
             }
+
             TextField(
                 value = email,
                 onValueChange = { email = it },
@@ -174,7 +179,11 @@ fun CaixaRegistrar(){
             ) {
                 BotaoEstilizado(
                     texto = "Registrar",
-                    click = { }
+                    click = {
+                        if (senha == confiSenha) {
+                            viewmodel.enviarEmail(email, navController)
+                        }
+                    }
                 )
                 Text(
                     text = "Login",

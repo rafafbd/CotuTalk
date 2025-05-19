@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -44,6 +45,8 @@ import androidx.navigation.compose.NavHost
 import com.example.cotutalk_program.PaginaCriarGrupo
 import com.example.cotutalk_program.ui.theme.responder
 import com.example.cotutalk_program.ui.theme.roxo80
+import androidx.navigation.navArgument
+import androidx.navigation.NavType
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,18 +66,26 @@ class MainActivity : ComponentActivity() {
                     composable(route = "EsqueceuSenha") {
                         EsqueceuSenha(navController)
                     }
-                    composable(route = "EmailRecuperacao") {
-                        EmailRecuperacao(navController)
+                    composable(
+                        route = "EmailRecuperacao/{email}",
+                        arguments = listOf(navArgument("email") { type = NavType.StringType })
+                    ) {
+                        val email = it.arguments?.getString("email") ?: ""
+                        EmailRecuperacao(navController, email)
                     }
                     composable(route = "NovaSenha") {
                         NovaSenha(navController)
                     }
                     composable(route = "Principal"){
-                        Search(navController)
+                        TelaPrincipal(navController)
                     }
-                    composable(route = "Config") {
-                        paginaConfigurar(navController)
-                    }
+//                    composable(
+//                        route = "Config/{loginRequest}",
+//                        arguments = listOf(navArgument("loginRequest") {type = NavType.StringType})
+//                        ) {
+//                        val loginRequest = it.arguments?.getString("loginRequest") ?: ""
+//                        paginaConfigurar(navController, loginRequest)
+//                    }
                     composable(route = "Pesquisa") {
                         Search(navController)
                     }
@@ -178,9 +189,8 @@ fun PostUI(post: Post) {
     }
 }
 
-
 @Composable
-fun PreviewPost(navController: NavHostController) {
+fun TelaPrincipal(navController: NavHostController) {
     val post1 = Post(
         "viniguep",
         "Vini",
@@ -208,7 +218,7 @@ fun PreviewPost(navController: NavHostController) {
     Scaffold(
         modifier = Modifier.background(roxo80),
         bottomBar = {
-            //BottomNavigationBar()
+            BottomNavigationBar(navController)
         }
     ) { innerPadding ->
         Column(

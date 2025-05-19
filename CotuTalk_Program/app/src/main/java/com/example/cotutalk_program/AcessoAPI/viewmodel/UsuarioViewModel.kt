@@ -5,12 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
+import com.example.cotutalk_program.AcessoAPI.data.EmailRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
+import com.example.cotutalk_program.AcessoAPI.data.ValidarCodigoRequest
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 class UsuarioViewModel : ViewModel() {
     private val _usuarios = mutableStateOf<List<Usuario>>(emptyList())
@@ -101,7 +104,7 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    //LOGIN
+    //LOGIN E VERIFICACAO
     fun fazerLogin(username: String, senha: String, navController: NavController){
         coroutineScope.launch {
             try {
@@ -118,6 +121,39 @@ class UsuarioViewModel : ViewModel() {
             }
             catch (e: Exception){
                 _mensagem.value = "Erro no login: ${e.message}"
+            }
+        }
+    }
+
+    fun enviarEmail(email : String, navController: NavController) {
+        coroutineScope.launch {
+            try {
+                val emailRequest = EmailRequest(email)
+                val response = ApiService.verificaoInstance.enviarEmail(emailRequest)
+                if (response.isSuccessful){
+                    val encodedEmail = URLEncoder.encode(email, "UTF-8")
+                    navController.navigate("EmailRecuperacao/$encodedEmail")
+                } else {
+                    _mensagem.value = "Email não enviado"
+                }
+            } catch (e: Exception){
+                _mensagem.value = "Erro ao enviar email: ${e.message}"
+            }
+        }
+    }
+
+    fun validarCodigo(email : String, codigo : String, navController: NavController) {
+        coroutineScope.launch {
+            try {
+                val codeRequest = ValidarCodigoRequest(email, codigo)
+                val response = ApiService.verificaoInstance.validarCodigo(codeRequest)
+                if (response.isSuccessful){
+                    navController.navigate("Config")
+                } else {
+                    _mensagem.value = "Codigo invalido!"
+                }
+            } catch (e : Exception) {
+                _mensagem.value = "Erro ao validar codigo: ${e.message}"
             }
         }
     }

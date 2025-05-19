@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
@@ -34,9 +35,8 @@ import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
-
 @Composable
-fun EmailRecuperacao(navController: Any) {
+fun EmailRecuperacao(navController: NavController, email : String) {
 
     Column(
         modifier = Modifier
@@ -50,17 +50,16 @@ fun EmailRecuperacao(navController: Any) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin3()
+        CaixaLogin3(email, navController)
     }
 }
 
 
 @Composable
-fun CaixaLogin3(){
+fun CaixaLogin3(email : String, navController: NavController){
     val viewModel = UsuarioViewModel()
 
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
+    var codigo by remember { mutableStateOf("") }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -92,8 +91,8 @@ fun CaixaLogin3(){
                 )
             }
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = codigo,
+                onValueChange = { codigo = it },
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = roxo70,
@@ -114,7 +113,7 @@ fun CaixaLogin3(){
             ) {
                 BotaoEstilizado(
                     texto = "Verificar",
-                    click = {  }
+                    click = { viewModel.validarCodigo(email, codigo, navController) }
                 )
             }
 
