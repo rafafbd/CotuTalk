@@ -47,6 +47,7 @@ import com.example.cotutalk_program.ui.theme.responder
 import com.example.cotutalk_program.ui.theme.roxo80
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
+import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,8 +80,17 @@ class MainActivity : ComponentActivity() {
                     composable(route = "Principal"){
                         TelaPrincipal(navController)
                     }
-                    composable(route = "Responder"){
-                        TelaRespostas()
+                    composable(
+                        route = "responder/{post}/{nomeUsuario}",
+                        arguments = listOf(
+                            navArgument("post") { type = PostagemUI },
+                            navArgument("nomeUsuario") { type = NavType.StringType }
+                        )
+                    ) { backStackEntry ->
+                        val idPostagem = backStackEntry.arguments?.getObject<PostagemUI>("idPostagem") ?: -1
+                        val nomeUsuario = backStackEntry.arguments?.getString("nomeUsuario") ?: "Desconhecido"
+
+                        TelaRespostas(oPost = post, nomeUsuario = nomeUsuario)
                     }
 //                    composable(
 //                        route = "Config/{loginRequest}",
