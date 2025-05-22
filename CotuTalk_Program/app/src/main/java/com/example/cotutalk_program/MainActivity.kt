@@ -79,6 +79,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "Principal"){
                         TelaPrincipal(navController)
                     }
+                    composable(route = "Responder"){
+                        TelaRespostas()
+                    }
 //                    composable(
 //                        route = "Config/{loginRequest}",
 //                        arguments = listOf(navArgument("loginRequest") {type = NavType.StringType})

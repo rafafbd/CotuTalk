@@ -26,9 +26,13 @@ class PostagemViewModel : ViewModel() {
 
     private val _curtidasPostagem = MutableStateFlow<List<Curtida>>(emptyList())
     val curtidasPostagem: StateFlow<List<Curtida>> = _curtidasPostagem
+    private val _qtsCurtidas = MutableStateFlow<Int>(0)
+    val qtsCurtidas: StateFlow<Int> = _qtsCurtidas
 
     private val _respostasPostagem = MutableStateFlow<List<Resposta>>(emptyList())
     val respostasPostagem: StateFlow<List<Resposta>> = _respostasPostagem
+    private val _qtsRespostas = MutableStateFlow<Int>(0)
+    val qtsRespostas: StateFlow<Int> = _qtsRespostas
 
     fun listarPostagens() {
         coroutineScope.launch {
@@ -138,6 +142,7 @@ class PostagemViewModel : ViewModel() {
                 val curtidas = ApiService.curtidaInstance.buscarCurtidasPorPostagem(idPostagem)
                 _mensagem.value = "Curtidas encontradas para o post $idPostagem: ${curtidas.size}"
                 _curtidasPostagem.value = curtidas
+                _qtsCurtidas.value = _curtidasPostagem.value.size
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao buscar curtidas do post: ${e.message}"
             }
@@ -151,6 +156,7 @@ class PostagemViewModel : ViewModel() {
                 val response = ApiService.respostaInstance.buscarRespostasPorPostagem(idPostagem)
                 if (response.isSuccessful) {
                     _respostasPostagem.value = response.body() ?: emptyList()
+                    _qtsRespostas.value = _respostasPostagem.value.size
                 } else {
                     _mensagem.value = "Erro ao buscar respostas da postagem"
                 }

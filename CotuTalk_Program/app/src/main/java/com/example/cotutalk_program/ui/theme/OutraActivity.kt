@@ -59,8 +59,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
+import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.R
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
@@ -79,15 +81,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Post(postagem: Postagem){
+fun Post(postagem: PostagemUI){
     val context = LocalContext.current
-
-    val userModel = remember { UsuarioViewModel() }
-    val usuario by userModel.usuarioDetalhe.collectAsState()
-
-    LaunchedEffect(postagem.IdUsuario) {
-        userModel.buscarUsuario(postagem.IdUsuario)
-    }
 
     val imagePainter = painterResource(id = R.drawable.defaultprofile)
 
@@ -110,9 +105,9 @@ fun Post(postagem: Postagem){
                     .clip(CircleShape)
             )
             Text(
-                text = "@" + usuario.Nome,
+                text = "@${postagem.Usuario.Nome}",
                 color = Color.White,
-                fontSize = 20.sp,  // Aumentando o tamanho da fonte
+                fontSize = 20.sp,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = 8.dp)
@@ -121,14 +116,14 @@ fun Post(postagem: Postagem){
 
         // Segunda linha: mensagem do post
         Text(
-            text = post.message,
+            text = postagem.Conteudo,
             color = Color.White,
             fontSize = 17.sp,  // Aumentando o tamanho da fonte
             modifier = Modifier.padding(start = 8.dp)
         )
 
         Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
-            Text(post.curtidas.toString(), color = Color.LightGray)
+            Text(postagem.qtsCurtidas.toString(), color = Color.LightGray)
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = "Curtidas",
@@ -138,7 +133,7 @@ fun Post(postagem: Postagem){
                     .padding(start = 2.dp)
             )
             Spacer(modifier = Modifier.width(40.dp))
-            Text(post.comentarios.size.toString(), color = Color.LightGray)
+            Text(postagem.qtsRespostas.toString(), color = Color.LightGray)
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = "Comentários",
