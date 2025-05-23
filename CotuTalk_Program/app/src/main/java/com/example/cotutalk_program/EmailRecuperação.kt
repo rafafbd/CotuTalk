@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +38,7 @@ import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
 @Composable
-fun EmailRecuperacao(navController: NavController, email : String) {
+fun EmailRecuperacao(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -50,13 +52,13 @@ fun EmailRecuperacao(navController: NavController, email : String) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin3(email, navController)
+        CaixaLogin3(navController)
     }
 }
 
 
 @Composable
-fun CaixaLogin3(email : String, navController: NavController){
+fun CaixaLogin3(navController: NavController){
     val viewModel = UsuarioViewModel()
 
     var codigo by remember { mutableStateOf("") }
@@ -111,9 +113,14 @@ fun CaixaLogin3(email : String, navController: NavController){
                 Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
+                val context = LocalContext.current
                 BotaoEstilizado(
                     texto = "Verificar",
-                    click = { viewModel.validarCodigo(email, codigo, navController) }
+                    click = {
+                        val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        val email = sharedPref.getString("Email", "") ?: ""
+                        viewModel.validarCodigo(email, codigo, navController)
+                    }
                 )
             }
 

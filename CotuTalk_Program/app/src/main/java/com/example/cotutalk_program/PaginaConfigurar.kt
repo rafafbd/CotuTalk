@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,11 +29,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
@@ -42,7 +46,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun paginaConfigurar(navController: Any) {
+fun paginaConfigurar(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -56,13 +60,14 @@ fun paginaConfigurar(navController: Any) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaConfigurar()
+        CaixaConfigurar(navController)
     }
 }
 
 
 @Composable
-fun CaixaConfigurar(){
+fun CaixaConfigurar(navController : NavController){
+    val viewmodel = UsuarioViewModel()
     var nome by remember { mutableStateOf("") }
     var biografia by remember { mutableStateOf("") }
     Box (
@@ -113,7 +118,6 @@ fun CaixaConfigurar(){
                 value = nome,
                 onValueChange = { nome = it },
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = roxo70,
                     unfocusedContainerColor = roxo70,
@@ -144,7 +148,6 @@ fun CaixaConfigurar(){
                 value = biografia,
                 onValueChange = { biografia = it },
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = roxo70,
                     unfocusedContainerColor = roxo70,
@@ -168,9 +171,21 @@ fun CaixaConfigurar(){
                 Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
+                val context = LocalContext.current
                 BotaoEstilizado(
                     texto = "Criar conta",
-                    click = { }
+                    click = {
+                        val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putString("Nome", nome)
+                            putString("Biografia", biografia)
+                            apply()
+                        }
+                        val email = sharedPref.getString("Email", "") ?: ""
+                        val senha = sharedPref.getString("Senha", "") ?: ""
+
+                        viewmodel.adicionarUsuario(nome, email, senha, biografia, navController)
+                    }
                 )
 
             }

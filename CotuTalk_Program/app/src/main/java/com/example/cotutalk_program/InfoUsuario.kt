@@ -1,4 +1,8 @@
 package com.example.cotutalk_program
 
-class SaveUserInfo {
-}
+data class InfoUsuario(
+    val Nome: String,
+    val Biografia: String,
+    val Email: String,
+    val Senha: String
+)

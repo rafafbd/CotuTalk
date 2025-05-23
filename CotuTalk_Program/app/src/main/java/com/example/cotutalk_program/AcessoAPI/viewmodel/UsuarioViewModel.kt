@@ -2,6 +2,7 @@ package com.example.cotutalk_program.AcessoAPI.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.Navigator
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.EmailRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
@@ -62,13 +63,14 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun adicionarUsuario(nome: String, email: String, senha: String) {
+    fun adicionarUsuario(nome: String, email: String, senha: String, biografia : String, navController: NavController) {
         coroutineScope.launch {
             try {
                 val novoUsuario = Usuario(IdUsuario = 0, Nome = nome, Email = email, Senha = senha)
                 val usuarioCriado = ApiService.usuarioInstance.adicionarUsuario(novoUsuario)
                 _usuarios.value = _usuarios.value + usuarioCriado
                 _mensagem.value = "Usuário criado com ID ${usuarioCriado.IdUsuario}"
+                navController.navigate("Principal")
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
             }
@@ -136,11 +138,11 @@ class UsuarioViewModel : ViewModel() {
     fun enviarEmail(email : String, navController: NavController) {
         coroutineScope.launch {
             try {
+                navController.navigate("EmailRecuperacao")
                 val emailRequest = EmailRequest(email)
                 val response = ApiService.verificaoInstance.enviarEmail(emailRequest)
                 if (response.isSuccessful){
-                    val encodedEmail = URLEncoder.encode(email, "UTF-8")
-                    navController.navigate("EmailRecuperacao/$encodedEmail")
+                    navController.navigate("EmailRecuperacao")
                 } else {
                     _mensagem.value = "Email não enviado"
                 }

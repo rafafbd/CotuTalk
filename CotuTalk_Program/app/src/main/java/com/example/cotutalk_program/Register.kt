@@ -1,5 +1,7 @@
 package com.example.cotutalk_program
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,13 +20,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -42,6 +42,15 @@ import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
+import androidx.compose.ui.platform.LocalContext
+import com.example.cotutalk_program.InfoUsuario
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -63,13 +72,15 @@ fun paginaRegistrar(navController: NavController) {
     }
 }
 
+
 @Composable
 fun CaixaRegistrar(navController: NavController){
     val viewmodel = UsuarioViewModel()
-    var nome by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var confiSenha by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
+    var infoValidada by remember { mutableStateOf(false) }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -171,7 +182,15 @@ fun CaixaRegistrar(navController: NavController){
                     .fillMaxWidth(0.9f)
             )
 
-            Spacer(Modifier.height(150.dp))
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text(message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 20.sp
+                )
+            }
+
+            Spacer(Modifier.height(140.dp))
 
             Column (
                 Modifier.fillMaxWidth(0.9f),
@@ -181,7 +200,9 @@ fun CaixaRegistrar(navController: NavController){
                     texto = "Registrar",
                     click = {
                         if (senha == confiSenha) {
-                            viewmodel.enviarEmail(email, navController)
+                            infoValidada = true
+                        } else {
+                            message = "*Senhas diferentes"
                         }
                     }
                 )
@@ -194,6 +215,41 @@ fun CaixaRegistrar(navController: NavController){
                         .clickable { levaAoSignUp() }
                         .padding(start = 10.dp)
                 )
+            }
+
+            if (infoValidada) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0xAA000000)), // fundo escuro semi-transparente
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmRpbnNhbm94Z3hrdXl6b284dmRhcWs2bDVpamN5aHA5OXEzZzRwYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvtt4mtViPOSrLYNFh/giphy.gif",
+                        contentDescription = "Carregando...",
+                        modifier = Modifier.size(150.dp)
+                    )
+                }
+                val context = LocalContext.current
+                LaunchedEffect(infoValidada) {
+                    delay(2000)
+
+                    val usuario = InfoUsuario(
+                        Nome = "",
+                        Biografia = "",
+                        Email = email,
+                        Senha = senha
+                    )
+                    val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putString("Nome", usuario.Nome)
+                        putString("Biografia", usuario.Biografia)
+                        putString("Email", usuario.Email)
+                        putString("Senha", usuario.Senha)
+                        apply()
+                    }
+                    viewmodel.enviarEmail(email, navController)
+                }
             }
 
         }

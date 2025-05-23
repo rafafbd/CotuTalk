@@ -67,12 +67,11 @@ class MainActivity : ComponentActivity() {
                     composable(route = "EsqueceuSenha") {
                         EsqueceuSenha(navController)
                     }
-                    composable(
-                        route = "EmailRecuperacao/{email}",
-                        arguments = listOf(navArgument("email") { type = NavType.StringType })
-                    ) {
-                        val email = it.arguments?.getString("email") ?: ""
-                        EmailRecuperacao(navController, email)
+                    composable(route = "EmailRecuperacao") {
+                        EmailRecuperacao(navController)
+                    }
+                    composable(route = "Config") {
+                        paginaConfigurar(navController)
                     }
                     composable(route = "NovaSenha") {
                         NovaSenha(navController)
@@ -80,18 +79,18 @@ class MainActivity : ComponentActivity() {
                     composable(route = "Principal"){
                         TelaPrincipal(navController)
                     }
-                    composable(
-                        route = "responder/{post}/{nomeUsuario}",
-                        arguments = listOf(
-                            navArgument("post") { type = PostagemUI },
-                            navArgument("nomeUsuario") { type = NavType.StringType }
-                        )
-                    ) { backStackEntry ->
-                        val idPostagem = backStackEntry.arguments?.getObject<PostagemUI>("idPostagem") ?: -1
-                        val nomeUsuario = backStackEntry.arguments?.getString("nomeUsuario") ?: "Desconhecido"
-
-                        TelaRespostas(oPost = post, nomeUsuario = nomeUsuario)
-                    }
+//                    composable(
+//                        route = "responder/{post}/{nomeUsuario}",
+//                        arguments = listOf(
+//                            navArgument("post") { type = PostagemUI },
+//                            navArgument("nomeUsuario") { type = NavType.StringType }
+//                        )
+//                    ) { backStackEntry ->
+//                        val idPostagem = backStackEntry.arguments?.getObject<PostagemUI>("idPostagem") ?: -1
+//                        val nomeUsuario = backStackEntry.arguments?.getString("nomeUsuario") ?: "Desconhecido"
+//
+//                        TelaRespostas(oPost = post, nomeUsuario = nomeUsuario)
+//                    }
 //                    composable(
 //                        route = "Config/{loginRequest}",
 //                        arguments = listOf(navArgument("loginRequest") {type = NavType.StringType})
