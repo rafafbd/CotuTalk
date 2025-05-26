@@ -181,7 +181,7 @@ app.MapGet("/postagens", async (AppDbContext db) =>
     return Results.Ok(postagens);
 });
 
-app.MapGet("/postagensUI", async (AppDbContext db) =>
+app.MapGet("/postagens", async (AppDbContext db) =>
 {
     var postagens = await db.Postagens
         .Include(p => p.Usuario)

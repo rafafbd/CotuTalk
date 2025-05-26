@@ -181,26 +181,7 @@ app.MapGet("/postagens", async (AppDbContext db) =>
     return Results.Ok(postagens);
 });
 
-app.MapGet("/postagensUI", async (AppDbContext db) =>
-{
-    var postagens = await db.Postagens
-        .Include(p => p.Usuario)
-        .Include(p => p.Grupo)
-        .Include(p => p.Curtidas)
-        .Include(p => p.Respostas)
-        .Select(p => new PostagemUI
-        {
-            IdPostagem = p.IdPostagem,
-            Conteudo = p.Conteudo,
-            Usuario = p.Usuario,
-            Grupo = p.Grupo,
-            qtsCurtidas = p.Curtidas.Count,
-            qtsRespostas = p.Respostas.Count
-        })
-        .ToListAsync();
 
-    return Results.Ok(postagens);
-});
 
 // Deletar um post por ID
 app.MapDelete("/postagens/{id}", async (int id, AppDbContext db) =>
