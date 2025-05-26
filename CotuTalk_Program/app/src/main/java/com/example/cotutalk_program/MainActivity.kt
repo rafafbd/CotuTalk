@@ -71,8 +71,12 @@ class MainActivity : ComponentActivity() {
                     composable(route = "EsqueceuSenha") {
                         EsqueceuSenha(navController)
                     }
-                    composable(route = "EmailRecuperacao") {
-                        EmailRecuperacao(navController)
+                    composable(
+                        route = "EmailRecuperacao/{where}",
+                        arguments = listOf(navArgument("where") { defaultValue = "" })
+                    ) { backStackEntry ->
+                        val where = backStackEntry.arguments?.getString("where") ?: ""
+                        EmailRecuperacao(navController, where)
                     }
                     composable(route = "Config") {
                         paginaConfigurar(navController)

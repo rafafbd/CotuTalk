@@ -165,6 +165,7 @@ fun CaixaConfigurar(navController : NavController){
             )
 
 
+
             Spacer(Modifier.height(50.dp))
 
             Column (
