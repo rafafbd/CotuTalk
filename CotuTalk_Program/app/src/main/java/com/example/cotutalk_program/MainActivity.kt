@@ -38,6 +38,8 @@ import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -47,7 +49,9 @@ import com.example.cotutalk_program.ui.theme.responder
 import com.example.cotutalk_program.ui.theme.roxo80
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
+import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
+import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,21 +84,19 @@ class MainActivity : ComponentActivity() {
                     composable(route = "NovaSenha") {
                         NovaSenha(navController)
                     }
-                    composable(route = "Principal"){
-                        TelaPrincipal(navController)
+                    composable(route = "Principal"){ backStackEntry ->
+                        val postagemViewModel = viewModel<PostagemViewModel>(backStackEntry)
+                        TelaPrincipal(navController, postagemViewModel)
                     }
-//                    composable(
-//                        route = "responder/{post}/{nomeUsuario}",
-//                        arguments = listOf(
-//                            navArgument("post") { type = PostagemUI },
-//                            navArgument("nomeUsuario") { type = NavType.StringType }
-//                        )
-//                    ) { backStackEntry ->
-//                        val idPostagem = backStackEntry.arguments?.getObject<PostagemUI>("idPostagem") ?: -1
-//                        val nomeUsuario = backStackEntry.arguments?.getString("nomeUsuario") ?: "Desconhecido"
-//
-//                        TelaRespostas(oPost = post, nomeUsuario = nomeUsuario)
-//                    }
+                    composable(
+                        route = "responder/{idPost}",
+                    ) { backStackEntry ->
+                        val idPost = backStackEntry.arguments?.getInt("idPost")
+
+                        val postagemViewModel = viewModel<PostagemViewModel>(backStackEntry)
+
+                        TelaRespostas(navController = navController, postModel = postagemViewModel, idPost = idPost!!)
+                    }
 //                    composable(
 //                        route = "Config/{loginRequest}",
 //                        arguments = listOf(navArgument("loginRequest") {type = NavType.StringType})
@@ -206,7 +208,73 @@ fun PostUI(post: Post) {
 }
 
 @Composable
-fun TelaPrincipal(navController: NavHostController) {
+fun principal(navController: NavController, postModel: PostagemViewModel) {
+    postModel.listarPostagens()
+
+    Scaffold(
+        modifier = Modifier.background(roxo80),
+        bottomBar = {
+            //BottomNavigationBar(navController)
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(roxo80)
+                .padding(innerPadding)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo2),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .width(620.dp)
+                    .padding(16.dp)  // Adicionando padding à imagem
+            )
+            Post(postModel.postagens)
+        }
+    }
+    Scaffold(
+        modifier = Modifier.background(roxo80),
+        bottomBar = {
+            BottomNavigationBar(navController)
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate("criarGrupo")
+                },
+                containerColor = Color(0xFF6C40BF), // roxo80 ou a cor que preferir
+                contentColor = Color.White,
+                shape = CircleShape
+            ) {
+                Text(
+                    text = "+",
+                    fontSize = 30.sp,
+                    color = Color.White
+                )
+            }
+        },
+        floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(roxo80)
+                .padding(innerPadding)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo2),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .width(620.dp)
+                    .padding(16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel) {
     val post1 = Post(
         "viniguep",
         "Vini",
@@ -301,7 +369,7 @@ fun TelaPrincipal(navController: NavHostController) {
 
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
+fun BottomNavigationBar(navController: NavController) {
     Column {
         // Borda superior
         Box(
