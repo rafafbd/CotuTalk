@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
@@ -25,9 +26,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 
 @Composable
-fun TelaRespostas(postModel: PostagemViewModel, oPost: PostagemUI){
-
-
+fun TelaRespostas(navController: NavController, postModel: PostagemViewModel, idPost: Int){
 
     Scaffold(
         modifier = Modifier.background(roxo80),

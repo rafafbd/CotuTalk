@@ -3,6 +3,7 @@ package com.example.cotutalk_program.AcessoAPI.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +19,10 @@ class PostagemViewModel : ViewModel() {
     val postagens: StateFlow<List<Postagem>> = _postagens
 
     private val _postagemDetalhe = MutableStateFlow<Postagem?>(null)
-    val usuarioDetalhe: StateFlow<Postagem?> = _postagemDetalhe
+    val postagensDetalhe: StateFlow<Postagem?> = _postagemDetalhe
+
+    private val _postagemUIDetalhe = MutableStateFlow<Postagem?>(null)
+    val postagemUIDetalhe: StateFlow<Postagem?> = _postagemUIDetalhe
 
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem
@@ -38,9 +42,19 @@ class PostagemViewModel : ViewModel() {
         coroutineScope.launch {
             try {
                 _postagens.value = ApiService.postagemInstance.listarPostagens()
-                _mensagem.value = "Usuários carregados com sucesso."
+                _mensagem.value = "Postagens carregados com sucesso."
             } catch (e: Exception) {
-                _mensagem.value = "Erro ao carregar usuários: ${e.message}"
+                _mensagem.value = "Erro ao carregar postagens: ${e.message}"
+            }
+        }
+    }
+
+    fun postagemParaUI(postagem: Postagem){
+        coroutineScope.launch {
+            try {
+                //
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao processar  a postagem: ${e.message}"
             }
         }
     }
