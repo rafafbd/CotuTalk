@@ -49,7 +49,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 
 
@@ -190,7 +189,7 @@ fun CaixaRegistrar(navController: NavController){
                 )
             }
 
-            Spacer(Modifier.height(140.dp))
+            Spacer(Modifier.height(120.dp))
 
             Column (
                 Modifier.fillMaxWidth(0.9f),
@@ -199,10 +198,17 @@ fun CaixaRegistrar(navController: NavController){
                 BotaoEstilizado(
                     texto = "Registrar",
                     click = {
-                        if (senha == confiSenha) {
-                            infoValidada = true
-                        } else {
+                        val pattern = Regex("^cc\\d{5}@g\\.unicamp\\.br$")
+                        if (email == "" || senha == "") {
+                            message = "*Preencha todos os campos"
+                        }
+                        else if (!pattern.matches(email)) {
+                            message = "*Email não pertence ao cotuca"
+                        }
+                        else if (senha != confiSenha) {
                             message = "*Senhas diferentes"
+                        } else {
+                            infoValidada = true
                         }
                     }
                 )
@@ -212,28 +218,14 @@ fun CaixaRegistrar(navController: NavController){
                     textDecoration = TextDecoration.Underline,
                     fontSize = 20.sp,
                     modifier = Modifier
-                        .clickable { levaAoSignUp() }
+                        .clickable { navController.navigate("Login") }
                         .padding(start = 10.dp)
                 )
             }
 
             if (infoValidada) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xAA000000)), // fundo escuro semi-transparente
-                    contentAlignment = Alignment.Center
-                ) {
-                    AsyncImage(
-                        model = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmRpbnNhbm94Z3hrdXl6b284dmRhcWs2bDVpamN5aHA5OXEzZzRwYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wvtt4mtViPOSrLYNFh/giphy.gif",
-                        contentDescription = "Carregando...",
-                        modifier = Modifier.size(150.dp)
-                    )
-                }
                 val context = LocalContext.current
                 LaunchedEffect(infoValidada) {
-                    delay(2000)
-
                     val usuario = InfoUsuario(
                         Nome = "",
                         Biografia = "",
@@ -248,7 +240,7 @@ fun CaixaRegistrar(navController: NavController){
                         putString("Senha", usuario.Senha)
                         apply()
                     }
-                    viewmodel.enviarEmail(email, navController)
+                    viewmodel.enviarEmail(email, navController, "Config")
                 }
             }
 

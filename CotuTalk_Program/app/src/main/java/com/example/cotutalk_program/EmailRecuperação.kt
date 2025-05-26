@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +39,7 @@ import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 
 @Composable
-fun EmailRecuperacao(navController: NavController) {
+fun EmailRecuperacao(navController: NavController, where : String) {
 
     Column(
         modifier = Modifier
@@ -52,21 +53,22 @@ fun EmailRecuperacao(navController: NavController) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin3(navController)
+        CaixaLogin3(navController, where)
     }
 }
 
 
 @Composable
-fun CaixaLogin3(navController: NavController){
+fun CaixaLogin3(navController: NavController, where : String){
     val viewModel = UsuarioViewModel()
-
+    var message by remember { mutableStateOf("") }
     var codigo by remember { mutableStateOf("") }
     Box (
         Modifier
             .fillMaxSize(0.85f)
             .clip(RoundedCornerShape(16.dp))
     ){
+        val context = LocalContext.current
         Column(
             Modifier
                 .background(color = roxo60)
@@ -75,9 +77,11 @@ fun CaixaLogin3(navController: NavController){
             verticalArrangement = Arrangement.Center,
 
             ){
+            val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+            val email = sharedPref.getString("Email", "") ?: ""
             Box (modifier = Modifier.fillMaxWidth(0.9f)) {
                 Text(
-                    "Enviamos um código de verificação para o email u24159@g.unicamp.br, insira o código no campo a baixo para prosseguir com a recuperação de senha",
+                    "Enviamos um código de verificação para $email, insira o código no campo a baixo para prosseguir",
                     color = branco,
                     fontSize = 19.sp
                 )
@@ -107,19 +111,26 @@ fun CaixaLogin3(navController: NavController){
                     .fillMaxWidth(0.9f)
             )
 
+            Box (modifier = Modifier.fillMaxWidth(0.9f),){
+                Text(message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 5.dp),
+                    fontSize = 20.sp
+                )
+            }
+
             Spacer(Modifier.height(180.dp))
 
             Column (
                 Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
-                val context = LocalContext.current
+
                 BotaoEstilizado(
                     texto = "Verificar",
                     click = {
-                        val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-                        val email = sharedPref.getString("Email", "") ?: ""
-                        viewModel.validarCodigo(email, codigo, navController)
+                        viewModel.validarCodigo(email, codigo, navController, where)
+                        message = viewModel.mensagem.value
                     }
                 )
             }

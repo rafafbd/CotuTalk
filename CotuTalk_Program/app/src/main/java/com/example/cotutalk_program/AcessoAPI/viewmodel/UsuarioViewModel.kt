@@ -135,14 +135,13 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun enviarEmail(email : String, navController: NavController) {
+    fun enviarEmail(email : String, navController: NavController, where : String) {
         coroutineScope.launch {
             try {
-                navController.navigate("EmailRecuperacao")
                 val emailRequest = EmailRequest(email)
                 val response = ApiService.verificaoInstance.enviarEmail(emailRequest)
                 if (response.isSuccessful){
-                    navController.navigate("EmailRecuperacao")
+                    navController.navigate("EmailRecuperacao/${where}")
                 } else {
                     _mensagem.value = "Email não enviado"
                 }
@@ -152,15 +151,15 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun validarCodigo(email : String, codigo : String, navController: NavController) {
+    fun validarCodigo(email : String, codigo : String, navController: NavController, where : String) {
         coroutineScope.launch {
             try {
                 val codeRequest = ValidarCodigoRequest(email, codigo)
                 val response = ApiService.verificaoInstance.validarCodigo(codeRequest)
                 if (response.isSuccessful){
-                    navController.navigate("Config")
+                    navController.navigate(where)
                 } else {
-                    _mensagem.value = "Codigo invalido!"
+                    _mensagem.value = "*Codigo invalido"
                 }
             } catch (e : Exception) {
                 _mensagem.value = "Erro ao validar codigo: ${e.message}"
