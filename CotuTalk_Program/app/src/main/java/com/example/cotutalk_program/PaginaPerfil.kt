@@ -1,10 +1,12 @@
 package com.example.cotutalk_program
 
+import androidx.collection.intIntMapOf
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,16 +24,13 @@ fun paginaPerfil(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(roxo80)
-            .padding(16.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(Color.LightGray)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
+        Scaffold (
+            modifier = Modifier.background(roxo80),
+            bottomBar = {
+                BottomNavigationBar(navController)
+            }
+        )
+        {  }
 
 }

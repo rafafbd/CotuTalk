@@ -73,4 +73,3 @@ fun postar(navController: NavHostController , Idgrupo : Int) {
                 }
             }
         }
-    
