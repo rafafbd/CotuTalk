@@ -37,6 +37,7 @@ import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo50
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
+import org.threeten.bp.LocalDateTime
 
 
 @Composable
@@ -122,7 +123,8 @@ fun PaginaCriarGrupo(navController: NavHostController) {
                     BotaoEstilizado("Criar") {
                         grupoModel.adicionarGrupo(
                             nome = nomeGrupo,
-
+                            descricao = descGrupo,
+                            dt = LocalDateTime.now()
                         )
                     }
                 }

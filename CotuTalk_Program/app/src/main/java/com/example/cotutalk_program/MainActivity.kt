@@ -104,11 +104,22 @@ class MainActivity : ComponentActivity() {
 //                        val loginRequest = it.arguments?.getString("loginRequest") ?: ""
 //                        paginaConfigurar(navController, loginRequest)
 //                    }
+
+                    composable(route = "paginaPostar/{idGrupo}"){ BackStackEntry ->
+                        val idGrupo = BackStackEntry.arguments?.getInt("idGrupo")
+                        if (idGrupo != null){
+                            postar(navController, idGrupo)
+                        }
+
+                    }
                     composable(route = "Pesquisa") {
                         Search(navController)
                     }
-                    composable(route = "Resposta") {
-                        responder(navController)
+                    composable(route = "Resposta/{idPost}") { backStackEntry ->
+                        val idPost = backStackEntry.arguments?.getInt("idPost")
+                        if (idPost != null){
+                            responder(navController, idPost)
+                        }
                     }
                     composable(route = "Verificar") {
                         paginaVerificar(navController)
