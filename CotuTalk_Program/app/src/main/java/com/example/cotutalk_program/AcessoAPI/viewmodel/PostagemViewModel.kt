@@ -38,6 +38,9 @@ class PostagemViewModel : ViewModel() {
     private val _qtsRespostas = MutableStateFlow<Int>(0)
     val qtsRespostas: StateFlow<Int> = _qtsRespostas
 
+    private val _respostaAdicionada = MutableStateFlow<Resposta?>(null)
+    val respostaAdicionada: StateFlow<Resposta?> = _respostaAdicionada
+
     fun listarPostagens() {
         coroutineScope.launch {
             try {
@@ -164,6 +167,21 @@ class PostagemViewModel : ViewModel() {
     }
 
     //HANDLE RESPOSTA
+    fun adicionarResposta(resposta: Resposta) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.respostaInstance.adicionarResposta(resposta)
+                if (response.isSuccessful) {
+                    _respostaAdicionada.value = response.body()
+                } else {
+                    _mensagem.value  = "Erro ao adicionar resposta: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção ao adicionar resposta: ${e.message}"
+            }
+        }
+    }
+
     fun buscarRespostasPorPostagem(idPostagem: Int) {
         coroutineScope.launch {
             try {
