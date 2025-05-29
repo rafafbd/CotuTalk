@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class GrupoViewModel : ViewModel() {
     private val _grupos = MutableStateFlow<List<Grupo>>(emptyList())

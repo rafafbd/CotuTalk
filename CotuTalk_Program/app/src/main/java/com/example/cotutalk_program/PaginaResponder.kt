@@ -64,6 +64,7 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
     val contex = LocalContext.current
     val userIdFlow = UserPreferences.lerUsuario(contex)
     val userId by userIdFlow.collectAsState(initial = null)
+    val agr = LocalDateTime.now()
     var resposta by remember { mutableStateOf("") }
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
