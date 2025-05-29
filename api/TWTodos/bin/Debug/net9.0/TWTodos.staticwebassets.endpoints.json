@@ -1,5 +1,88 @@
 {
   "Version": 1,
   "ManifestType": "Build",
-  "Endpoints": []
+  "Endpoints": [
+    {
+      "Route": "img/casal.dfjxiz3rgr.webp",
+      "AssetFile": "img/casal.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 29 May 2025 13:22:11 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dfjxiz3rgr"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        },
+        {
+          "Name": "label",
+          "Value": "img/casal.webp"
+        }
+      ]
+    },
+    {
+      "Route": "img/casal.webp",
+      "AssetFile": "img/casal.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 29 May 2025 13:22:11 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        }
+      ]
+    }
+  ]
 }

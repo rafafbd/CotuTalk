@@ -1,12 +1,125 @@
 {
   "Version": 1,
-  "Hash": "lVUsh6F1p7ANdAJ0FQ3jBIelDLJnzk5T4n79h2K21iw=",
+  "Hash": "Waa45vhcwg+adwgcZtUCPZrd+FAdn12anDK10j/kzKs=",
   "Source": "TWTodos",
   "BasePath": "_content/TWTodos",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "TWTodos\\wwwroot",
+      "Source": "TWTodos",
+      "ContentRoot": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\",
+      "BasePath": "_content/TWTodos",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\casal.webp",
+      "SourceId": "TWTodos",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\",
+      "BasePath": "_content/TWTodos",
+      "RelativePath": "img/casal#[.{fingerprint}]?.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dfjxiz3rgr",
+      "Integrity": "mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\casal.webp"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "img/casal.dfjxiz3rgr.webp",
+      "AssetFile": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\casal.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 29 May 2025 13:22:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dfjxiz3rgr"
+        },
+        {
+          "Name": "label",
+          "Value": "img/casal.webp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        }
+      ]
+    },
+    {
+      "Route": "img/casal.webp",
+      "AssetFile": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\casal.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 29 May 2025 13:22:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        }
+      ]
+    }
+  ]
 }

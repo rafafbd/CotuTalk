@@ -12,10 +12,35 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=twtdb.db"));
 
 var app = builder.Build();
+app.UseStaticFiles(); 
 
 // Rota raiz
 app.MapGet("/", () => "Hello World!");
 
+//IMAGENS
+//upload 
+app.MapPost("/upload", async (HttpRequest request) =>
+{
+    var form = await request.ReadFormAsync();
+    var file = form.Files["image"];
+
+    if (file == null || file.Length == 0)
+        return Results.BadRequest("Nenhuma imagem enviada");
+
+    var uploadsFolder = Path.Combine("wwwroot", "img");
+
+    if (!Directory.Exists(uploadsFolder))
+        Directory.CreateDirectory(uploadsFolder);
+
+    var filePath = Path.Combine(uploadsFolder, file.FileName);
+
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(stream);
+    }
+    var publicUrl = $"/imgs/{file.FileName}";
+    return Results.Ok(new { url = publicUrl });
+});
 
 // VERIFICACAO POR EMAIL
 //Mandar email de verificacao

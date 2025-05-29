@@ -4,6 +4,8 @@ import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginResponse
 import com.google.gson.JsonArray
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.POST
@@ -11,6 +13,8 @@ import retrofit2.http.Body
 import retrofit2.http.PUT
 import retrofit2.http.DELETE
 import retrofit2.Response
+import retrofit2.http.Multipart
+import retrofit2.http.Part
 
 
 interface UsuarioApi {
@@ -31,4 +35,8 @@ interface UsuarioApi {
 
     @POST("/login")
     suspend fun login(@Body login : LoginRequest) : Response<Usuario>
+
+    @Multipart
+    @POST("/upload")
+    suspend fun uploadImage(@Part image: MultipartBody.Part): Response<ResponseBody>
 }

@@ -1,6 +1,8 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
 import android.content.Context
+import android.net.Uri
+import android.webkit.MimeTypeMap
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
@@ -17,6 +19,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.net.URLEncoder
 
 class UsuarioViewModel : ViewModel() {
@@ -246,6 +252,40 @@ class UsuarioViewModel : ViewModel() {
             } catch (e: Exception) {
                 _mensagem.value = "Exceção: ${e.message}"
             }
+        }
+    }
+
+    //UPLOAD IMAGEM
+    suspend fun uploadImage(context: Context, uri: Uri) {
+        val contentResolver = context.contentResolver
+
+        // Detectar o tipo MIME e extensão
+        val mimeType = contentResolver.getType(uri) ?: "image/*"
+        val extension = MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(mimeType) ?: "jpg"
+
+        val inputStream = contentResolver.openInputStream(uri) ?: return
+        val fileName = "upload_${System.currentTimeMillis()}.$extension"
+        val file = File(context.cacheDir, fileName)
+
+        // Copiar conteúdo para arquivo temporário
+        file.outputStream().use { output ->
+            inputStream.copyTo(output)
+        }
+
+        // Criar corpo da requisição
+        val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+        val imagePart = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        try {
+            val response = ApiService.usuarioInstance.uploadImage(imagePart)
+            if (response.isSuccessful){
+                _mensagem.value = "Upload da imagem concluido com sucesso!"
+            } else {
+                _mensagem.value = "Falha no upload da imagem"
+            }
+        } catch (e: Exception) {
+            _mensagem.value = "Falha no upload da imagem: $e"
         }
     }
 }

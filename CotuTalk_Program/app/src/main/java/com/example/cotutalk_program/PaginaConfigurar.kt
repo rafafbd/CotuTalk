@@ -1,6 +1,10 @@
 package com.example.cotutalk_program
 
 import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -22,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
@@ -42,9 +49,9 @@ import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
+import kotlinx.coroutines.launch
 
 
-@Preview
 @Composable
 fun paginaConfigurar(navController: NavController) {
 
@@ -61,6 +68,45 @@ fun paginaConfigurar(navController: NavController) {
             modifier = Modifier.size(200.dp)
         )
         CaixaConfigurar(navController)
+    }
+}
+
+
+@Composable
+fun ImagePickerButton() {
+    val viewmodel = UsuarioViewModel()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val imageUri = remember { mutableStateOf<Uri?>(null) }
+
+    // Lançador do seletor de conteúdo (imagem)
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let {
+                imageUri.value = it
+                scope.launch {
+                    viewmodel.uploadImage(context, it)
+                }
+            }
+        }
+    )
+
+    // UI do botão
+    Button(
+        onClick = {
+            // Abrir seletor de imagem
+            imagePickerLauncher.launch("image/*")
+        }
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icon_camera),
+            contentDescription = "foto do perfil",
+            modifier = Modifier
+                .size(100.dp)
+                .clip(RoundedCornerShape(50.dp)) // Aplica bordas arredondadas
+        )
+        Text("Selecionar Imagem")
     }
 }
 
@@ -95,13 +141,8 @@ fun CaixaConfigurar(navController : NavController){
 
 
 
-            Image(
-                painter = painterResource(id = R.drawable.icon_camera),
-                contentDescription = "foto do perfil",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(50.dp)) // Aplica bordas arredondadas
-            )
+
+            ImagePickerButton();
 
 
             Spacer(Modifier.height(22.dp))

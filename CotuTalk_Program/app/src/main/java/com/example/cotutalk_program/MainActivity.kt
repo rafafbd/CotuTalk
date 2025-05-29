@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
                         Search(navController)
                     }
                     composable(route = "Resposta") {
-                        responder(navController)
+                        //responder(navController)
                     }
                     composable(route = "Verificar") {
                         paginaVerificar(navController)

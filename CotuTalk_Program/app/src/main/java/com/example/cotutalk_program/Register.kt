@@ -79,7 +79,6 @@ fun CaixaRegistrar(navController: NavController){
     var senha by remember { mutableStateOf("") }
     var confiSenha by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
-    var infoValidada by remember { mutableStateOf(false) }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -195,6 +194,7 @@ fun CaixaRegistrar(navController: NavController){
                 Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
+                val context = LocalContext.current
                 BotaoEstilizado(
                     texto = "Registrar",
                     click = {
@@ -208,7 +208,21 @@ fun CaixaRegistrar(navController: NavController){
                         else if (senha != confiSenha) {
                             message = "*Senhas diferentes"
                         } else {
-                            infoValidada = true
+                            val usuario = InfoUsuario(
+                                Nome = "",
+                                Biografia = "",
+                                Email = email,
+                                Senha = senha
+                            )
+                            val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                putString("Nome", usuario.Nome)
+                                putString("Biografia", usuario.Biografia)
+                                putString("Email", usuario.Email)
+                                putString("Senha", usuario.Senha)
+                                apply()
+                            }
+                            viewmodel.enviarEmail(email, navController, "Config")
                         }
                     }
                 )
@@ -222,29 +236,6 @@ fun CaixaRegistrar(navController: NavController){
                         .padding(start = 10.dp)
                 )
             }
-
-            if (infoValidada) {
-                val context = LocalContext.current
-                LaunchedEffect(infoValidada) {
-                    val usuario = InfoUsuario(
-                        Nome = "",
-                        Biografia = "",
-                        Email = email,
-                        Senha = senha
-                    )
-                    val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-                    with(sharedPref.edit()) {
-                        putString("Nome", usuario.Nome)
-                        putString("Biografia", usuario.Biografia)
-                        putString("Email", usuario.Email)
-                        putString("Senha", usuario.Senha)
-                        apply()
-                    }
-                    viewmodel.enviarEmail(email, navController, "Config")
-                }
-            }
-
         }
     }
-
 }

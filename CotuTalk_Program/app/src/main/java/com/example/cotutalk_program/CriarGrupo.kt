@@ -118,14 +118,14 @@ fun PaginaCriarGrupo(navController: NavHostController) {
 
                 Spacer(Modifier.height(25.dp))
 
-                Box (Modifier.fillMaxWidth(0.9f)){
-                    BotaoEstilizado("Criar") {
-                        grupoModel.adicionarGrupo(
-                            nome = nomeGrupo,
-
-                        )
-                    }
-                }
+//                Box (Modifier.fillMaxWidth(0.9f)){
+//                    BotaoEstilizado("Criar") {
+//                        grupoModel.adicionarGrupo(
+//                            //nome = nomeGrupo,
+//
+//                        )
+//                    }
+//                }
             }
         }
     }
