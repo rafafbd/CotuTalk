@@ -34,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.cotutalk_program.AcessoAPI.viewmodel.GrupoViewModel
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.R
 import com.example.cotutalk_program.BottomNavigationBar
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
@@ -47,7 +49,10 @@ import com.example.cotutalk_program.ui.theme.roxo80
 fun PaginaCriarGrupo(navController: NavHostController) {
     var nomeGrupo by remember { mutableStateOf("") }
     var descGrupo by remember { mutableStateOf("") }
-    var ehPrivado by remember { mutableStateOf(false) }
+//    var ehPrivado by remember { mutableStateOf(false) }
+    val userModel = UsuarioViewModel()
+    val grupoModel = GrupoViewModel()
+    
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
@@ -113,15 +118,15 @@ fun PaginaCriarGrupo(navController: NavHostController) {
                 Spacer(Modifier.height(25.dp))
 
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(
-                        checked = ehPrivado,
-                        onCheckedChange = { ehPrivado = it }
-                    )
-                    Text("Privado",
-                        color = branco,
-                        fontSize = 16.sp)
-                }
+//                Row(verticalAlignment = Alignment.CenterVertically) {
+//                    Checkbox(
+//                        checked = ehPrivado,
+//                        onCheckedChange = { ehPrivado = it }
+//                    )
+//                    Text("Privado",
+//                        color = branco,
+//                        fontSize = 16.sp)
+//                }
 
 
                 Spacer(Modifier.height(25.dp))

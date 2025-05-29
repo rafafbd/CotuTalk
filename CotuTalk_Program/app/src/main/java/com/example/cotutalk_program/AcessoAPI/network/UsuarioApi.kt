@@ -30,5 +30,5 @@ interface UsuarioApi {
     suspend fun deletarUsuario(@Path("id") id: Int): Response<String>
 
     @POST("/login")
-    suspend fun login(@Body login : LoginRequest) : Response<LoginResponse>
+    suspend fun login(@Body login : LoginRequest) : Response<Usuario>
 }

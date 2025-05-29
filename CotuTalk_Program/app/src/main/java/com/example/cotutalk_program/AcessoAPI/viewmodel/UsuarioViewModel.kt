@@ -1,5 +1,7 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigator
@@ -115,14 +117,14 @@ class UsuarioViewModel : ViewModel() {
     }
 
     //LOGIN E VERIFICACAO
-    fun fazerLogin(username: String, senha: String, navController: NavController){
+    fun fazerLogin(username: String, senha: String, navController: NavController, context: Context){
         coroutineScope.launch {
             try {
                 val loginReq = LoginRequest(username, senha)
                 val response = ApiService.usuarioInstance.login(loginReq)
                 if (response.isSuccessful){
-                    // alguma linha de codigo para guardar no env os dados do usuario
-                    var usuarioLogaldo = response.body() // supoem-se que o body da response tem o Usuario
+                    var usuarioLogado = response.body() // supoem-se que o body da response tem o Usuario
+                    UserPreferences.salvarUsuario(context, usuarioLogado!!.IdUsuario)
                     navController.navigate("Principal")
                 }
                 else{

@@ -155,27 +155,13 @@ app.MapPut("/usuarios/{id}", async (int id, Usuario usuarioAtualizado, AppDbCont
 });
 
 // Verifiar login
-// app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
-//     var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Email == login.Nome);
-//     if (usuario is null)
-//         return Results.Unauthorized();
-//     bool validacao = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
-//     return validacao 
-//         ? Results.Ok(usuario)
-//         : Results.Unauthorized();   
-// });
-
-app.MapPost("/login", async (LoginRequest login, AppDbContext db) =>
-{
-    var usuario = await db.Usuarios
-        .FirstOrDefaultAsync(u => u.Email == login.Nome);
+app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Email == login.Nome);
     if (usuario is null)
         return Results.Unauthorized();
-    bool senhaCorreta = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
-    if (!senhaCorreta)
-        return Results.Unauthorized();
-
-    return senhaCorreta 
+    bool validacao = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
+    validacao.
+    return validacao 
         ? Results.Ok(usuario)
         : Results.Unauthorized();
 });

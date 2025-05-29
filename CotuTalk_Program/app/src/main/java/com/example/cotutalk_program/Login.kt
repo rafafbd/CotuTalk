@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
@@ -82,6 +83,8 @@ fun paginaLogin(navController: NavController) {
 @Composable
 fun CaixaLogin(navController: NavController){
     val viewmodel = UsuarioViewModel()
+    val context = LocalContext.current
+
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -172,7 +175,9 @@ fun CaixaLogin(navController: NavController){
             ) {
                 BotaoEstilizado(
                     texto = "Entrar",
-                    click = { viewmodel.fazerLogin(username = email, senha = senha, navController = navController) }
+                    click = { viewmodel.fazerLogin(
+                        username = email, senha = senha, navController = navController, context = context
+                    ) }
                 )
                 Text(
                     text = "Criar conta",

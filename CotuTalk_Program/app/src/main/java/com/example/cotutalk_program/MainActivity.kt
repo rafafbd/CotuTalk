@@ -210,6 +210,7 @@ fun PostUI(post: Post) {
 @Composable
 fun principal(navController: NavController, postModel: PostagemViewModel) {
     postModel.listarPostagens()
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.background(roxo80),
@@ -230,7 +231,7 @@ fun principal(navController: NavController, postModel: PostagemViewModel) {
                     .width(620.dp)
                     .padding(16.dp)  // Adicionando padding à imagem
             )
-            Post(postModel.postagens)
+            //Post(postModel.postagens)
         }
     }
     Scaffold(

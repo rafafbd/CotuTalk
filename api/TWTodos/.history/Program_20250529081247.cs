@@ -155,29 +155,39 @@ app.MapPut("/usuarios/{id}", async (int id, Usuario usuarioAtualizado, AppDbCont
 });
 
 // Verifiar login
-// app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
-//     var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Email == login.Nome);
-//     if (usuario is null)
-//         return Results.Unauthorized();
-//     bool validacao = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
-//     return validacao 
-//         ? Results.Ok(usuario)
-//         : Results.Unauthorized();   
-// });
+app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Email == login.Nome);
+    if (usuario is null)
+        return Results.Unauthorized();
+    bool validacao = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
+    return validacao 
+        ? Results.Ok(usuario)
+        : Results.Unauthorized();   
+});
 
 app.MapPost("/login", async (LoginRequest login, AppDbContext db) =>
 {
     var usuario = await db.Usuarios
-        .FirstOrDefaultAsync(u => u.Email == login.Nome);
+        .FirstOrDefaultAsync(u => u.Email == login.Nome); // ou login.Email, se for o caso
+
     if (usuario is null)
         return Results.Unauthorized();
+
     bool senhaCorreta = BCrypt.Net.BCrypt.Verify(login.Senha, usuario.Senha);
+    
     if (!senhaCorreta)
         return Results.Unauthorized();
 
-    return senhaCorreta 
-        ? Results.Ok(usuario)
-        : Results.Unauthorized();
+    // Evitar retornar a senha (mesmo que criptografada)
+    var usuarioSeguro = new
+    {
+        usuario.IdUsuario,
+        usuario.Nome,
+        usuario.Email
+        // Adicione outros campos que fizerem sentido
+    };
+
+    return Results.Ok(usuarioSeguro);
 });
 
 // POSTAGEM
