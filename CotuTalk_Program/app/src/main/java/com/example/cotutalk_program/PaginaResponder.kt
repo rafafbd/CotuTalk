@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,12 +26,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.cotutalk_program.AcessoAPI.data.Resposta
+import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UserPreferences
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.BottomNavigationBar
 import com.example.cotutalk_program.Post
 import com.example.cotutalk_program.PostUI
+import org.threeten.bp.LocalDateTime
 
 class PaginaResponder : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +59,11 @@ fun postarResposta(resposta: String){
 
 
 @Composable
-fun responder(navController: NavHostController) {
+fun responder(navController: NavHostController , IdPostagem : Int) {
+    val postagemViewModel = PostagemViewModel()
+    val contex = LocalContext.current
+    val userIdFlow = UserPreferences.lerUsuario(contex)
+    val userId by userIdFlow.collectAsState(initial = null)
     var resposta by remember { mutableStateOf("") }
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
@@ -101,7 +112,7 @@ fun responder(navController: NavHostController) {
                 Spacer(Modifier.height(25.dp))
 
                 Box (Modifier.fillMaxWidth(0.9f)){
-                    BotaoEstilizado("Responder") { postarResposta(resposta) }
+                    BotaoEstilizado("Responder") { postagemViewModel.adicionarResposta( Resposta(IdResposta= 0, IdPostagem = 0,IdUsuario = 0, Conteudo = resposta, DataComentario = LocalDateTime.now()))}
                 }
             }
         }
