@@ -2,6 +2,7 @@ package com.example.cotutalk_program
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,7 +37,7 @@ fun PreviewPaginaGrupo() {
 }
 
 @Composable
-fun PaginaGrupo(navController: NavController){
+fun PaginaGrupo(navController: NavController, /*idGrupo: Int*/){
     val context = LocalContext.current
 
     Scaffold(
@@ -68,20 +70,31 @@ fun PaginaGrupo(navController: NavController){
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row (Modifier.fillMaxWidth(0.9f)) {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(all = 5.dp),
+                verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.vasco),
                     contentDescription = "Imagem placeholder",
                     modifier = Modifier
-                        .width(620.dp)
-                        .padding(16.dp)
+                        .clip(CircleShape)
+                        .fillMaxWidth(0.3f)
                 )
                 Text(
                     text = "Nome do grupo",
-                    color = Color.White
+                    color = Color.White,
+                    fontSize = 30.sp,
+                    modifier = Modifier.fillMaxWidth(0.7f).padding(horizontal = 10.dp)
                 )
             }
-            Text("Descrição do grupo lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum")
+            Text(
+                text = "Descrição do grupo lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(vertical = 20.dp)
+                )
 
         }
 
