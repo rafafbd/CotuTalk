@@ -1,7 +1,7 @@
 package com.example.cotutalk_program.AcessoAPI.data
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 @Parcelize
 data class Grupo(

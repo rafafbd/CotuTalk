@@ -112,7 +112,7 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
                 Spacer(Modifier.height(25.dp))
 
                 Box (Modifier.fillMaxWidth(0.9f)){
-                    //BotaoEstilizado("Responder") { postagemViewModel.adicionarResposta( Resposta(IdResposta= 0, IdPostagem = 0,IdUsuario = 0, Conteudo = resposta, DataComentario = LocalDateTime.now()))}
+                    BotaoEstilizado("Responder") { postagemViewModel.adicionarResposta( Resposta(IdResposta= 0, IdPostagem = IdPostagem,IdUsuario = 0, Conteudo = resposta, DataComentario = LocalDateTime.now()))}
                 }
             }
         }
