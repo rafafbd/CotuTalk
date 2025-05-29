@@ -21,8 +21,8 @@ class PostagemViewModel : ViewModel() {
     private val _postagemDetalhe = MutableStateFlow<Postagem?>(null)
     val postagensDetalhe: StateFlow<Postagem?> = _postagemDetalhe
 
-    private val _postagemUIDetalhe = MutableStateFlow<Postagem?>(null)
-    val postagemUIDetalhe: StateFlow<Postagem?> = _postagemUIDetalhe
+    private val _postagemUIDetalhe = MutableStateFlow<PostagemUI?>(null)
+    val postagemUIDetalhe: StateFlow<PostagemUI?> = _postagemUIDetalhe
 
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem
@@ -52,12 +52,17 @@ class PostagemViewModel : ViewModel() {
         }
     }
 
-    fun postagemParaUI(postagem: Postagem){
+    fun buscarPostagemUI(idPostagem: Int) {
         coroutineScope.launch {
             try {
-                //
+                val response = ApiService.postagemInstance.buscarPostagemUI(idPostagem)
+                if (response.isSuccessful) {
+                    _postagemUIDetalhe.value = response.body()
+                } else {
+                    _mensagem.value = "Erro: ${response.code()}"
+                }
             } catch (e: Exception) {
-                _mensagem.value = "Erro ao processar  a postagem: ${e.message}"
+                _mensagem.value = "Exceção: ${e.message}"
             }
         }
     }

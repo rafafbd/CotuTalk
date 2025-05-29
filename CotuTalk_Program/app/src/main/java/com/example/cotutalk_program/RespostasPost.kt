@@ -40,7 +40,7 @@ fun TelaRespostas(navController: NavController, postModel: PostagemViewModel, id
                 .background(roxo80)
                 .padding(innerPadding)
         ) {
-            Post(oPost)
+            //Post(oPost)
 
             // lógica para todas as postagens
         }

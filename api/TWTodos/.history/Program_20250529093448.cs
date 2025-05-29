@@ -217,14 +217,13 @@ app.MapGet("/postagensUI", async (AppDbContext db) =>
     return Results.Ok(postagens);
 });
 
-app.MapGet("/postagensUI/{idPostagem}", async (int idPostagem, AppDbContext db) =>
+app.MapGet("/postagensUI", async (AppDbContext db) =>
 {
-    var postagem = await db.Postagens
+    var postagens = await db.Postagens
         .Include(p => p.Usuario)
         .Include(p => p.Grupo)
         .Include(p => p.Curtidas)
         .Include(p => p.Respostas)
-        .Where(p => p.IdPostagem == idPostagem)
         .Select(p => new PostagemUI
         {
             IdPostagem = p.IdPostagem,
@@ -234,9 +233,9 @@ app.MapGet("/postagensUI/{idPostagem}", async (int idPostagem, AppDbContext db) 
             qtsCurtidas = p.Curtidas.Count,
             qtsRespostas = p.Respostas.Count
         })
-        .FirstOrDefaultAsync();
+        .ToListAsync();
 
-    return postagem is null ? Results.NotFound() : Results.Ok(postagem);
+    return Results.Ok(postagens);
 });
 
 app.MapGet("/postagensUI/grupo/{idGrupo:int}", async (int idGrupo, AppDbContext db) =>

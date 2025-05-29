@@ -37,6 +37,9 @@ interface PostagemApi {
     @GET("/postagensUI")
     suspend fun postagensParaUI(): List<PostagemUI>
 
+    @GET("/postagensUI/{idPostagem}")
+    suspend fun buscarPostagemUI(@Path("idPostagem") idPostagem: Int): Response<PostagemUI>
+
     @GET("/postagensUI/{idGrupo}")
     suspend fun postagensParaUIGrupo(@Path("idGrupo") id: Int): List<PostagemUI>
 }
