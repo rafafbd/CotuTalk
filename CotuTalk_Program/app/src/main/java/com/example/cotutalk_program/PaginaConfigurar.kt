@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -35,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -43,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
@@ -50,6 +55,7 @@ import com.example.cotutalk_program.ui.theme.roxo60
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
 import kotlinx.coroutines.launch
+val imageUrl = mutableStateOf<String>("")
 
 
 @Composable
@@ -87,27 +93,55 @@ fun ImagePickerButton() {
                 imageUri.value = it
                 scope.launch {
                     viewmodel.uploadImage(context, it)
+                    imageUrl.value = viewmodel.mensagem.value
                 }
             }
         }
     )
 
     // UI do botão
+    val imageModifier = Modifier
+        .size(100.dp) // Tamanho fixo do círculo
+        .clip(CircleShape) // Círculo perfeito
+        .background(Color.Gray) // Opcional: cor de fundo enquanto carrega
+
     Button(
         onClick = {
-            // Abrir seletor de imagem
             imagePickerLauncher.launch("image/*")
-        }
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+            contentColor = Color.Unspecified
+        ),
+        shape = RectangleShape,
+        elevation = ButtonDefaults.buttonElevation(0.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.icon_camera),
-            contentDescription = "foto do perfil",
-            modifier = Modifier
-                .size(100.dp)
-                .clip(RoundedCornerShape(50.dp)) // Aplica bordas arredondadas
-        )
-        Text("Selecionar Imagem")
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(modifier = imageModifier) {
+                if (imageUrl.value == "") {
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_camera),
+                        contentDescription = "foto do perfil",
+                        modifier = Modifier.fillMaxSize() // ocupa todo o círculo
+                    )
+                } else {
+                    AsyncImage(
+                        model = "${ApiService.BASE_URL}img/${imageUrl.value}",
+                        contentDescription = "foto do perfil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize() // ocupa todo o círculo
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("Selecionar Imagem",
+                fontSize = 20.sp)
+        }
     }
+
+
+
 }
 
 
@@ -188,6 +222,7 @@ fun CaixaConfigurar(navController : NavController){
             TextField(
                 value = biografia,
                 onValueChange = { biografia = it },
+                maxLines = 2,
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = roxo70,
@@ -204,7 +239,6 @@ fun CaixaConfigurar(navController : NavController){
                     .shadow(4.dp, RectangleShape)
                     .fillMaxWidth(0.9f)
             )
-
 
 
             Spacer(Modifier.height(50.dp))
@@ -226,7 +260,7 @@ fun CaixaConfigurar(navController : NavController){
                         val email = sharedPref.getString("Email", "") ?: ""
                         val senha = sharedPref.getString("Senha", "") ?: ""
 
-                        viewmodel.adicionarUsuario(nome, email, senha, biografia, navController)
+                        viewmodel.adicionarUsuario(nome, email, senha, biografia, imageUrl.value, navController, context)
                     }
                 )
 

@@ -127,7 +127,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "criarGrupo") {
                         PaginaCriarGrupo(navController)
                     }
-
+                    composable(route = "perfil") {
+                        PaginaPerfilPreview(navController)
+                    }
 
                 }
             }
@@ -335,47 +337,47 @@ fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel
             PostUI(post = post3)
         }
     }
-    Scaffold(
-        modifier = Modifier.background(roxo80),
-        bottomBar = {
-            //BottomNavigationBar()
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate("criarGrupo")
-                },
-                containerColor = Color(0xFF6C40BF), // roxo80 ou a cor que preferir
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Text(
-                    text = "+",
-                    fontSize = 30.sp,
-                    color = Color.White
-                )
-            }
-        },
-        floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(roxo80)
-                .padding(innerPadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(620.dp)
-                    .padding(16.dp)
-            )
-            PostUI(post = post1)
-            PostUI(post = post2)
-            PostUI(post = post3)
-        }
-    }
+//    Scaffold(
+//        modifier = Modifier.background(roxo80),
+//        bottomBar = {
+//            //BottomNavigationBar()
+//        },
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = {
+//                    navController.navigate("criarGrupo")
+//                },
+//                containerColor = Color(0xFF6C40BF), // roxo80 ou a cor que preferir
+//                contentColor = Color.White,
+//                shape = CircleShape
+//            ) {
+//                Text(
+//                    text = "+",
+//                    fontSize = 30.sp,
+//                    color = Color.White
+//                )
+//            }
+//        },
+//        floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,
+//    ) { innerPadding ->
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(roxo80)
+//                .padding(innerPadding)
+//        ) {
+//            Image(
+//                painter = painterResource(id = R.drawable.logo2),
+//                contentDescription = "Logo",
+//                modifier = Modifier
+//                    .width(620.dp)
+//                    .padding(16.dp)
+//            )
+//            PostUI(post = post1)
+//            PostUI(post = post2)
+//            PostUI(post = post3)
+//        }
+//    }
 
 }
 
@@ -425,7 +427,7 @@ fun BottomNavigationBar(navController: NavController) {
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                IconButton(onClick = {navController.navigate("Usuario")}) {
+                IconButton(onClick = {navController.navigate("perfil")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_profile),
                         contentDescription = "Profile",

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TWTodos.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250602143305_ArrumandoCagada")]
+    partial class ArrumandoCagada
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -117,7 +120,7 @@ namespace TWTodos.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GrupoIdGrupo")
+                    b.Property<int?>("GrupoIdGrupo")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("IdGrupo")
@@ -243,9 +246,7 @@ namespace TWTodos.Migrations
                 {
                     b.HasOne("Grupo", "Grupo")
                         .WithMany()
-                        .HasForeignKey("GrupoIdGrupo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GrupoIdGrupo");
 
                     b.HasOne("Usuario", "Usuario")
                         .WithMany("Postagens")

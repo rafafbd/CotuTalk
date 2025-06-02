@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -71,14 +72,14 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun adicionarUsuario(nome: String, email: String, senha: String, biografia : String, navController: NavController) {
+    fun adicionarUsuario(nome: String, email: String, senha: String, biografia : String, imagePath : String, navController: NavController, context: Context) {
         coroutineScope.launch {
             try {
-                val novoUsuario = Usuario(IdUsuario = 0, Nome = nome, Email = email, Senha = senha)
+                val novoUsuario = Usuario(idUsuario = 0, nome = nome, email = email, senha = senha, biografia = biografia, imagePath = imagePath)
                 val usuarioCriado = ApiService.usuarioInstance.adicionarUsuario(novoUsuario)
                 _usuarios.value = _usuarios.value + usuarioCriado
-                _mensagem.value = "Usuário criado com ID ${usuarioCriado.IdUsuario}"
-                navController.navigate("Principal")
+                _mensagem.value = "Usuário criado com ID ${usuarioCriado.idUsuario}"
+                fazerLogin(email, senha, navController, context)
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
             }
@@ -88,11 +89,11 @@ class UsuarioViewModel : ViewModel() {
     fun atualizarUsuario(id: Int, nome: String, email: String, senha: String) {
         coroutineScope.launch {
             try {
-                val usuarioAtualizado = Usuario(IdUsuario = id, Nome = nome, Email = email, Senha = senha)
+                val usuarioAtualizado = Usuario(idUsuario = id, nome = nome, email = email, senha = senha, biografia = "", imagePath="")
                 val response = ApiService.usuarioInstance.atualizarUsuario(id, usuarioAtualizado)
                 if (response.isSuccessful) {
                     _usuarios.value = _usuarios.value.map {
-                        if (it.IdUsuario == id) usuarioAtualizado else it
+                        if (it.idUsuario == id) usuarioAtualizado else it
                     }
                     _mensagem.value = "Usuário $id atualizado."
                     _usuarioDetalhe.value = usuarioAtualizado
@@ -110,7 +111,7 @@ class UsuarioViewModel : ViewModel() {
             try {
                 val response = ApiService.usuarioInstance.deletarUsuario(id)
                 if (response.isSuccessful) {
-                    _usuarios.value = _usuarios.value.filter { it.IdUsuario != id }
+                    _usuarios.value = _usuarios.value.filter { it.idUsuario != id }
                     _mensagem.value = "Usuário $id deletado."
                     _usuarioDetalhe.value = null
                 } else {
@@ -128,19 +129,31 @@ class UsuarioViewModel : ViewModel() {
             try {
                 val loginReq = LoginRequest(username, senha)
                 val response = ApiService.usuarioInstance.login(loginReq)
-                if (response.isSuccessful){
-                    var usuarioLogado = response.body() // supoem-se que o body da response tem o Usuario
-                    UserPreferences.salvarUsuario(context, usuarioLogado!!.IdUsuario)
-                    navController.navigate("Principal")
-                }
-                else{
+                if (response.isSuccessful) {
+                    val usuarioLogado = response.body()
+                    if (usuarioLogado != null) {
+                        // salvar
+                        val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putInt("Id", usuarioLogado.idUsuario)
+                            putString("Nome", usuarioLogado.nome)
+                            putString("Email", usuarioLogado.email)
+                            putString("Biografia", usuarioLogado.biografia)
+                            putString("ImagePath", usuarioLogado.imagePath)
+                            apply()
+                        }
+                        navController.navigate("Principal")
+                    } else {
+                        _mensagem.value = "Erro ao obter dados do usuário"
+                    }
+                } else {
                     _mensagem.value = "Usuário ou senha inválidos"
                 }
-            }
-            catch (e: Exception){
+            } catch (e: Exception) {
                 _mensagem.value = "Erro no login: ${e.message}"
             }
         }
+
     }
 
     fun enviarEmail(email : String, navController: NavController, where : String) {
@@ -255,7 +268,8 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    //UPLOAD IMAGEM
+    //IMAGEM
+    //upload
     suspend fun uploadImage(context: Context, uri: Uri) {
         val contentResolver = context.contentResolver
 
@@ -280,7 +294,7 @@ class UsuarioViewModel : ViewModel() {
         try {
             val response = ApiService.usuarioInstance.uploadImage(imagePart)
             if (response.isSuccessful){
-                _mensagem.value = "Upload da imagem concluido com sucesso!"
+                _mensagem.value = fileName
             } else {
                 _mensagem.value = "Falha no upload da imagem"
             }

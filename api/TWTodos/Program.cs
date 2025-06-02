@@ -207,12 +207,29 @@ app.MapPost("/login", async (LoginRequest login, AppDbContext db) =>
 
 // POSTAGEM
 // Adicionar um novo post
-app.MapPost("/postagens", async (Postagem postagem, AppDbContext db) => 
-{
+app.MapPost("/postagens", async (PostagemRequest postagemRequest, AppDbContext db) => 
+{   
+    var grupo = await db.Grupos.FirstOrDefaultAsync(g => g.IdGrupo == postagemRequest.IdGrupo);
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == postagemRequest.IdUsuario);
+
+    if (grupo is null || usuario is null)
+        return Results.BadRequest("Grupo ou Usuário não encontrados.");
+
+    var postagem = new Postagem
+    {
+        IdUsuario = postagemRequest.IdUsuario,
+        IdGrupo = postagemRequest.IdGrupo,
+        Conteudo = postagemRequest.Conteudo,
+        Grupo = grupo,
+        Usuario = usuario
+    };
+
     db.Postagens.Add(postagem);
     await db.SaveChangesAsync();
+
     return Results.Created($"/postagens/{postagem.IdPostagem}", postagem);
 });
+
 
 // Listar posts
 app.MapGet("/postagens", async (AppDbContext db) =>

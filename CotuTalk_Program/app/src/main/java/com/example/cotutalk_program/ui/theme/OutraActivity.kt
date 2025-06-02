@@ -105,7 +105,7 @@ fun Post(postagem: PostagemUI){
                     .clip(CircleShape)
             )
             Text(
-                text = "@${postagem.Usuario.Nome}",
+                text = "@${postagem.Usuario.nome}",
                 color = Color.White,
                 fontSize = 20.sp,
                 modifier = Modifier

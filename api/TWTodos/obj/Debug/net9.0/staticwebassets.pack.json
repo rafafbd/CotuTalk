@@ -1,8 +1,48 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\casal.webp",
-      "PackagePath": "staticwebassets\\img\\casal.webp"
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\robo.webp",
+      "PackagePath": "staticwebassets\\img\\robo.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748530714254.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748530714254.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864285640.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748864285640.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864453373.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748864453373.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864569858.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748864569858.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864729043.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748864729043.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864833143.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748864833143.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865246817.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748865246817.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865361625.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748865361625.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865464956.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748865464956.webp"
+    },
+    {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748866856056.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1748866856056.webp"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.TWTodos.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
