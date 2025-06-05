@@ -31,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
+import com.example.cotutalk_program.AcessoAPI.data.Grupo
+import com.example.cotutalk_program.AcessoAPI.viewmodel.GrupoViewModel
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo70
 import com.example.cotutalk_program.ui.theme.roxo80
@@ -40,6 +42,12 @@ import com.example.cotutalk_program.ui.theme.roxo80
 @Composable
 fun Search(navController: NavHostController) {
     var pesquisa by remember { mutableStateOf("") }
+    val grupoModel = GrupoViewModel()
+    grupoModel.listarGrupos()
+    val osGrupos = grupoModel.grupos
+
+    var gruposFiltrados by remember { mutableStateOf<List<Grupo>>(emptyList()) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
