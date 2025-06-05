@@ -1,6 +1,7 @@
 package com.example.cotutalk_program.ui.theme
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -50,6 +51,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -58,6 +60,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
@@ -81,10 +85,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Post(postagem: PostagemUI){
+fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
     val context = LocalContext.current
 
-    val imagePainter = painterResource(id = R.drawable.defaultprofile)
+
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -96,16 +100,19 @@ fun Post(postagem: PostagemUI){
         Spacer(modifier = Modifier.height(20.dp))
 
         // Primeira linha: foto e nome
-        Row(modifier = Modifier.padding(bottom = 8.dp)) {
-            Image (
-                painter = imagePainter,
-                contentDescription = "Foto de perfil",
+        Row(modifier = Modifier
+            .padding(bottom = 8.dp)
+            .clickable { navController.navigate("") }) {
+            AsyncImage(
+                model = "${ApiService.BASE_URL}img/${post.Usuario.imagePath}",
+                contentDescription = "foto do perfil",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(64.dp)
                     .clip(CircleShape)
             )
             Text(
-                text = "@${postagem.Usuario.nome}",
+                text = "@${post.Usuario.nome}",
                 color = Color.White,
                 fontSize = 20.sp,
                 modifier = Modifier
@@ -114,16 +121,25 @@ fun Post(postagem: PostagemUI){
             )
         }
 
+        Text(
+            text = post.Grupo.Nome,
+            color = Color.Gray,
+            fontSize = 12.sp,
+            modifier = Modifier.clickable {
+                navController.navigate("") // tela do grupo, passar o id dele
+            }
+        )
+
         // Segunda linha: mensagem do post
         Text(
-            text = postagem.Conteudo,
+            text = post.Conteudo,
             color = Color.White,
             fontSize = 17.sp,  // Aumentando o tamanho da fonte
             modifier = Modifier.padding(start = 8.dp)
         )
 
         Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
-            Text(postagem.qtsCurtidas.toString(), color = Color.LightGray)
+            Text(qtsCurtidas.toString(), color = Color.LightGray)
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = "Curtidas",
@@ -133,7 +149,7 @@ fun Post(postagem: PostagemUI){
                     .padding(start = 2.dp)
             )
             Spacer(modifier = Modifier.width(40.dp))
-            Text(postagem.qtsRespostas.toString(), color = Color.LightGray)
+            Text(qtsCurtidas.toString(), color = Color.LightGray)
             Icon(
                 imageVector = Icons.Default.Email,
                 contentDescription = "Comentários",
