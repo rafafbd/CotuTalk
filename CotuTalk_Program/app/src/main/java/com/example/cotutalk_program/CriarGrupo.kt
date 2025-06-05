@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -48,8 +49,7 @@ fun PaginaCriarGrupo(navController: NavHostController) {
     val grupoModel = GrupoViewModel()
 
     val context = LocalContext.current
-    val userIdFlow = UserPreferences.lerUsuario(context)
-    val userId by userIdFlow.collectAsState(initial = null)
+    val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
