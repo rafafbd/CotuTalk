@@ -87,16 +87,26 @@ class PostagemViewModel : ViewModel() {
     fun atualizarPostagem(idp: Int, idu: Int, idg: Int, conteudo: String) {
         coroutineScope.launch {
             try {
-                val postagemAtualizada = Postagem(IdPostagem = idp, IdUsuario = idu, IdGrupo = idg, Conteudo = conteudo)
-                val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
-                if (response.isSuccessful) {
-                    _postagens.value = _postagens.value.map {
-                        if (it.IdPostagem == idp) postagemAtualizada else it
+                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
+                val user = ApiService.usuarioInstance.buscarUsuario(idp)
+                if (gp != null && user != null){
+                    val postagemAtualizada = Postagem(IdPostagem = idp,
+                        IdUsuario = idu,
+                        IdGrupo = idg,
+                        Conteudo = conteudo,
+                        Usuario = user,
+                        Grupo = gp
+                    )
+                    val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
+                    if (response.isSuccessful) {
+                        _postagens.value = _postagens.value.map {
+                            if (it.IdPostagem == idp) postagemAtualizada else it
+                        }
+                        _mensagem.value = "Postagem $idp atualizada."
+                        _postagemDetalhe.value = postagemAtualizada
+                }else {
+                        _mensagem.value = "Erro ao atualizar postagem: ${response.code()}"
                     }
-                    _mensagem.value = "Postagem $idp atualizada."
-                    _postagemDetalhe.value = postagemAtualizada
-                } else {
-                    _mensagem.value = "Erro ao atualizar postagem: ${response.code()}"
                 }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao atualizar postagem: ${e.message}"
