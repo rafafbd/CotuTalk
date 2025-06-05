@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5CJXr/wLYTqDOyj9oe4bCLs8mDKqBn2fTrxuqRGrQS0=",
+  "Hash": "too3LSi/Y2EVh1dubeIZm+jCKqfCsdcSOoIjSTQEywk=",
   "Source": "TWTodos",
   "BasePath": "_content/TWTodos",
   "Mode": "Default",
@@ -246,6 +246,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\upload_1748866856056.webp"
+    },
+    {
+      "Identity": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
+      "SourceId": "TWTodos",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\",
+      "BasePath": "_content/TWTodos",
+      "RelativePath": "img/upload_1749132781979#[.{fingerprint}]?.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dfjxiz3rgr",
+      "Integrity": "mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\upload_1749132781979.webp"
     }
   ],
   "Endpoints": [
@@ -1138,6 +1159,88 @@
         {
           "Name": "Last-Modified",
           "Value": "Mon, 02 Jun 2025 12:21:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        }
+      ]
+    },
+    {
+      "Route": "img/upload_1749132781979.dfjxiz3rgr.webp",
+      "AssetFile": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 14:13:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dfjxiz3rgr"
+        },
+        {
+          "Name": "label",
+          "Value": "img/upload_1749132781979.webp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs="
+        }
+      ]
+    },
+    {
+      "Route": "img/upload_1749132781979.webp",
+      "AssetFile": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "315086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mY4z4JxpGTp9hlcL7ZrtnQ3SYNlIePcLwNvrSywllfs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 05 Jun 2025 14:13:06 GMT"
         },
         {
           "Name": "Cache-Control",

@@ -3,6 +3,7 @@ package com.example.cotutalk_program.AcessoAPI.network
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginResponse
+import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.google.gson.JsonArray
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -39,4 +40,7 @@ interface UsuarioApi {
     @Multipart
     @POST("/upload")
     suspend fun uploadImage(@Part image: MultipartBody.Part): Response<ResponseBody>
+
+    @GET("/postagensUsuario/{id}")
+    suspend fun buscarPostsUsuario(@Path("id") id : Int) : Response<List<Postagem>>
 }

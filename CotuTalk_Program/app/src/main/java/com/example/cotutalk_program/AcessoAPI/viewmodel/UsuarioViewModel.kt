@@ -10,6 +10,7 @@ import androidx.navigation.Navigator
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.EmailRequest
 import com.example.cotutalk_program.AcessoAPI.data.LoginRequest
+import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.data.ValidarCodigoRequest
@@ -45,6 +46,10 @@ class UsuarioViewModel : ViewModel() {
 
     private val _respostaAtualizada = MutableStateFlow<Resposta?>(null)
     val respostaAtualizada: StateFlow<Resposta?> = _respostaAtualizada
+
+    private val _postsUsuario = MutableStateFlow<List<Postagem>>(emptyList())
+    val postsUsuario: StateFlow<List<Postagem?>> = _postsUsuario
+
 
 
 
@@ -142,7 +147,7 @@ class UsuarioViewModel : ViewModel() {
                             putString("ImagePath", usuarioLogado.imagePath)
                             apply()
                         }
-                        navController.navigate("Principal")
+                        navController.navigate("perfil")
                     } else {
                         _mensagem.value = "Erro ao obter dados do usuário"
                     }
@@ -300,6 +305,23 @@ class UsuarioViewModel : ViewModel() {
             }
         } catch (e: Exception) {
             _mensagem.value = "Falha no upload da imagem: $e"
+        }
+    }
+
+    //pegar as postagens de um usuario
+    fun buscarPostagensUsuario(id: Int) {
+        coroutineScope.launch {
+            try {
+                val response = ApiService.usuarioInstance.buscarPostsUsuario(id)
+                if (response.isSuccessful) {
+                    _postsUsuario.value = response.body()!!
+                    _mensagem.value = "Resposta deletada com sucesso"
+                } else {
+                    _mensagem.value = "Erro ao deletar resposta"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Exceção: ${e.message}"
+            }
         }
     }
 }

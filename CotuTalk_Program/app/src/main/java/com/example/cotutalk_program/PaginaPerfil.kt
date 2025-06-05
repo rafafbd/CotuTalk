@@ -58,6 +58,10 @@ fun paginaPerfil(navController: NavController, context: Context) {
     val biografia = sharedPref.getString("Biografia", "") ?: ""
     val imagePath = sharedPref.getString("ImagePath", "") ?: ""
 
+    LaunchedEffect(true) {
+
+    }
+
     Scaffold(
         modifier = Modifier.background(roxo80),
         bottomBar = {
@@ -100,6 +104,7 @@ fun paginaPerfil(navController: NavController, context: Context) {
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("27 Groups", color = Color.Gray)
+                Spacer(modifier = Modifier.height(16.dp))
 
             }
         }

@@ -45,6 +45,10 @@
       "PackagePath": "staticwebassets\\img\\upload_1748866856056.webp"
     },
     {
+      "Id": "C:\\Users\\u24159\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
+      "PackagePath": "staticwebassets\\img\\upload_1749132781979.webp"
+    },
+    {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.TWTodos.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

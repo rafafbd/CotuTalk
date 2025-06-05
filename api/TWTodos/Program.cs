@@ -282,7 +282,7 @@ app.MapGet("/postagens", async (AppDbContext db) =>
         .ToListAsync();
     return Results.Ok(postagens);
 });
-/*
+
 app.MapGet("/postagensUI", async (AppDbContext db) =>
 {
     var postagens = await db.Postagens
@@ -349,7 +349,6 @@ app.MapGet("/postagensUI/grupo/{idGrupo:int}", async (int idGrupo, AppDbContext 
         ? Results.Ok(postagens)
         : Results.NotFound($"Nenhuma postagem encontrada para o grupo {idGrupo}");
 });
-*/
 
 // Deletar um post por ID
 app.MapDelete("/postagens/{id}", async (int id, AppDbContext db) =>
@@ -396,8 +395,11 @@ app.MapPut("/postagens/{id}", async (int id, PostagemDTO dto, AppDbContext db) =
 app.MapGet("/postagensUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
     var postagens = await db.Postagens
-                            .Where(p => p.IdUsuario == idUsuario)
-                            .ToListAsync();
+        .Where(p => p.IdUsuario == idUsuario)
+        .Include(p => p.Usuario)
+        .Include(p => p.Grupo)
+        .ToListAsync();
+
     return postagens.Any()
         ? Results.Ok(postagens)
         : Results.NotFound($"Nenhuma postagem encontrada para o usuário {idUsuario}");
@@ -441,19 +443,11 @@ app.MapPost("/grupos", async (GrupoDTO dto, AppDbContext db) =>
 
 
 // Listar grupos
-app.MapGet("/grupos", async (AppDbContext db) =>
+app.MapGet("/grupos", async (AppDbContext db) => 
 {
     var grupos = await db.Grupos.ToListAsync();
     return Results.Ok(grupos);
 });
-
-// buscar grupo por id
-app.MapGet("/grupos/{id}", async (int id, AppDbContext db) =>
-{
-    var grupo = await db.Grupos.FindAsync(id);
-    return Results.Ok(grupo);
-}
-);
 
 // Deletar um grupo por ID
 app.MapDelete("/grupos/{id}", async (int id, AppDbContext db) =>

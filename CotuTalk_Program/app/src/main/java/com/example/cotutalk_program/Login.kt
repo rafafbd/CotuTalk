@@ -85,8 +85,8 @@ fun CaixaLogin(navController: NavController){
     val viewmodel = UsuarioViewModel()
     val context = LocalContext.current
 
-    var email by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("cc24159@g.unicamp.br") }
+    var senha by remember { mutableStateOf("Senha123") }
     Box (
         Modifier
             .fillMaxSize(0.85f)
@@ -175,9 +175,9 @@ fun CaixaLogin(navController: NavController){
             ) {
                 BotaoEstilizado(
                     texto = "Entrar",
-                    click = { viewmodel.fazerLogin(
-                        username = email, senha = senha, navController = navController, context = context
-                    ) }
+                    click = {
+                        viewmodel.fazerLogin(username = email, senha = senha, navController = navController, context = context)
+                    }
                 )
                 Text(
                     text = "Criar conta",

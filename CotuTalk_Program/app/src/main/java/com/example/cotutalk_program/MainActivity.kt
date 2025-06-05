@@ -92,9 +92,8 @@ class MainActivity : ComponentActivity() {
                     composable(route = "NovaSenha") {
                         NovaSenha(navController)
                     }
-                    composable(route = "Principal"){ backStackEntry ->
-                        val postagemViewModel = viewModel<PostagemViewModel>(backStackEntry)
-                        TelaPrincipal(navController, postagemViewModel)
+                    composable(route = "Principal"){
+                        TelaPrincipal(navController)
                     }
                     composable(
                         route = "responder/{idPost}",
@@ -297,7 +296,7 @@ fun principal(navController: NavController, postModel: PostagemViewModel) {
 }
 
 @Composable
-fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel) {
+fun TelaPrincipal(navController: NavHostController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
