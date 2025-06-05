@@ -5,7 +5,4 @@ data class Postagem (
     val IdUsuario : Int,
     val IdGrupo : Int,
     val Conteudo: String
-//    val Curtidas: List<Curtida> = emptyList(),
-//    val Respostas: List<Resposta> = emptyList()
-
 )

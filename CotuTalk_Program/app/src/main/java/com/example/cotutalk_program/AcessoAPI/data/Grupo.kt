@@ -9,5 +9,4 @@ data class Grupo(
     val Nome: String,
     val DataCriacao: LocalDateTime,
     val Descricao: String,
-    //val Membros: List<Membro> = emptyList()
 ): Parcelable
