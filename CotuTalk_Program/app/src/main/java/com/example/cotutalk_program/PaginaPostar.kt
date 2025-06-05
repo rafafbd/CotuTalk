@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,9 +39,8 @@ import com.example.cotutalk_program.ui.theme.roxo80
 fun postar(navController: NavHostController , Idgrupo : Int) {
     val postagemViewModel = PostagemViewModel()
     val usuarioviewModel = UsuarioViewModel()
-    val contex = LocalContext.current
-    val userIdFlow = UserPreferences.lerUsuario(contex)
-    val userId by userIdFlow.collectAsState(initial = null)
+    val context = LocalContext.current
+    val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
     var postagem by remember { mutableStateOf("") }
 
             Column(
@@ -69,7 +69,7 @@ fun postar(navController: NavHostController , Idgrupo : Int) {
                 Spacer(Modifier.height(25.dp))
 
                 Box (Modifier.fillMaxWidth(0.9f)){
-                    BotaoEstilizado("Postar") { postagemViewModel.adicionarPostagem(idu = userId!! ,idg = Idgrupo , conteudo = postagem, idp = 0) }
+                    BotaoEstilizado("Postar") {if(sharedPref.getInt("Id", 0) != 0){ postagemViewModel.adicionarPostagem(idu = sharedPref.getInt("Id",  0) ,idg = Idgrupo , conteudo = postagem, idp = 0) }}
                 }
             }
         }

@@ -12,7 +12,6 @@ import retrofit2.http.PUT
 import retrofit2.http.DELETE
 import retrofit2.http.HTTP
 
-// grupos não esta terminado
 
 interface GrupoApi {
 

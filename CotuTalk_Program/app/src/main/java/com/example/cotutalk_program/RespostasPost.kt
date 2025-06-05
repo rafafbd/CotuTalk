@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
-import com.example.cotutalk_program.ui.theme.Post
+//import com.example.cotutalk_program.ui.theme.Post
 import com.example.cotutalk_program.ui.theme.roxo80
 
 
