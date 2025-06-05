@@ -122,28 +122,28 @@ app.MapPost("/validar-codigo", async (ValidarCodigoRequest validacao, AppDbConte
 
 // USUARIO
 // Adicionar um usuario
-app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
-{
-    usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
-    db.Usuarios.Add(usuario);
-    await db.SaveChangesAsync();
-    return Results.Created($"/usuarios/{usuario.IdUsuario}", usuario);
-});
-
-// app.MapPost("/usuarios", async (UsuarioDTO dto, AppDbContext db) =>
+// app.MapPost("/usuarios", async (Usuario usuario, AppDbContext db) =>
 // {
-//     var usuario = new Usuario
-//     {
-//         Nome = dto.Nome,
-//         Email = dto.Email,
-//         Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
-//         Biografia = dto.Biografia,
-//         ImagePath = dto.ImagePath
-//     };
+//     usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 //     db.Usuarios.Add(usuario);
 //     await db.SaveChangesAsync();
 //     return Results.Created($"/usuarios/{usuario.IdUsuario}", usuario);
 // });
+
+app.MapPost("/usuarios", async (UsuarioDTO dto, AppDbContext db) =>
+{
+    var usuario = new Usuario
+    {
+        Nome = dto.Nome,
+        Email = dto.Email,
+        Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
+        Biografia = dto.Biografia,
+        ImagePath = dto.ImagePath
+    };
+    db.Usuarios.Add(usuario);
+    await db.SaveChangesAsync();
+    return Results.Created($"/usuarios/{usuario.IdUsuario}", usuario);
+});
 
 // Listar usuarios
 app.MapGet("/usuarios", async (AppDbContext db) =>
@@ -175,26 +175,26 @@ app.MapDelete("/usuarios/{id}", async (int id, AppDbContext db) =>
 });
 
 // Atualizar um usuario por ID
-app.MapPut("/usuarios/{id}", async (int id, Usuario usuarioAtualizado, AppDbContext db) =>
-{
-    var usuario = await db.Usuarios.FindAsync(id);
-    if (usuario is null)
-    {
-        return Results.NotFound();
-    }
+// app.MapPut("/usuarios/{id}", async (int id, Usuario usuarioAtualizado, AppDbContext db) =>
+// {
+//     var usuario = await db.Usuarios.FindAsync(id);
+//     if (usuario is null)
+//     {
+//         return Results.NotFound();
+//     }
 
-    usuario.Nome = usuarioAtualizado.Nome;
-    usuario.Email = usuarioAtualizado.Email;
-    if (!string.IsNullOrWhiteSpace(usuarioAtualizado.Senha))
-    {
-        usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuarioAtualizado.Senha);
-    }
+//     usuario.Nome = usuarioAtualizado.Nome;
+//     usuario.Email = usuarioAtualizado.Email;
+//     if (!string.IsNullOrWhiteSpace(usuarioAtualizado.Senha))
+//     {
+//         usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuarioAtualizado.Senha);
+//     }
 
-    await db.SaveChangesAsync();
-    return Results.Ok(usuario);
-});
+//     await db.SaveChangesAsync();
+//     return Results.Ok(usuario);
+// });
 
-/*
+
 app.MapPut("/usuarios/{id}", async (int id, UsuarioDTO dto, AppDbContext db) =>
 {
     var usuario = await db.Usuarios.FindAsync(id);
@@ -211,7 +211,7 @@ app.MapPut("/usuarios/{id}", async (int id, UsuarioDTO dto, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Ok(usuario);
 });
-*/
+
 
 // Verifiar login
 // app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {
@@ -241,57 +241,45 @@ app.MapPost("/login", async (LoginRequest login, AppDbContext db) =>
 
 // POSTAGEM
 // Adicionar um novo post
-app.MapPost("/postagens", async (PostagemRequest postagemRequest, AppDbContext db) => 
-{   
-    var grupo = await db.Grupos.FirstOrDefaultAsync(g => g.IdGrupo == postagemRequest.IdGrupo);
-    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == postagemRequest.IdUsuario);
-
-    if (grupo is null || usuario is null)
-        return Results.BadRequest("Grupo ou Usuário não encontrados.");
-
-    var postagem = new Postagem
-    {
-        IdUsuario = postagemRequest.IdUsuario,
-        IdGrupo = postagemRequest.IdGrupo,
-        Conteudo = postagemRequest.Conteudo,
-        Grupo = grupo,
-        Usuario = usuario
-    };
-
-    db.Postagens.Add(postagem);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/postagens/{postagem.IdPostagem}", postagem);
-});
-
-/*
-app.MapPost("/postagens", async (PostagemDTO dto, AppDbContext db) =>
+app.MapPost("/postagens", async (PostagemDTO postagemDTO, AppDbContext db) =>
 {
-    var grupo = await db.Grupos.FindAsync(dto.IdGrupo);
-    var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
+    var grupo = await db.Grupos.FirstOrDefaultAsync(g => g.IdGrupo == postagemDTO.IdGrupo);
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == postagemDTO.IdUsuario);
 
     if (grupo is null || usuario is null)
         return Results.BadRequest("Grupo ou Usuário não encontrados.");
 
     var postagem = new Postagem
     {
-        IdUsuario = dto.IdUsuario,
-        IdGrupo = dto.IdGrupo,
-        Conteudo = dto.Conteudo,
+        IdUsuario = postagemDTO.IdUsuario,
+        IdGrupo = postagemDTO.IdGrupo,
+        Conteudo = postagemDTO.Conteudo,
         Grupo = grupo,
         Usuario = usuario
     };
 
     db.Postagens.Add(postagem);
     await db.SaveChangesAsync();
-    return Results.Created($"/postagens/{postagem.IdPostagem}", postagem);
+
+
+    // Carregar postagem com navegações preenchidas
+    var postagemCriada = await db.Postagens
+        .Include(p => p.Usuario)
+        .Include(p => p.Grupo)
+        .FirstOrDefaultAsync(p => p.IdPostagem == postagem.IdPostagem);
+
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/postagens/{postagemCriada.IdPostagem}", postagemCriada);
 });
-*/
 
 // Listar posts
 app.MapGet("/postagens", async (AppDbContext db) =>
 {
-    var postagens = await db.Postagens.ToListAsync();
+    var postagens = await db.Postagens
+        .Include(p => p.Usuario)
+        .Include(p => p.Grupo)
+        .ToListAsync();
     return Results.Ok(postagens);
 });
 
@@ -376,21 +364,21 @@ app.MapDelete("/postagens/{id}", async (int id, AppDbContext db) =>
 });
 
 // Atualizar um post por ID
-app.MapPut("/postagens/{id}", async (int id, Postagem postagemAtualizado, AppDbContext db) =>
-{
-    var postagem = await db.Postagens.FindAsync(id);
-    if (postagem is null)
-    {
-        return Results.NotFound();
-    }
+// app.MapPut("/postagens/{id}", async (int id, Postagem postagemAtualizado, AppDbContext db) =>
+// {
+//     var postagem = await db.Postagens.FindAsync(id);
+//     if (postagem is null)
+//     {
+//         return Results.NotFound();
+//     }
     
-    postagem.Conteudo = postagemAtualizado.Conteudo;
+//     postagem.Conteudo = postagemAtualizado.Conteudo;
 
-    await db.SaveChangesAsync();
-    return Results.Ok(postagem);
-});
+//     await db.SaveChangesAsync();
+//     return Results.Ok(postagem);
+// });
 
-/*
+
 app.MapPut("/postagens/{id}", async (int id, PostagemDTO dto, AppDbContext db) =>
 {
     var postagem = await db.Postagens.FindAsync(id);
@@ -401,7 +389,7 @@ app.MapPut("/postagens/{id}", async (int id, PostagemDTO dto, AppDbContext db) =
     await db.SaveChangesAsync();
     return Results.Ok(postagem);
 });
-*/
+
 
 // Posts de usuario
 app.MapGet("/postagensUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
@@ -427,15 +415,15 @@ app.MapGet("/postagensGrupo/{IdGrupo:int}", async (int idGrupo, AppDbContext db)
 
 // GRUPO
 // Adicionar um grupo
-app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) => 
-{
-    grupo.DataCriacao = DateTime.UtcNow; 
-    db.Grupos.Add(grupo);
-    await db.SaveChangesAsync();
-    return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
-});
+// app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) => 
+// {
+//     grupo.DataCriacao = DateTime.UtcNow; 
+//     db.Grupos.Add(grupo);
+//     await db.SaveChangesAsync();
+//     return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
+// });
 
-/*
+
 app.MapPost("/grupos", async (GrupoDTO dto, AppDbContext db) =>
 {
     var grupo = new Grupo
@@ -449,7 +437,7 @@ app.MapPost("/grupos", async (GrupoDTO dto, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
 });
-*/
+
 
 // Listar grupos
 app.MapGet("/grupos", async (AppDbContext db) => 
@@ -472,22 +460,22 @@ app.MapDelete("/grupos/{id}", async (int id, AppDbContext db) =>
 });
 
 // Atualizar um grupo por ID
-app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db) =>
-{
-    var grupo = await db.Grupos.FindAsync(id);
-    if (grupo is null)
-    {
-        return Results.NotFound();
-    }
+// app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db) =>
+// {
+//     var grupo = await db.Grupos.FindAsync(id);
+//     if (grupo is null)
+//     {
+//         return Results.NotFound();
+//     }
 
-    grupo.Nome = grupoAtualizado.Nome;
-    grupo.Descricao = grupoAtualizado.Descricao;
+//     grupo.Nome = grupoAtualizado.Nome;
+//     grupo.Descricao = grupoAtualizado.Descricao;
 
-    await db.SaveChangesAsync();
-    return Results.Ok(grupo);
-});
+//     await db.SaveChangesAsync();
+//     return Results.Ok(grupo);
+// });
 
-/*
+
 app.MapPut("/grupos/{id}", async (int id, GrupoDTO dto, AppDbContext db) =>
 {
     var grupo = await db.Grupos.FindAsync(id);
@@ -499,29 +487,29 @@ app.MapPut("/grupos/{id}", async (int id, GrupoDTO dto, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Ok(grupo);
 });
-*/
+
 
 // Adicionar membro
-app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
-{
-    var usuario = await db.Usuarios.FindAsync(membro.IdUsuario);
-    if (usuario == null)
-        return Results.NotFound("Usuário não encontrado.");
-    var grupo = await db.Grupos.FindAsync(membro.Idgrupo);
-    if (grupo == null)
-        return Results.NotFound("Grupo não encontrado.");
+// app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
+// {
+//     var usuario = await db.Usuarios.FindAsync(membro.IdUsuario);
+//     if (usuario == null)
+//         return Results.NotFound("Usuário não encontrado.");
+//     var grupo = await db.Grupos.FindAsync(membro.Idgrupo);
+//     if (grupo == null)
+//         return Results.NotFound("Grupo não encontrado.");
 
-    membro.Usuario = usuario;
-    membro.Grupo = grupo;
-    membro.DataDeEntrada = DateTime.UtcNow;
+//     membro.Usuario = usuario;
+//     membro.Grupo = grupo;
+//     membro.DataDeEntrada = DateTime.UtcNow;
 
-    db.Membros.Add(membro);
-    await db.SaveChangesAsync();
+//     db.Membros.Add(membro);
+//     await db.SaveChangesAsync();
 
-    return Results.Created($"/membros/{membro.IdMembro}", membro);
-});
+//     return Results.Created($"/membros/{membro.IdMembro}", membro);
+// });
 
-/*
+
 app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
 {
     var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
@@ -543,7 +531,7 @@ app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/membros/{membro.IdMembro}", membro);
 });
-*/
+
 
 // Remover membro
 app.MapDelete("/deletarMembro", async ([FromBody] Membro membroDeletado, AppDbContext db) => 

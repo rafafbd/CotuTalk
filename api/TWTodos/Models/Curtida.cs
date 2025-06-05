@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 public class Curtida
 {
     public int IdCurtida { get; set; }

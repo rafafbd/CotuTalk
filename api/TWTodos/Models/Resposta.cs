@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 public class Resposta
 {
     public int IdResposta { get; set; }

@@ -19,9 +19,12 @@ public class Usuario
 
     [JsonPropertyName("imagePath")]
     public string ImagePath { get; set; }
-
+    [JsonIgnore]
     public ICollection<Membro> Membros { get; set; } = new List<Membro>();
+    [JsonIgnore]
     public ICollection<Postagem> Postagens { get; set; } = new List<Postagem>();
+    [JsonIgnore]
     public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
+    [JsonIgnore]
     public ICollection<Resposta> Respostas { get; set; } = new List<Resposta>();
 }
