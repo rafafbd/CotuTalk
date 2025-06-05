@@ -21,9 +21,6 @@ class PostagemViewModel : ViewModel() {
     private val _postagemDetalhe = MutableStateFlow<Postagem?>(null)
     val postagensDetalhe: StateFlow<Postagem?> = _postagemDetalhe
 
-    private val _postagemUIDetalhe = MutableStateFlow<PostagemUI?>(null)
-    val postagemUIDetalhe: StateFlow<PostagemUI?> = _postagemUIDetalhe
-
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
@@ -52,21 +49,6 @@ class PostagemViewModel : ViewModel() {
         }
     }
 
-    fun buscarPostagemUI(idPostagem: Int) {
-        coroutineScope.launch {
-            try {
-                val response = ApiService.postagemInstance.buscarPostagemUI(idPostagem)
-                if (response.isSuccessful) {
-                    _postagemUIDetalhe.value = response.body()
-                } else {
-                    _mensagem.value = "Erro: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _mensagem.value = "Exceção: ${e.message}"
-            }
-        }
-    }
-
     fun buscarPostagem(id: Int) {
         coroutineScope.launch {
             try {
@@ -82,10 +64,20 @@ class PostagemViewModel : ViewModel() {
     fun adicionarPostagem(idp: Int, idu: Int, idg: Int, conteudo: String) {
         coroutineScope.launch {
             try {
-                val novaPostagem = Postagem(IdPostagem = idp, IdUsuario = idu, IdGrupo = idg, Conteudo = conteudo)
-                val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
-                _postagens.value = _postagens.value + postagemAtualizada
-                _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
+                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
+                val user = ApiService.usuarioInstance.buscarUsuario(idp)
+                if (gp != null && user != null){
+                    val novaPostagem = Postagem(IdPostagem = idp,
+                        IdUsuario = idu,
+                        IdGrupo = idg,
+                        Conteudo = conteudo,
+                        Usuario = user,
+                        Grupo = gp
+                    )
+                    val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
+                    _postagens.value = _postagens.value + postagemAtualizada
+                    _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
+                }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
             }
