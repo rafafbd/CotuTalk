@@ -567,21 +567,7 @@ app.MapPost("/curtidas", async (Curtida curtida, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
 });
-
-/*
-app.MapPost("/curtidas", async (CurtidaDTO dto, AppDbContext db) =>
-{
-    var curtida = new Curtida
-    {
-        IdUsuario = dto.IdUsuario,
-        IdPostagem = dto.IdPostagem
-    };
-    db.Curtidas.Add(curtida);
-    await db.SaveChangesAsync();
-    return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
-});
-*/
-
+a
 // Listar curtidas 
 app.MapGet("/curtidas", async (AppDbContext db) =>
 {
@@ -632,23 +618,7 @@ app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
-
-/*
-app.MapPost("/respostas", async (RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = new Resposta
-    {
-        IdPostagem = dto.IdPostagem,
-        IdUsuario = dto.IdUsuario,
-        Conteudo = dto.Conteudo,
-        DataComentario = DateTime.UtcNow
-    };
-    db.Respostas.Add(resposta);
-    await db.SaveChangesAsync();
-    return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
-});
-*/
-
+a
 // Listar respostas
 app.MapGet("/respostas", async (AppDbContext db) =>
 {
@@ -681,20 +651,7 @@ app.MapPut("/respostas/{id}", async (int id, Resposta respostaAtualizado, AppDbC
     await db.SaveChangesAsync();
     return Results.Ok(resposta);
 });
-
-/*
-app.MapPut("/respostas/{id}", async (int id, RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = await db.Respostas.FindAsync(id);
-    if (resposta is null)
-        return Results.NotFound();
-
-    resposta.Conteudo = dto.Conteudo;
-    await db.SaveChangesAsync();
-    return Results.Ok(resposta);
-});
-*/
-
+a
 // Respostas de um usuario
 app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {

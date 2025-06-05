@@ -681,20 +681,7 @@ app.MapPut("/respostas/{id}", async (int id, Resposta respostaAtualizado, AppDbC
     await db.SaveChangesAsync();
     return Results.Ok(resposta);
 });
-
-/*
-app.MapPut("/respostas/{id}", async (int id, RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = await db.Respostas.FindAsync(id);
-    if (resposta is null)
-        return Results.NotFound();
-
-    resposta.Conteudo = dto.Conteudo;
-    await db.SaveChangesAsync();
-    return Results.Ok(resposta);
-});
-*/
-
+a
 // Respostas de um usuario
 app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {

@@ -633,21 +633,7 @@ app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) =>
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
 
-/*
-app.MapPost("/respostas", async (RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = new Resposta
-    {
-        IdPostagem = dto.IdPostagem,
-        IdUsuario = dto.IdUsuario,
-        Conteudo = dto.Conteudo,
-        DataComentario = DateTime.UtcNow
-    };
-    db.Respostas.Add(resposta);
-    await db.SaveChangesAsync();
-    return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
-});
-*/
+
 
 // Listar respostas
 app.MapGet("/respostas", async (AppDbContext db) =>
@@ -681,20 +667,7 @@ app.MapPut("/respostas/{id}", async (int id, Resposta respostaAtualizado, AppDbC
     await db.SaveChangesAsync();
     return Results.Ok(resposta);
 });
-
-/*
-app.MapPut("/respostas/{id}", async (int id, RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = await db.Respostas.FindAsync(id);
-    if (resposta is null)
-        return Results.NotFound();
-
-    resposta.Conteudo = dto.Conteudo;
-    await db.SaveChangesAsync();
-    return Results.Ok(resposta);
-});
-*/
-
+a
 // Respostas de um usuario
 app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {

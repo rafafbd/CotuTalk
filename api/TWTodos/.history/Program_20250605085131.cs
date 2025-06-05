@@ -390,18 +390,6 @@ app.MapPut("/postagens/{id}", async (int id, Postagem postagemAtualizado, AppDbC
     return Results.Ok(postagem);
 });
 
-/*
-app.MapPut("/postagens/{id}", async (int id, PostagemDTO dto, AppDbContext db) =>
-{
-    var postagem = await db.Postagens.FindAsync(id);
-    if (postagem is null)
-        return Results.NotFound();
-
-    postagem.Conteudo = dto.Conteudo;
-    await db.SaveChangesAsync();
-    return Results.Ok(postagem);
-});
-*/
 
 // Posts de usuario
 app.MapGet("/postagensUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
@@ -434,23 +422,7 @@ app.MapPost("/grupos", async (Grupo grupo, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
 });
-
-/*
-app.MapPost("/grupos", async (GrupoDTO dto, AppDbContext db) =>
-{
-    var grupo = new Grupo
-    {
-        Nome = dto.Nome,
-        Descricao = dto.Descricao,
-        DataCriacao = DateTime.UtcNow
-    };
-
-    db.Grupos.Add(grupo);
-    await db.SaveChangesAsync();
-    return Results.Created($"/grupos/{grupo.IdGrupo}", grupo);
-});
-*/
-
+a
 // Listar grupos
 app.MapGet("/grupos", async (AppDbContext db) => 
 {
@@ -485,21 +457,7 @@ app.MapPut("/grupos/{id}", async (int id, Grupo grupoAtualizado, AppDbContext db
 
     await db.SaveChangesAsync();
     return Results.Ok(grupo);
-});
-
-/*
-app.MapPut("/grupos/{id}", async (int id, GrupoDTO dto, AppDbContext db) =>
-{
-    var grupo = await db.Grupos.FindAsync(id);
-    if (grupo is null)
-        return Results.NotFound();
-
-    grupo.Nome = dto.Nome;
-    grupo.Descricao = dto.Descricao;
-    await db.SaveChangesAsync();
-    return Results.Ok(grupo);
-});
-*/
+});a
 
 // Adicionar membro
 app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
@@ -520,31 +478,7 @@ app.MapPost("/adicionarMembro", async (Membro membro, AppDbContext db) =>
 
     return Results.Created($"/membros/{membro.IdMembro}", membro);
 });
-
-/*
-app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
-{
-    var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
-    var grupo = await db.Grupos.FindAsync(dto.IdGrupo);
-
-    if (usuario == null || grupo == null)
-        return Results.NotFound("Usuário ou grupo não encontrado.");
-
-    var membro = new Membro
-    {
-        IdUsuario = dto.IdUsuario,
-        Idgrupo = dto.IdGrupo,
-        Usuario = usuario,
-        Grupo = grupo,
-        DataDeEntrada = DateTime.UtcNow
-    };
-
-    db.Membros.Add(membro);
-    await db.SaveChangesAsync();
-    return Results.Created($"/membros/{membro.IdMembro}", membro);
-});
-*/
-
+a
 // Remover membro
 app.MapDelete("/deletarMembro", async ([FromBody] Membro membroDeletado, AppDbContext db) => 
 {
@@ -567,21 +501,7 @@ app.MapPost("/curtidas", async (Curtida curtida, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
 });
-
-/*
-app.MapPost("/curtidas", async (CurtidaDTO dto, AppDbContext db) =>
-{
-    var curtida = new Curtida
-    {
-        IdUsuario = dto.IdUsuario,
-        IdPostagem = dto.IdPostagem
-    };
-    db.Curtidas.Add(curtida);
-    await db.SaveChangesAsync();
-    return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
-});
-*/
-
+a
 // Listar curtidas 
 app.MapGet("/curtidas", async (AppDbContext db) =>
 {
@@ -632,23 +552,7 @@ app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) =>
     await db.SaveChangesAsync();
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
-
-/*
-app.MapPost("/respostas", async (RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = new Resposta
-    {
-        IdPostagem = dto.IdPostagem,
-        IdUsuario = dto.IdUsuario,
-        Conteudo = dto.Conteudo,
-        DataComentario = DateTime.UtcNow
-    };
-    db.Respostas.Add(resposta);
-    await db.SaveChangesAsync();
-    return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
-});
-*/
-
+a
 // Listar respostas
 app.MapGet("/respostas", async (AppDbContext db) =>
 {
@@ -681,20 +585,7 @@ app.MapPut("/respostas/{id}", async (int id, Resposta respostaAtualizado, AppDbC
     await db.SaveChangesAsync();
     return Results.Ok(resposta);
 });
-
-/*
-app.MapPut("/respostas/{id}", async (int id, RespostaDTO dto, AppDbContext db) =>
-{
-    var resposta = await db.Respostas.FindAsync(id);
-    if (resposta is null)
-        return Results.NotFound();
-
-    resposta.Conteudo = dto.Conteudo;
-    await db.SaveChangesAsync();
-    return Results.Ok(resposta);
-});
-*/
-
+a
 // Respostas de um usuario
 app.MapGet("/respostasUsuario/{IdUsuario:int}", async (int idUsuario, AppDbContext db) => 
 {
