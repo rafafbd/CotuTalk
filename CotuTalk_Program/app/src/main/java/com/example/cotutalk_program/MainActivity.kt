@@ -59,6 +59,7 @@ import androidx.navigation.NavType
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -341,8 +342,27 @@ fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel
                     .fillMaxSize()
                     .background(roxo80)
                     .padding(innerPadding)
-                
+
             ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween // Ou Arrangement.Start se quiser o botão só na esquerda
+                ) {
+                    IconButton(onClick = {
+                        scope.launch {
+                            drawerState.open()
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_bars),
+                            contentDescription = "Abrir menu lateral",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 Image(
                     painter = painterResource(id = R.drawable.logo2),
                     contentDescription = "Logo",
