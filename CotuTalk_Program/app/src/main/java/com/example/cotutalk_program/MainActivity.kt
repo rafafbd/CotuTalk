@@ -6,11 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,12 +24,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -289,6 +296,9 @@ fun principal(navController: NavController, postModel: PostagemViewModel) {
 
 @Composable
 fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
     val post1 = Post(
         "viniguep",
         "Vini",
@@ -312,30 +322,40 @@ fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel
         post2.adicionarCurtida()
         post1.removerCurtida()
     }
+    ModalNavigationDrawer(
+        drawerState = drawerState, // O estado do drawer
+        drawerContent = {
+            SidebarMenu(navController)
+        },
+        gesturesEnabled = drawerState.isOpen // Permite fechar com gesto apenas quando aberto
+    ) {
 
-    Scaffold(
-        modifier = Modifier.background(roxo80),
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(roxo80)
-                .padding(innerPadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "Logo",
+        Scaffold(
+            modifier = Modifier.background(roxo80),
+            bottomBar = {
+                BottomNavigationBar(navController)
+            }
+        ) { innerPadding ->
+            Column(
                 modifier = Modifier
-                    .width(620.dp)
-                    .padding(16.dp)  // Adicionando padding à imagem
-            )
-            PostUI(post = post1)
-            PostUI(post = post2)
-            PostUI(post = post3)
+                    .fillMaxSize()
+                    .background(roxo80)
+                    .padding(innerPadding)
+                
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo2),
+                    contentDescription = "Logo",
+                    modifier = Modifier
+                        .width(620.dp)
+                        .padding(16.dp)  // Adicionando padding à imagem
+                )
+                PostUI(post = post1)
+                PostUI(post = post2)
+                PostUI(post = post3)
+            }
         }
+
     }
 //    Scaffold(
 //        modifier = Modifier.background(roxo80),
@@ -437,6 +457,56 @@ fun BottomNavigationBar(navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SidebarMenu(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(0.7f)
+            .background(color = roxo80)
+            .padding(16.dp)
+    ) {
+        Text("Grupos privados", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        Spacer(Modifier.height(16.dp))
+
+        GroupItem(title = "Os Piratas") {
+            // Ação ao clicar no grupo "Os Piratas"
+            // Exemplo: navController.navigate("grupo_piratas_screen")
+            // Você pode querer fechar a sidebar após a navegação: scope.launch { drawerState.close() }
+        }
+        Spacer(Modifier.height(8.dp))
+        GroupItem(title = "sou pai sabe...") {
+        }
+
+        Spacer(Modifier.height(24.dp))
+        Text("Grupos Públicos", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        Spacer(Modifier.height(16.dp))
+
+
+        GroupItem(title = "Desenvolvedores Kotlin") {
+        }
+    }
+}
+
+@Composable
+fun GroupItem(title: String, onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(30.dp)
+                .background(Color.White, shape = CircleShape)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(text = title, color = Color.White, fontSize = 16.sp)
     }
 }
 
