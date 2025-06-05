@@ -19,6 +19,9 @@ interface GrupoApi {
     @GET("/grupos")
     suspend fun listarGrupos(): List<Grupo>
 
+    @GET("/grupos/{id}")
+    suspend fun buscarGrupo(@Path("id") id: Int): Response<Grupo>
+
     @POST("/grupos")
     suspend fun adicionarGrupo(@Body grupo: Grupo): Grupo
 

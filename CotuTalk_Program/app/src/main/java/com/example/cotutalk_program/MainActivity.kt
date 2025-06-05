@@ -228,6 +228,7 @@ fun PostUI(post: Post) {
     }
 }
 
+
 @Composable
 fun principal(navController: NavController, postModel: PostagemViewModel) {
     postModel.listarPostagens()
@@ -363,20 +364,20 @@ fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                Image(
-                    painter = painterResource(id = R.drawable.logo2),
-                    contentDescription = "Logo",
-                    modifier = Modifier
-                        .width(620.dp)
-                        .padding(16.dp)  // Adicionando padding à imagem
-                )
-                PostUI(post = post1)
-                PostUI(post = post2)
-                PostUI(post = post3)
+                    Image(
+                        painter = painterResource(id = R.drawable.logo2),
+                        contentDescription = "Logo",
+                        modifier = Modifier
+                            .width(620.dp)
+                            .padding(16.dp)  // Adicionando padding à imagem
+                    )
+                    PostUI(post = post1)
+                    PostUI(post = post2)
+                    PostUI(post = post3)
+                }
             }
-        }
 
-    }
+        }
 //    Scaffold(
 //        modifier = Modifier.background(roxo80),
 //        bottomBar = {
@@ -419,9 +420,8 @@ fun TelaPrincipal(navController: NavHostController, postModel: PostagemViewModel
 //        }
 //    }
 
+    }
 }
-
-
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     Column {
@@ -480,53 +480,100 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
-@Composable
-fun SidebarMenu(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(0.7f)
-            .background(color = roxo80)
-            .padding(16.dp)
-    ) {
-        Text("Grupos privados", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        Spacer(Modifier.height(16.dp))
-
-        GroupItem(title = "Os Piratas") {
-            // Ação ao clicar no grupo "Os Piratas"
-            // Exemplo: navController.navigate("grupo_piratas_screen")
-            // Você pode querer fechar a sidebar após a navegação: scope.launch { drawerState.close() }
-        }
-        Spacer(Modifier.height(8.dp))
-        GroupItem(title = "sou pai sabe...") {
-        }
-
-        Spacer(Modifier.height(24.dp))
-        Text("Grupos Públicos", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        Spacer(Modifier.height(16.dp))
-
-
-        GroupItem(title = "Desenvolvedores Kotlin") {
-        }
-    }
-}
-
-@Composable
-fun GroupItem(title: String, onClick: () -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(vertical = 8.dp)
-    ) {
-        Box(
+    @Composable
+    fun SidebarMenu(navController: NavController) {
+        Column(
             modifier = Modifier
-                .size(30.dp)
-                .background(Color.White, shape = CircleShape)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(text = title, color = Color.White, fontSize = 16.sp)
+                .fillMaxHeight()
+                .fillMaxWidth(0.75f)  // Sidebar um pouco maior para melhor legibilidade
+                .background(color = roxo80)
+                .padding(24.dp)
+        ) {
+            Text(
+                text = "Grupos Privados",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            GroupItem(
+                title = "Os Piratas",
+                onClick = {
+                    navController.navigate("paginaPostar/1")
+                }
+            )
+
+            GroupItem(
+                title = "Sou pai sabe...",
+                onClick = {
+                    navController.navigate("paginaPostar/2")
+                }
+            )
+
+            Spacer(Modifier.height(32.dp))
+
+            Text(
+                text = "Grupos Públicos",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            GroupItem(
+                title = "Desenvolvedores Kotlin",
+                onClick = {
+                    navController.navigate("paginaPostar/3")
+                }
+            )
+
+            GroupItem(
+                title = "Amigos do ChatGPT",
+                onClick = {
+                    navController.navigate("paginaPostar/4")
+                }
+            )
+
+            Spacer(Modifier.weight(1f)) // Empurra o restante para cima, deixando espaço embaixo
+
+            Text(
+                text = "Configurações",
+                color = Color.LightGray,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate("Config")
+                    }
+                    .padding(top = 16.dp)
+            )
+        }
     }
-}
+
+    @Composable
+    fun GroupItem(title: String, onClick: () -> Unit) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(vertical = 12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 18.sp
+            )
+        }
+    }
+
 

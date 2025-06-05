@@ -4,5 +4,7 @@ data class Postagem (
     val IdPostagem : Int,
     val IdUsuario : Int,
     val IdGrupo : Int,
-    val Conteudo: String
+    val Conteudo: String,
+    val Grupo: Grupo,
+    val Usuario: Usuario
 )
