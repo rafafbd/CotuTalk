@@ -552,26 +552,36 @@ app.MapDelete("/deletarMembro", async ([FromBody] Membro membroDeletado, AppDbCo
 
 // CURTIDA   
 // Adicionar curtida
+/*
 app.MapPost("/curtidas", async (Curtida curtida, AppDbContext db) => 
 {
     db.Curtidas.Add(curtida);
     await db.SaveChangesAsync();
     return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
 });
+*/
 
-/*
 app.MapPost("/curtidas", async (CurtidaDTO dto, AppDbContext db) =>
 {
+    var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
+    var postagem = await db.Postagens.FindAsync(dto.IdPostagem);
+
+    if (usuario == null || postagem == null)
+        return Results.NotFound("Usuário ou Postagem não encontrados.");
+
     var curtida = new Curtida
     {
-        IdUsuario = dto.IdUsuario,
-        IdPostagem = dto.IdPostagem
+        Usuario = usuario,
+        Postagem = postagem
     };
+
     db.Curtidas.Add(curtida);
     await db.SaveChangesAsync();
+
     return Results.Created($"/curtidas/{curtida.IdCurtida}", curtida);
 });
-*/
+
+
 
 // Listar curtidas 
 app.MapGet("/curtidas", async (AppDbContext db) =>
@@ -617,28 +627,36 @@ app.MapGet("/curtidasPostagem/{idPostagem:int}", async (int idPostagem, AppDbCon
 
 // RESPOSTA
 // Adicionar resposta
+/*
 app.MapPost("/respostas", async (Resposta resposta, AppDbContext db) => 
 {
     db.Respostas.Add(resposta);
     await db.SaveChangesAsync();
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
+*/
 
-/*
 app.MapPost("/respostas", async (RespostaDTO dto, AppDbContext db) =>
 {
+    var postagem = await db.Postagens.FindAsync(dto.IdPostagem);
+    var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
+    if (postagem == null || usuario == null)
+        return Results.BadRequest("Postagem ou Usuario não encontrados.");
+
     var resposta = new Resposta
     {
         IdPostagem = dto.IdPostagem,
         IdUsuario = dto.IdUsuario,
         Conteudo = dto.Conteudo,
-        DataComentario = DateTime.UtcNow
+        DataComentario = DateTime.UtcNow,
+        Usuario = usuario,
+        Postagem = postagem
     };
     db.Respostas.Add(resposta);
     await db.SaveChangesAsync();
     return Results.Created($"/respostas/{resposta.IdResposta}", resposta);
 });
-*/
+
 
 // Listar respostas
 app.MapGet("/respostas", async (AppDbContext db) =>

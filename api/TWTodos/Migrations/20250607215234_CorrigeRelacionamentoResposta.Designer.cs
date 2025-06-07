@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TWTodos.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250607215234_CorrigeRelacionamentoResposta")]
+    partial class CorrigeRelacionamentoResposta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -54,8 +57,6 @@ namespace TWTodos.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("IdCurtida");
-
-                    b.HasIndex("IdPostagem");
 
                     b.HasIndex("IdUsuario");
 
@@ -209,7 +210,7 @@ namespace TWTodos.Migrations
                 {
                     b.HasOne("Postagem", "Postagem")
                         .WithMany("Curtidas")
-                        .HasForeignKey("IdPostagem")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

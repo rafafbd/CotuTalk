@@ -20,7 +20,7 @@ public class RespostaEntityConfig : IEntityTypeConfiguration<Resposta>
 
         builder.HasOne(r => r.Postagem)
             .WithMany(p => p.Respostas)
-            .HasForeignKey(r => r.IdUsuario)
+            .HasForeignKey(r => r.IdPostagem)
             .OnDelete(DeleteBehavior.Cascade);
                
     }

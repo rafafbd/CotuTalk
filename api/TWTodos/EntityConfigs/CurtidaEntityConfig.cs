@@ -17,7 +17,7 @@ public class CurtidaEntityConfig : IEntityTypeConfiguration<Curtida>
 
         builder.HasOne(c => c.Postagem)
             .WithMany(p => p.Curtidas)
-            .HasForeignKey(c => c.IdUsuario)
+            .HasForeignKey(c => c.IdPostagem)
             .OnDelete(DeleteBehavior.Cascade);
                
     }
