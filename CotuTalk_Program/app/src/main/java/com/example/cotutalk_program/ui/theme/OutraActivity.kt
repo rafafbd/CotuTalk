@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,6 +65,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
+import com.example.cotutalk_program.AcessoAPI.data.Resposta
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
@@ -170,6 +172,72 @@ fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
         )
     }
 }
+@Composable
+fun RespostaUI(resposta: Resposta, usuarioViewModel: UsuarioViewModel) {
+    val context = LocalContext.current
+    var nomeAutor by remember { mutableStateOf("Carregando...") }
+    var fotoAutor by remember { mutableStateOf("defaultprofile") }
+
+    LaunchedEffect(resposta.IdUsuario) {
+        usuarioViewModel.buscarUsuario(resposta.IdUsuario)
+        val usuario = usuarioViewModel.usuarioDetalhe.value
+            if (usuario != null) {
+            nomeAutor = usuario.nome
+            fotoAutor = usuario.imagePath
+        }
+    }
+
+    val resourceId = context.resources.getIdentifier(fotoAutor, "drawable", context.packageName)
+    val imagePainter = if (resourceId != 0) {
+        painterResource(id = resourceId)
+    } else {
+        painterResource(id = R.drawable.defaultprofile)
+    }
+
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)) {
+        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+            AsyncImage(
+                model = "${ApiService.BASE_URL}img/${fotoAutor}",
+                contentDescription = "foto do autor da resposta",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                Text(
+                    text = "@$nomeAutor",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+                Text(
+                    text = resposta.DataComentario.toString(), // Pode formatar com DateTimeFormatter
+                    color = Color.Gray,
+                    fontSize = 12.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = resposta.Conteudo,
+            color = Color.White,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 52.dp, end = 8.dp) // alinhado com o texto
+        )
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            color = Color.Gray,
+            thickness = 1.dp
+        )
+    }
+}
+
 
 
 @Composable
