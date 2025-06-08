@@ -1,6 +1,6 @@
 package com.example.cotutalk_program
 
-class Post(val nome : String, val foto : String, val dataHorario : String, val message : String, val grupo : String){
+class Post(val Id : Int, val nome : String, val foto : String, val dataHorario : String, val message : String, val grupo : String){
     var curtidas = 0;
     val comentarios: MutableList<Post> = mutableListOf();
 

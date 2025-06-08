@@ -69,13 +69,9 @@ fun paginaPerfil(navController: NavController, context: Context) {
             foto = imagePath,
             dataHorario = post?.dataCriacao.toString() ?: "Sem data",
             message = post?.conteudo ?: "",
-            grupo = post?.Grupo!!.Nome
+            grupo = post?.Grupo!!.Nome,
+            Id = post.IdPostagem
         )
-    }
-
-
-    LaunchedEffect(true) {
-
     }
 
     Scaffold(
@@ -124,7 +120,7 @@ fun paginaPerfil(navController: NavController, context: Context) {
                 Text("27 Groups", color = Color.Gray)
                 Spacer(modifier = Modifier.height(16.dp))
                 postagensFormatadas.forEach { post ->
-                    PostUI(post)
+                    PostUI(post, navController)
                 }
             }
             }
