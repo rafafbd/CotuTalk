@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import androidx.benchmark.perfetto.Row
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,20 +27,30 @@ import com.example.cotutalk_program.ui.theme.roxo80
 import com.example.cotutalk_program.R
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+
+
+
 
 @Composable
 fun Search(navController: NavHostController) {
     var pesquisa by remember { mutableStateOf("") }
 
     val grupoModel = remember { GrupoViewModel() }
-    val osGrupos by grupoModel.grupos.collectAsState() // coleta os dados do StateFlow
+    val osGrupos by grupoModel.grupos.collectAsState()
 
-    // Buscar os grupos da API
     LaunchedEffect(Unit) {
         grupoModel.listarGrupos()
     }
 
-    // Filtrar os grupos com base no texto digitado
     val gruposFiltrados = osGrupos.filter {
         it.Nome.contains(pesquisa, ignoreCase = true)
     }
@@ -78,24 +89,49 @@ fun Search(navController: NavHostController) {
                 .height(50.dp)
         )
 
-        // Lista de grupos filtrados
-        Column(
+
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(1f)
                 .padding(16.dp)
         ) {
-            gruposFiltrados.forEach { grupo ->
-                Text(
-                    text = grupo.Nome,
-                    color = Color.White,
+            items(gruposFiltrados) { grupo ->
+                Card(
                     modifier = Modifier
-                        .padding(vertical = 4.dp)
-                        .background(roxo70, shape = RoundedCornerShape(8.dp))
-                        .padding(12.dp)
                         .fillMaxWidth()
-                )
+                        .padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            text = grupo.Nome,
+                            color = Color.Black,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.padding(top = 8.dp)
+                        ) {
+                            Button(onClick = {
+                                println("Entrar no grupo ${grupo.Nome} (id=${grupo.IdGrupo})")
+                            }) {
+                                Text("Entrar")
+                            }
+
+                            Button(onClick = {
+                                println("Detalhes do grupo ${grupo.Nome}")
+                            }) {
+                                Text("Detalhes")
+                            }
+                        }
+                    }
+                }
             }
         }
+
 
         // Logo
         Image(
@@ -103,10 +139,10 @@ fun Search(navController: NavHostController) {
             contentDescription = "Logo",
             modifier = Modifier
                 .alpha(0.5f)
-                .fillMaxSize(0.5f)
+                .fillMaxSize(0.3f)
         )
 
-        // Barra de navegação
         BottomNavigationBar(navController)
     }
 }
+
