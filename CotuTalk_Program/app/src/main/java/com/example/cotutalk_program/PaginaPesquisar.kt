@@ -1,6 +1,6 @@
 package com.example.cotutalk_program
 
-import androidx.benchmark.perfetto.Row
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
