@@ -16,6 +16,9 @@ class GrupoViewModel : ViewModel() {
     private val _grupos = MutableStateFlow<List<Grupo>>(emptyList())
     val grupos: StateFlow<List<Grupo>> = _grupos
 
+    private val _grupoDetalhe = MutableStateFlow<Grupo?>(null)
+    val grupoDetalhe: StateFlow<Grupo?> = _grupoDetalhe
+
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem
     private val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
@@ -27,6 +30,18 @@ class GrupoViewModel : ViewModel() {
                 _mensagem.value = "Grupos carregados com sucesso."
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao carregar grupos: ${e.message}"
+            }
+        }
+    }
+
+    fun buscarGrupo(id: Int) {
+        coroutineScope.launch {
+            try {
+                val grupo = ApiService.grupoInstance.buscarGrupo(id)
+                _grupoDetalhe.value = grupo.body()
+                _mensagem.value = "Grupo carregado com sucesso."
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao carregar grupo: ${e.message}"
             }
         }
     }

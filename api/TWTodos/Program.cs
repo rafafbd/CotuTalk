@@ -557,6 +557,17 @@ app.MapPut("/grupos/{id}", async (int id, GrupoDTO dto, AppDbContext db) =>
 // });
 
 
+// todos os membros
+app.MapGet("/membros", async (AppDbContext db) =>
+{
+    var membros = await db.Membros
+        .Include(m => m.Usuario)
+        .Include(m => m.Grupo)
+        .ToListAsync();
+
+    return Results.Ok(membros);
+});
+
 app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
 {
     var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
