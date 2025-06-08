@@ -65,8 +65,11 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
-    //oPost = postagemViewModel.
-    //postagemViewModel.
+    postagemViewModel.buscarPostagem(IdPostagem)
+    postagemViewModel.buscarRespostasPorPostagem(IdPostagem)
+
+    val oPost = postagemViewModel.postagensDetalhe
+    val outraRespostas = postagemViewModel.respostasPostagem
 
     var resposta by remember { mutableStateOf("") }
 

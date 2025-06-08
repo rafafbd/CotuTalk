@@ -579,6 +579,28 @@ app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
     return Results.Created($"/membros/{membro.IdMembro}", membro);
 });
 
+// todos os grupos de um usuario
+app.MapGet("/usuarios/{idUsuario}/grupos", async (int idUsuario, AppDbContext db) =>
+{
+    var grupos = await db.Membros
+        .Where(m => m.IdUsuario == idUsuario)
+        .Select(m => m.Grupo)
+        .ToListAsync();
+
+    return grupos.Any() ? Results.Ok(grupos) : Results.NotFound("Nenhum grupo encontrado para esse usuário.");
+});
+
+// todos os usuarios de um grupo
+app.MapGet("/grupos/{idGrupo}/usuarios", async (int idGrupo, AppDbContext db) =>
+{
+    var usuarios = await db.Membros
+        .Where(m => m.Idgrupo == idGrupo)
+        .Select(m => m.Usuario)
+        .ToListAsync();
+
+    return usuarios.Any() ? Results.Ok(usuarios) : Results.NotFound("Nenhum usuário encontrado nesse grupo.");
+});
+
 
 // Remover membro
 app.MapDelete("/deletarMembro", async ([FromBody] Membro membroDeletado, AppDbContext db) => 
