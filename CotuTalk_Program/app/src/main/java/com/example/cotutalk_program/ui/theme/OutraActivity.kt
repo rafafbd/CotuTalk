@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
     val context = LocalContext.current
-
+    val postagemViewModel = PostagemViewModel()
 
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -103,32 +103,32 @@ fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
         Row(modifier = Modifier
             .padding(bottom = 8.dp)
             .clickable { navController.navigate("") }) {
-            AsyncImage(
-                model = "${ApiService.BASE_URL}img/${post.Usuario.imagePath}",
-                contentDescription = "foto do perfil",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-            )
-            Text(
-                text = "@${post.Usuario.nome}",
-                color = Color.White,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 8.dp)
-            )
+//            AsyncImage(
+//                model = "${ApiService.BASE_URL}img/${post.Usuario.imagePath}",
+//                contentDescription = "foto do perfil",
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier
+//                    .size(64.dp)
+//                    .clip(CircleShape)
+//            )
+//            Text(
+//                text = "@${post.Usuario.nome}",
+//                color = Color.White,
+//                fontSize = 20.sp,
+//                modifier = Modifier
+//                    .align(Alignment.CenterVertically)
+//                    .padding(start = 8.dp)
+//            )
         }
 
-        Text(
-            text = post.Grupo.Nome,
-            color = Color.Gray,
-            fontSize = 12.sp,
-            modifier = Modifier.clickable {
-                navController.navigate("") // tela do grupo, passar o id dele
-            }
-        )
+//        Text(
+//            text = post.Grupo.Nome,
+//            color = Color.Gray,
+//            fontSize = 12.sp,
+//            modifier = Modifier.clickable {
+//                navController.navigate("") // tela do grupo, passar o id dele
+//            }
+//        )
 
         // Segunda linha: mensagem do post
         Text(

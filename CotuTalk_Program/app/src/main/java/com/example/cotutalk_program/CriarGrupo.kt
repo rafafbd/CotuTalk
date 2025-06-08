@@ -51,6 +51,7 @@ fun PaginaCriarGrupo(navController: NavHostController) {
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
+
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->

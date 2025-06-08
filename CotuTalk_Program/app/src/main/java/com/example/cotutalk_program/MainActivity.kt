@@ -59,11 +59,13 @@ import androidx.navigation.NavType
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
+import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidThreeTen.init(this)
         enableEdgeToEdge()
         setContent {
             CotuTalk_ProgramTheme {
@@ -112,12 +114,19 @@ class MainActivity : ComponentActivity() {
 //                        paginaConfigurar(navController, loginRequest)
 //                    }
 
-                    composable(route = "paginaPostar/{idGrupo}"){ BackStackEntry ->
+                    composable(
+                        route = "paginaPostar/{idGrupo}",
+                        arguments = listOf(
+                            navArgument("idGrupo") {
+                                type = NavType.IntType
+                            }
+                        )
+                    ) { BackStackEntry ->
                         val idGrupo = BackStackEntry.arguments?.getInt("idGrupo")
-                        if (idGrupo != null){
+                        println("DEBUG NO COMPOSABLE: idGrupo recebido do argumento: $idGrupo")
+                        if (idGrupo != null && idGrupo != 0) {
                             postar(navController, idGrupo)
                         }
-
                     }
                     composable(route = "Pesquisa") {
                         Search(navController)

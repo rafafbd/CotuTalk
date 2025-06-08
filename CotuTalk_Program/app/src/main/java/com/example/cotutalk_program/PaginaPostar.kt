@@ -36,7 +36,8 @@ import com.example.cotutalk_program.ui.theme.roxo50
 import com.example.cotutalk_program.ui.theme.roxo80
 
 @Composable
-fun postar(navController: NavHostController , Idgrupo : Int) {
+fun postar(navController: NavHostController , idgrupo : Int) {
+    println("DEBUG: idg recebido em adicionarPostagem: $idgrupo")
     val postagemViewModel = PostagemViewModel()
     val usuarioviewModel = UsuarioViewModel()
     val context = LocalContext.current
@@ -69,7 +70,15 @@ fun postar(navController: NavHostController , Idgrupo : Int) {
                 Spacer(Modifier.height(25.dp))
 
                 Box (Modifier.fillMaxWidth(0.9f)){
-                    BotaoEstilizado("Postar") {if(sharedPref.getInt("Id", 0) != 0){ postagemViewModel.adicionarPostagem(idu = sharedPref.getInt("Id",  0) ,idg = Idgrupo , conteudo = postagem, idp = 0) }}
+                    BotaoEstilizado("Postar") {
+                        if(sharedPref.getInt("Id", 0) != 0){
+                            postagemViewModel.adicionarPostagem(
+                                idu = sharedPref.getInt("Id",  0),
+                                idg = idgrupo,
+                                conteudo = postagem
+                            )
+                        }
+                    }
                 }
             }
         }

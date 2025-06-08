@@ -61,23 +61,23 @@ class PostagemViewModel : ViewModel() {
         }
     }
 
-    fun adicionarPostagem(idp: Int, idu: Int, idg: Int, conteudo: String) {
+    fun adicionarPostagem(idu: Int, idg: Int, conteudo: String) {
         coroutineScope.launch {
             try {
-                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
-                val user = ApiService.usuarioInstance.buscarUsuario(idp)
-                if (gp != null && user != null){
-                    val novaPostagem = Postagem(IdPostagem = idp,
+//                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
+//                val user = ApiService.usuarioInstance.buscarUsuario(idu)
+//                if (gp != null && user != null){
+                    val novaPostagem = Postagem(IdPostagem = 0,
                         IdUsuario = idu,
                         IdGrupo = idg,
-                        Conteudo = conteudo,
-                        Usuario = user,
-                        Grupo = gp
+                        Conteudo = conteudo
+//                        Usuario = user,
+//                        Grupo = gp
                     )
                     val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
                     _postagens.value = _postagens.value + postagemAtualizada
                     _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
-                }
+//                }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
             }
@@ -87,15 +87,15 @@ class PostagemViewModel : ViewModel() {
     fun atualizarPostagem(idp: Int, idu: Int, idg: Int, conteudo: String) {
         coroutineScope.launch {
             try {
-                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
-                val user = ApiService.usuarioInstance.buscarUsuario(idp)
-                if (gp != null && user != null){
+//                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
+//                val user = ApiService.usuarioInstance.buscarUsuario(idp)
+//                if (gp != null && user != null){
                     val postagemAtualizada = Postagem(IdPostagem = idp,
                         IdUsuario = idu,
                         IdGrupo = idg,
-                        Conteudo = conteudo,
-                        Usuario = user,
-                        Grupo = gp
+                        Conteudo = conteudo
+//                        Usuario = user,
+//                        Grupo = gp
                     )
                     val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
                     if (response.isSuccessful) {
@@ -104,10 +104,10 @@ class PostagemViewModel : ViewModel() {
                         }
                         _mensagem.value = "Postagem $idp atualizada."
                         _postagemDetalhe.value = postagemAtualizada
-                }else {
-                        _mensagem.value = "Erro ao atualizar postagem: ${response.code()}"
+//                }else {
+//                        _mensagem.value = "Erro ao atualizar postagem: ${response.code()}"
+//                    }
                     }
-                }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao atualizar postagem: ${e.message}"
             }

@@ -241,6 +241,7 @@ app.MapPost("/login", async (LoginRequest login, AppDbContext db) =>
 
 // POSTAGEM
 // Adicionar um novo post
+/*
 app.MapPost("/postagens", async (PostagemDTO postagemDTO, AppDbContext db) =>
 {
     var grupo = await db.Grupos.FirstOrDefaultAsync(g => g.IdGrupo == postagemDTO.IdGrupo);
@@ -254,6 +255,39 @@ app.MapPost("/postagens", async (PostagemDTO postagemDTO, AppDbContext db) =>
         IdUsuario = postagemDTO.IdUsuario,
         IdGrupo = postagemDTO.IdGrupo,
         Conteudo = postagemDTO.Conteudo,
+        Grupo = grupo,
+        Usuario = usuario
+    };
+
+    db.Postagens.Add(postagem);
+    await db.SaveChangesAsync();
+
+
+    // Carregar postagem com navegações preenchidas
+    var postagemCriada = await db.Postagens
+        .Include(p => p.Usuario)
+        .Include(p => p.Grupo)
+        .FirstOrDefaultAsync(p => p.IdPostagem == postagem.IdPostagem);
+
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/postagens/{postagemCriada.IdPostagem}", postagemCriada);
+});
+*/
+
+app.MapPost("/postagens", async (PostagemDTO post, AppDbContext db) =>
+{
+    var grupo = await db.Grupos.FirstOrDefaultAsync(g => g.IdGrupo == post.IdGrupo);
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == post.IdUsuario);
+
+    if (grupo is null || usuario is null)
+        return Results.BadRequest("Grupo ou Usuário não encontrados.");
+
+    var postagem = new Postagem
+    {
+        IdUsuario = post.IdUsuario,
+        IdGrupo = post.IdGrupo,
+        Conteudo = post.Conteudo,
         Grupo = grupo,
         Usuario = usuario
     };
@@ -447,6 +481,16 @@ app.MapGet("/grupos", async (AppDbContext db) =>
 {
     var grupos = await db.Grupos.ToListAsync();
     return Results.Ok(grupos);
+});
+
+app.MapGet("/grupos/{id}", async (int id, AppDbContext db) => 
+{
+    var grupo = await db.Grupos.FindAsync(id); 
+    if (grupo is null)
+    {
+        return Results.NotFound(); 
+    }
+    return Results.Ok(grupo); 
 });
 
 // Deletar um grupo por ID
