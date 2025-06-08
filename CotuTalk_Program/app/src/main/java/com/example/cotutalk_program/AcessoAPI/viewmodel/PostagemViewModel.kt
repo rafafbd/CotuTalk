@@ -20,7 +20,7 @@ class PostagemViewModel : ViewModel() {
     val postagens: StateFlow<List<Postagem>> = _postagens
 
     private val _postagemDetalhe = MutableStateFlow<Postagem?>(null)
-    val postagensDetalhe: StateFlow<Postagem?> = _postagemDetalhe
+    val postagemDetalhe: StateFlow<Postagem?> = _postagemDetalhe
 
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem

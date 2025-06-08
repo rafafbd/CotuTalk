@@ -43,6 +43,7 @@ import com.example.cotutalk_program.BottomNavigationBar
 import com.example.cotutalk_program.Post
 import com.example.cotutalk_program.PostUI
 import org.threeten.bp.LocalDateTime
+import android.util.Log
 
 class PaginaResponder : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,24 +144,31 @@ fun responder(navController: NavHostController, IdPostagem: Int) {
     val usuarioId = sharedPref.getInt("userId", 0)
 
     // Lendo dados via StateFlow
-    val oPost by postagemViewModel.postagensDetalhe.collectAsState()
+    val oPost by postagemViewModel.postagemDetalhe.collectAsState()
     val respostas by postagemViewModel.respostasPostagem.collectAsState()
     val usuario by usuarioViewModel.usuarioDetalhe.collectAsState()
     val grupo by grupoViewModel.grupoDetalhe.collectAsState()
 
     var resposta by remember { mutableStateOf("") }
 
-    // Buscar os dados assim que entrar na tela
     LaunchedEffect(IdPostagem) {
+        Log.d("ResponderScreen", "LaunchedEffect(IdPostagem) - Buscando postagem e respostas para Id: $IdPostagem")
         postagemViewModel.buscarPostagem(IdPostagem)
         postagemViewModel.buscarRespostasPorPostagem(IdPostagem)
-        grupoViewModel.buscarGrupo(oPost!!.IdGrupo)
-        if (oPost != null)
-        {
-            usuarioViewModel.buscarUsuario(oPost!!.IdUsuario)
-        }
-
     }
+
+    LaunchedEffect(oPost) {
+        val post = oPost
+        Log.d("ResponderScreen", "LaunchedEffect(oPost) - oPost mudou para: $post")
+        if (post != null) {
+            Log.d("ResponderScreen", "oPost não é nulo. Buscando grupo (${post.IdGrupo}) e usuário (${post.IdUsuario}).")
+            grupoViewModel.buscarGrupo(post.IdGrupo)
+            usuarioViewModel.buscarUsuario(post.IdUsuario)
+        } else {
+            Log.d("ResponderScreen", "oPost ainda é nulo. Aguardando...")
+        }
+    }
+
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
@@ -174,31 +182,35 @@ fun responder(navController: NavHostController, IdPostagem: Int) {
             // Postagem no topo
             oPost?.let {
                 usuario?.let {
-                    PostUI(
-                        Post(
-                            nome = usuario!!.nome,
-                            foto = usuario!!.imagePath,
-                            grupo = grupo!!.Nome,
-                            message = oPost!!.conteudo,
-                            dataHorario = oPost!!.dataCriacao.toString()
+                    grupo?.let {
+                        PostUI(
+                            Post(
+                                nome = usuario.nome ?: "Nome Desconhecido", // Use Elvis operator para fallback
+                                foto = usuario.imagePath ?: "", // Use Elvis operator para fallback
+                                grupo = grupo.Nome ?: "Grupo Desconhecido", // Use Elvis operator para fallback
+                                message = oPost.conteudo ?: "Conteúdo Vazio", // Use Elvis operator para fallback
+                                dataHorario = oPost.dataCriacao?.toString() ?: "Data Desconhecida" // Use Elvis operator para fallback
+                            )
                         )
-                    )
+                    }
                 }
-
             }
 
             Spacer(Modifier.height(10.dp))
 
             // Respostas em lista rolável
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 10.dp)
-            ) {
-                items(respostas) { respostaItem ->
-                    RespostaUI(resposta = respostaItem, usuarioViewModel = usuarioViewModel)
+            respostas?.let{
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 10.dp)
+                ) {
+                    items(respostas) { respostaItem ->
+                        RespostaUI(resposta = respostaItem, usuarioViewModel = usuarioViewModel)
+                    }
                 }
             }
+
 
             // Campo de resposta
             Column(

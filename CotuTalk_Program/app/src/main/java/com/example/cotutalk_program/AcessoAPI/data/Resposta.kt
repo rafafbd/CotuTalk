@@ -6,5 +6,5 @@ data class Resposta(
     val IdPostagem: Int,
     val IdUsuario: Int,
     val Conteudo: String,
-    val DataComentario: LocalDateTime
+    val DataComentario: LocalDateTime?
 )
