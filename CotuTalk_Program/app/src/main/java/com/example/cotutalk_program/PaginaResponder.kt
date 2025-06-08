@@ -1,5 +1,6 @@
 package com.example.cotutalk_program.ui.theme
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -61,10 +62,14 @@ fun postarResposta(resposta: String){
 @Composable
 fun responder(navController: NavHostController , IdPostagem : Int) {
     val postagemViewModel = PostagemViewModel()
-    val contex = LocalContext.current
-    val userIdFlow = UserPreferences.lerUsuario(contex)
-    val userId by userIdFlow.collectAsState(initial = null)
+    val context = LocalContext.current
+    val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+
+    //oPost = postagemViewModel.
+    //postagemViewModel.
+
     var resposta by remember { mutableStateOf("") }
+
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
