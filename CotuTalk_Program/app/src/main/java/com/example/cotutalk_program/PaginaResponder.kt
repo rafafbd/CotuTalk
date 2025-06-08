@@ -88,15 +88,16 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PostUI(
-                Post(
-                    "Vini.guep",
-                    "defaultprofile",
-                    "",
-                    "Como eu faço herança em C#???",
-                    "Informatica"
-                )
-            )
+//            PostUI(
+//                Post(
+//                    100,
+//                    "Vini.guep",
+//                    "defaultprofile",
+//                    "",
+//                    "Como eu faço herança em C#???",
+//                    "Informatica"
+//                )
+//            )
 
             Spacer(Modifier.height(25.dp))
 

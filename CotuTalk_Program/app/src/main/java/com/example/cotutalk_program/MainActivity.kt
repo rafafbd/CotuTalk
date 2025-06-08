@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -33,6 +34,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,6 +65,7 @@ import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.launch
 
@@ -158,17 +162,8 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun PostUI(post: Post) {
+fun PostUI(post: Post, navController: NavController) {
     val context = LocalContext.current
-    val resourceId = context.resources.getIdentifier(post.foto, "drawable", context.packageName)
-
-    val imagePainter = if (resourceId != 0) {
-        painterResource(id = resourceId)
-    } else {
-        painterResource(id = R.drawable.defaultprofile)
-    }
-
-
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -216,25 +211,40 @@ fun PostUI(post: Post) {
 
         Row(modifier = Modifier.padding(start = 8.dp, top = 8.dp)) {
             Text(post.curtidas.toString(), color = Color.LightGray)
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Curtidas",
-                tint = Color.LightGray,
+
+            IconButton(
+                onClick = { /* Ação ao clicar no botão de curtida */ },
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(24.dp)
                     .padding(start = 2.dp)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Curtidas",
+                    tint = Color.LightGray,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+
             Spacer(modifier = Modifier.width(40.dp))
+
             Text(post.comentarios.size.toString(), color = Color.LightGray)
-            Icon(
-                imageVector = Icons.Default.Email,
-                contentDescription = "Comentários",
-                tint = Color.LightGray,
+
+            IconButton(
+                onClick = { navController.navigate("responder/${post.Id}") },
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(24.dp)
                     .padding(start = 2.dp)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "Comentários",
+                    tint = Color.LightGray,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
         }
+
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -319,13 +329,26 @@ fun principal(navController: NavController, postModel: PostagemViewModel) {
 fun TelaPrincipal(navController: NavHostController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val viewModel = PostagemViewModel()
+    viewModel.listarPostagens()
+    val postagens by viewModel.postagens.collectAsState()
+    val postagensFormatadas = postagens.map { post ->
+        Post(
+            nome = post.Usuario.nome,
+            foto = post.Usuario.imagePath,
+            dataHorario = post?.dataCriacao.toString() ?: "Sem data",
+            message = post?.conteudo ?: "",
+            grupo = post?.Grupo!!.Nome,
+            Id = post.IdPostagem
+        )
+    }
 
     ModalNavigationDrawer(
-        drawerState = drawerState, // O estado do drawer
+        drawerState = drawerState,
         drawerContent = {
             SidebarMenu(navController)
         },
-        gesturesEnabled = drawerState.isOpen // Permite fechar com gesto apenas quando aberto
+        gesturesEnabled = drawerState.isOpen
     ) {
 
         Scaffold(
@@ -334,43 +357,55 @@ fun TelaPrincipal(navController: NavHostController) {
                 BottomNavigationBar(navController)
             }
         ) { innerPadding ->
-            Column(
+
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(roxo80)
                     .padding(innerPadding)
-
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween // Ou Arrangement.Start se quiser o botão só na esquerda
-                ) {
-                    IconButton(onClick = {
-                        scope.launch {
-                            drawerState.open()
+                // Cabeçalho com Row fixo
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        IconButton(onClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        }) {
+                            // Ícone comentado, pode descomentar se quiser
+                             Icon(
+                                 painter = painterResource(id = R.drawable.cardapio),
+                                 contentDescription = "Abrir menu lateral",
+                                 tint = Color.White,
+                                 modifier = Modifier.size(24.dp)
+                             )
                         }
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icon_bars),
-                            contentDescription = "Abrir menu lateral",
-                            tint = Color.White,
-                            modifier = Modifier.size(24.dp)
+                        Image(
+                            painter = painterResource(id = R.drawable.logo2),
+                            contentDescription = "Logo",
+                            modifier = Modifier
+                                .width(620.dp)
+                                .padding(16.dp)
                         )
                     }
-                    Image(
-                        painter = painterResource(id = R.drawable.logo2),
-                        contentDescription = "Logo",
-                        modifier = Modifier
-                            .width(620.dp)
-                            .padding(16.dp)  // Adicionando padding à imagem
-                    )
+                    postagensFormatadas.forEach { post ->
+                        PostUI(post, navController)
+                    }
                 }
-            }
 
+                // Lista de postagens
+
+            }
         }
+    }
+}
+
 //    Scaffold(
 //        modifier = Modifier.background(roxo80),
 //        bottomBar = {
@@ -413,8 +448,6 @@ fun TelaPrincipal(navController: NavHostController) {
 //        }
 //    }
 
-    }
-}
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     Column {
