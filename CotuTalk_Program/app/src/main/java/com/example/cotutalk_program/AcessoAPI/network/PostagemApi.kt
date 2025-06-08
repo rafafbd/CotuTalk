@@ -1,6 +1,7 @@
 package com.example.cotutalk_program.AcessoAPI.network
 
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
+import com.example.cotutalk_program.AcessoAPI.data.PostagemDTO
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.data.Usuario
 import retrofit2.http.GET
@@ -20,13 +21,13 @@ interface PostagemApi {
     suspend fun buscarPostagem(@Path("id") id: Int): Postagem
 
     @POST("/postagens")
-    suspend fun adicionarPostagem(@Body postagem: Postagem) : Postagem
+    suspend fun adicionarPostagem(@Body postagem: PostagemDTO) : Postagem
 
     @DELETE("/postens/{id}")
     suspend fun deletarPostagem(@Path("id") id : Int) : Response<String>
 
     @PUT("/postagens/{id}")
-    suspend fun atualizarPostagem(@Path("id") id : Int, @Body postagem: Postagem) : Response<String>
+    suspend fun atualizarPostagem(@Path("id") id : Int, @Body postagem: PostagemDTO) : Response<String>
 
     @GET("/postagensUsuario/{IdUsuario}")
     suspend fun listarPostagensUsuario(@Path("id") id : Int): List<Postagem>

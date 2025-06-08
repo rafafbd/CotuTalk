@@ -35,50 +35,60 @@ import com.example.cotutalk_program.ui.theme.postarResposta
 import com.example.cotutalk_program.ui.theme.roxo50
 import com.example.cotutalk_program.ui.theme.roxo80
 
+
+
 @Composable
-fun postar(navController: NavHostController , idgrupo : Int) {
+fun postar(navController: NavHostController, idgrupo: Int) {
     println("DEBUG: idg recebido em adicionarPostagem: $idgrupo")
     val postagemViewModel = PostagemViewModel()
-    val usuarioviewModel = UsuarioViewModel()
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
     var postagem by remember { mutableStateOf("") }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(bottom = 10.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(roxo80) // Fundo roxo em toda a tela
+            .padding(vertical = 16.dp), // Margem opcional superior/inferior
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            TextField(
+                value = postagem,
+                onValueChange = { postagem = it },
+                singleLine = false,
+                minLines = 20,
+                placeholder = {
+                    Text("Escreva sua postagem aqui...", color = branco)
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = roxo50,
+                    unfocusedContainerColor = roxo50,
+                    focusedTextColor = branco,
+                    unfocusedTextColor = branco
+                ),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .fillMaxWidth(0.9f)
+            )
 
-                TextField(
-                    value = postagem,
-                    onValueChange = { postagem = it },
-                    singleLine = false,
-                    minLines = 20,
-                    placeholder = {
-                        Text("Escreva sua postagem aqui...", color = branco)
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = roxo50,
-                        unfocusedContainerColor = roxo50,
-                        focusedTextColor = branco,
-                        unfocusedTextColor = branco
-                    ),
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .fillMaxWidth(0.9f)
-                )
+            Spacer(Modifier.height(25.dp))
 
-                Spacer(Modifier.height(25.dp))
-
-                Box (Modifier.fillMaxWidth(0.9f)){
-                    BotaoEstilizado("Postar") {
-                        if(sharedPref.getInt("Id", 0) != 0){
-                            postagemViewModel.adicionarPostagem(
-                                idu = sharedPref.getInt("Id",  0),
-                                idg = idgrupo,
-                                conteudo = postagem
-                            )
-                        }
+            Box(Modifier.fillMaxWidth(0.9f)) {
+                BotaoEstilizado("Postar") {
+                    if (sharedPref.getInt("Id", 0) != 0) {
+                        postagemViewModel.adicionarPostagem(
+                            idu = sharedPref.getInt("Id", 0),
+                            idg = idgrupo,
+                            conteudo = postagem
+                        )
                     }
                 }
             }
         }
+    }
+}
+
