@@ -36,8 +36,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
-
-
+import com.example.cotutalk_program.ui.theme.lilas20
 
 
 @Composable
@@ -115,15 +114,27 @@ fun Search(navController: NavHostController) {
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             modifier = Modifier.padding(top = 8.dp)
                         ) {
-                            Button(onClick = {
-                                println("Entrar no grupo ${grupo.Nome} (id=${grupo.IdGrupo})")
-                            }) {
+                            Button(
+                                onClick = {
+                                    println("Entrar no grupo ${grupo.Nome} (id=${grupo.IdGrupo})")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = lilas20,
+                                    contentColor = Color.White
+                                )
+                            ) {
                                 Text("Entrar")
                             }
 
-                            Button(onClick = {
-                                println("Detalhes do grupo ${grupo.Nome}")
-                            }) {
+                            Button(
+                                onClick = {
+                                    println("Detalhes do grupo ${grupo.Nome}")
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = lilas20,
+                                    contentColor = Color.White
+                                )
+                            ) {
                                 Text("Detalhes")
                             }
                         }
