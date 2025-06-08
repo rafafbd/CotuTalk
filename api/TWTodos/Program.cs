@@ -557,6 +557,17 @@ app.MapPut("/grupos/{id}", async (int id, GrupoDTO dto, AppDbContext db) =>
 // });
 
 
+// todos os membros
+app.MapGet("/membros", async (AppDbContext db) =>
+{
+    var membros = await db.Membros
+        .Include(m => m.Usuario)
+        .Include(m => m.Grupo)
+        .ToListAsync();
+
+    return Results.Ok(membros);
+});
+
 app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
 {
     var usuario = await db.Usuarios.FindAsync(dto.IdUsuario);
@@ -577,6 +588,28 @@ app.MapPost("/adicionarMembro", async (MembroDTO dto, AppDbContext db) =>
     db.Membros.Add(membro);
     await db.SaveChangesAsync();
     return Results.Created($"/membros/{membro.IdMembro}", membro);
+});
+
+// todos os grupos de um usuario
+app.MapGet("/usuarios/{idUsuario}/grupos", async (int idUsuario, AppDbContext db) =>
+{
+    var grupos = await db.Membros
+        .Where(m => m.IdUsuario == idUsuario)
+        .Select(m => m.Grupo)
+        .ToListAsync();
+
+    return grupos.Any() ? Results.Ok(grupos) : Results.NotFound("Nenhum grupo encontrado para esse usuário.");
+});
+
+// todos os usuarios de um grupo
+app.MapGet("/grupos/{idGrupo}/usuarios", async (int idGrupo, AppDbContext db) =>
+{
+    var usuarios = await db.Membros
+        .Where(m => m.Idgrupo == idGrupo)
+        .Select(m => m.Usuario)
+        .ToListAsync();
+
+    return usuarios.Any() ? Results.Ok(usuarios) : Results.NotFound("Nenhum usuário encontrado nesse grupo.");
 });
 
 
