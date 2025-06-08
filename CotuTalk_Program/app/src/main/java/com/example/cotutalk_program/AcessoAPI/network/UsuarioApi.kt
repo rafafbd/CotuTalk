@@ -42,5 +42,5 @@ interface UsuarioApi {
     suspend fun uploadImage(@Part image: MultipartBody.Part): Response<ResponseBody>
 
     @GET("/postagensUsuario/{id}")
-    suspend fun buscarPostsUsuario(@Path("id") id : Int) : Response<List<Postagem>>
+    suspend fun buscarPostsUsuario(@Path("id") id: Int): Response<List<Postagem>>
 }

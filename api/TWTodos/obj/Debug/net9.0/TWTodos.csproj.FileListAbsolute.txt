@@ -780,3 +780,4 @@ C:\Users\u24130\Documents\GitHub\CotuTalk\api\TWTodos\obj\Debug\net9.0\TWTodos.g
 C:\Users\u24130\Documents\GitHub\CotuTalk\api\TWTodos\obj\Debug\net9.0\ref\TWTodos.dll
 C:\Users\rafaf\Documents\GitHub\CotuTalk\api\TWTodos\bin\Debug\net9.0\TWTodos.staticwebassets.runtime.json
 C:\Users\rafaf\Documents\GitHub\CotuTalk\api\TWTodos\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\Vinicius\Documents\GitHub\CotuTalk\api\TWTodos\bin\Debug\net9.0\TWTodos.staticwebassets.runtime.json

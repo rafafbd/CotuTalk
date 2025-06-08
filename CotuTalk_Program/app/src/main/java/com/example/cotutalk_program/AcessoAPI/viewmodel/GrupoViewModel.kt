@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
+//import java.time.LocalDateTime
 
 class GrupoViewModel : ViewModel() {
     private val _grupos = MutableStateFlow<List<Grupo>>(emptyList())
@@ -30,7 +31,7 @@ class GrupoViewModel : ViewModel() {
         }
     }
 
-    fun adicionarGrupo(nome: String, descricao: String, dt: LocalDateTime) {
+    fun adicionarGrupo(nome: String, descricao: String, dt: LocalDateTime ) {
         coroutineScope.launch {
             try {
                 val novoGrupo = Grupo(IdGrupo = 0, Nome = nome, Descricao = descricao, DataCriacao = dt)
@@ -43,67 +44,67 @@ class GrupoViewModel : ViewModel() {
         }
     }
 
-    fun deletarGrupo(id: Int) {
-        coroutineScope.launch {
-            try {
-                val response = ApiService.grupoInstance.deletarGrupo(id)
-                if (response.isSuccessful) {
-                    _grupos.value = _grupos.value.filter { it.IdGrupo != id }
-                    _mensagem.value = "Grupo $id deletado com sucesso."
-                } else {
-                    _mensagem.value = "Erro ao deletar grupo: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _mensagem.value = "Erro ao deletar grupo: ${e.message}"
-            }
-        }
-    }
-
-    fun atualizarGrupo(id: Int, nome: String, descricao: String, dt: LocalDateTime) {
-        coroutineScope.launch {
-            try {
-                val grupoAtualizado = Grupo(IdGrupo = id, Nome = nome, Descricao = descricao, DataCriacao = dt)
-                val response = ApiService.grupoInstance.atualizarGrupo(id, grupoAtualizado)
-                if (response.isSuccessful) {
-                    _grupos.value = _grupos.value.map {
-                        if (it.IdGrupo == id) response.body() ?: it else it
-                    }
-                    _mensagem.value = "Grupo $id atualizado com sucesso."
-                } else {
-                    _mensagem.value = "Erro ao atualizar grupo: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _mensagem.value = "Erro ao atualizar grupo: ${e.message}"
-            }
-        }
-    }
-
-    //HANDLE MEMBRO
-    fun adicionarMembro(idMembro: Int, idUsuario: Int, idGrupo: Int, dt: LocalDateTime) {
-        coroutineScope.launch {
-            try {
-                val novoMembro = Membro(IdMembro = idMembro, IdUsuario = idUsuario, Idgrupo = idGrupo, DataDeEntrada = dt)
-                val membroAdicionado = ApiService.membroInstance.adicionarMembro(novoMembro)
-                _mensagem.value = "Membro adicionado com sucesso ao grupo $idGrupo."
-            } catch (e: Exception) {
-                _mensagem.value = "Erro ao adicionar membro: ${e.message}"
-            }
-        }
-    }
-
-    fun removerMembro(idMembro: Int, idUsuario: Int, idGrupo: Int, dt: LocalDateTime) {
-        coroutineScope.launch {
-            try {
-                val membroRemover = Membro(IdMembro = idMembro, IdUsuario = idUsuario, Idgrupo = idGrupo, DataDeEntrada = dt)
-                val response = ApiService.membroInstance.removerMembro(membroRemover)
-                if (response.isSuccessful) {
-                    _mensagem.value = "Membro removido do grupo $idGrupo com sucesso."
-                } else {
-                    _mensagem.value = "Erro ao remover membro: ${response.code()}"
-                }
-            } catch (e: Exception) {
-                _mensagem.value = "Erro ao remover membro: ${e.message}"
-            }
-        }
-    }
+//    fun deletarGrupo(id: Int) {
+//        coroutineScope.launch {
+//            try {
+//                val response = ApiService.grupoInstance.deletarGrupo(id)
+//                if (response.isSuccessful) {
+//                    _grupos.value = _grupos.value.filter { it.IdGrupo != id }
+//                    _mensagem.value = "Grupo $id deletado com sucesso."
+//                } else {
+//                    _mensagem.value = "Erro ao deletar grupo: ${response.code()}"
+//                }
+//            } catch (e: Exception) {
+//                _mensagem.value = "Erro ao deletar grupo: ${e.message}"
+//            }
+//        }
+//    }
+//
+//    fun atualizarGrupo(id: Int, nome: String, descricao: String, dt: LocalDateTime ) {
+//        coroutineScope.launch {
+//            try {
+//                val grupoAtualizado = Grupo(IdGrupo = id, Nome = nome, Descricao = descricao, DataCriacao = dt)
+//                val response = ApiService.grupoInstance.atualizarGrupo(id, grupoAtualizado)
+//                if (response.isSuccessful) {
+//                    _grupos.value = _grupos.value.map {
+//                        if (it.IdGrupo == id) response.body() ?: it else it
+//                    }
+//                    _mensagem.value = "Grupo $id atualizado com sucesso."
+//                } else {
+//                    _mensagem.value = "Erro ao atualizar grupo: ${response.code()}"
+//                }
+//            } catch (e: Exception) {
+//                _mensagem.value = "Erro ao atualizar grupo: ${e.message}"
+//            }
+//        }
+//    }
+//
+//    //HANDLE MEMBRO
+//    fun adicionarMembro(idMembro: Int, idUsuario: Int, idGrupo: Int, dt: LocalDateTime) {
+//        coroutineScope.launch {
+//            try {
+//                val novoMembro = Membro(IdMembro = idMembro, IdUsuario = idUsuario, Idgrupo = idGrupo, DataDeEntrada = dt)
+//                val membroAdicionado = ApiService.membroInstance.adicionarMembro(novoMembro)
+//                _mensagem.value = "Membro adicionado com sucesso ao grupo $idGrupo."
+//            } catch (e: Exception) {
+//                _mensagem.value = "Erro ao adicionar membro: ${e.message}"
+//            }
+//        }
+//    }
+//
+//    fun removerMembro(idMembro: Int, idUsuario: Int, idGrupo: Int, dt: LocalDateTime) {
+//        coroutineScope.launch {
+//            try {
+//                val membroRemover = Membro(IdMembro = idMembro, IdUsuario = idUsuario, Idgrupo = idGrupo, DataDeEntrada = dt)
+//                val response = ApiService.membroInstance.removerMembro(membroRemover)
+//                if (response.isSuccessful) {
+//                    _mensagem.value = "Membro removido do grupo $idGrupo com sucesso."
+//                } else {
+//                    _mensagem.value = "Erro ao remover membro: ${response.code()}"
+//                }
+//            } catch (e: Exception) {
+//                _mensagem.value = "Erro ao remover membro: ${e.message}"
+//            }
+//        }
+//    }
 }

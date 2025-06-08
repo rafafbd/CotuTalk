@@ -80,7 +80,8 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
                     "Vini.guep",
                     "defaultprofile",
                     "",
-                    "Como eu faço herança em C#???"
+                    "Como eu faço herança em C#???",
+                    "Informatica"
                 )
             )
 

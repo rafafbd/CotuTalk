@@ -7,6 +7,7 @@ public class Postagem
     public required Usuario Usuario { get; set; }
     public required Grupo Grupo { get; set; }
     public required string Conteudo { get; set; }
+    public DateTime DataCriacao { get; set; }
     [JsonIgnore]
     public ICollection<Curtida> Curtidas { get; set; } = new List<Curtida>();
     [JsonIgnore]

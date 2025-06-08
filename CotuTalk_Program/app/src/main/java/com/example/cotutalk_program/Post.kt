@@ -1,6 +1,6 @@
 package com.example.cotutalk_program
 
-class Post(val nome : String, val foto : String, val dataHorario : String, val message : String){
+class Post(val nome : String, val foto : String, val dataHorario : String, val message : String, val grupo : String){
     var curtidas = 0;
     val comentarios: MutableList<Post> = mutableListOf();
 
@@ -23,7 +23,8 @@ class Post(val nome : String, val foto : String, val dataHorario : String, val m
             "com/example/cotutalk_program/AcessoAPI/data" to dataHorario,
             "message" to message,
             "curtidas" to curtidas.toString(),
-            "comentarios" to comentarios.joinToString(";")
+            "comentarios" to comentarios.joinToString(";"),
+            "grupo" to grupo
         )
         return dados
     }

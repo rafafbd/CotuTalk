@@ -6,6 +6,7 @@ import androidx.collection.intIntMapOf
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
@@ -54,9 +56,23 @@ fun PaginaPerfilPreview(navController: NavController) {
 @Composable
 fun paginaPerfil(navController: NavController, context: Context) {
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    val id = sharedPref.getInt("Id", 0)
     val nome = sharedPref.getString("Nome", "") ?: ""
     val biografia = sharedPref.getString("Biografia", "") ?: ""
     val imagePath = sharedPref.getString("ImagePath", "") ?: ""
+    val viewModel = UsuarioViewModel()
+    viewModel.buscarPostagensUsuario(id)
+    val postagens by viewModel.postsUsuario.collectAsState()
+    val postagensFormatadas = postagens.map { post ->
+        Post(
+            nome = nome,
+            foto = imagePath,
+            dataHorario = post?.dataCriacao.toString() ?: "Sem data",
+            message = post?.conteudo ?: "",
+            grupo = post?.Grupo!!.Nome
+        )
+    }
+
 
     LaunchedEffect(true) {
 
@@ -68,13 +84,15 @@ fun paginaPerfil(navController: NavController, context: Context) {
             BottomNavigationBar(navController)
         },
         content = { paddingValues ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(roxo80)
                     .padding(paddingValues)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                contentPadding = PaddingValues(bottom = 80.dp) // espaço para não sobrepor a bottom bar
             ) {
+                item {
                 // Perfil
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     AsyncImage(
@@ -105,7 +123,10 @@ fun paginaPerfil(navController: NavController, context: Context) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("27 Groups", color = Color.Gray)
                 Spacer(modifier = Modifier.height(16.dp))
-
+                postagensFormatadas.forEach { post ->
+                    PostUI(post)
+                }
+            }
             }
         }
     )

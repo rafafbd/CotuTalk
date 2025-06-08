@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.cotutalk_program.ui.theme.CotuTalk_ProgramTheme
@@ -56,8 +57,10 @@ import com.example.cotutalk_program.ui.theme.responder
 import com.example.cotutalk_program.ui.theme.roxo80
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
+import coil.compose.AsyncImage
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
+import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.launch
@@ -178,21 +181,29 @@ fun PostUI(post: Post) {
 
         // Primeira linha: foto e nome
         Row(modifier = Modifier.padding(bottom = 8.dp)) {
-            Image (
-                painter = imagePainter,
-                contentDescription = "Foto de perfil",
+            AsyncImage(
+                model = "${ApiService.BASE_URL}img/${post.foto}",
+                contentDescription = "foto do perfil",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
             )
-            Text(
-                text = "@" + post.nome,
-                color = Color.White,
-                fontSize = 20.sp,  // Aumentando o tamanho da fonte
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 8.dp)
-            )
+
+            Spacer(modifier = Modifier.width(8.dp)) // Espaço entre imagem e textos
+
+            Column {
+                Text(
+                    text = "@" + post.nome,
+                    color = Color.White,
+                    fontSize = 15.sp
+                )
+                Text(
+                    text = "Em: " + post.grupo,
+                    color = Color.Gray,
+                    fontSize = 14.sp
+                )
+            }
         }
 
         // Segunda linha: mensagem do post
@@ -309,29 +320,6 @@ fun TelaPrincipal(navController: NavHostController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    val post1 = Post(
-        "viniguep",
-        "Vini",
-        "{LocalDateTime.now()}",
-        "Rpzd o que fazer com a minha vida?"
-    )
-    val post2 = Post(
-        "gui.OProfeta",
-        "profeta",
-        "{LocalDateTime.now()}",
-        "Estou enfrentando dificuldades para entender uma matéria de matemática, alguém pode me ajudar?"
-    )
-    val post3 = Post(
-        "rafa.Vasco",
-        "vasco",
-        "{LocalDateTime.now()}",
-        "Quais dicas vocês têm para melhorar meu caminhão de bombeiro de papelão?"
-    )
-    for (i in 0 until 43) {
-        post2.adicionarCurtida()
-        post2.adicionarCurtida()
-        post1.removerCurtida()
-    }
     ModalNavigationDrawer(
         drawerState = drawerState, // O estado do drawer
         drawerContent = {
@@ -379,9 +367,6 @@ fun TelaPrincipal(navController: NavHostController) {
                             .width(620.dp)
                             .padding(16.dp)  // Adicionando padding à imagem
                     )
-                    PostUI(post = post1)
-                    PostUI(post = post2)
-                    PostUI(post = post3)
                 }
             }
 

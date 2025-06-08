@@ -132,7 +132,7 @@ fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
 
         // Segunda linha: mensagem do post
         Text(
-            text = post.Conteudo,
+            text = post.conteudo,
             color = Color.White,
             fontSize = 17.sp,  // Aumentando o tamanho da fonte
             modifier = Modifier.padding(start = 8.dp)

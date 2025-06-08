@@ -67,16 +67,16 @@ class PostagemViewModel : ViewModel() {
 //                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
 //                val user = ApiService.usuarioInstance.buscarUsuario(idu)
 //                if (gp != null && user != null){
-                    val novaPostagem = Postagem(IdPostagem = 0,
-                        IdUsuario = idu,
-                        IdGrupo = idg,
-                        Conteudo = conteudo
+//                    val novaPostagem = Postagem(IdPostagem = 0,
+//                        IdUsuario = idu,
+//                        IdGrupo = idg,
+//                        Conteudo = conteudo
 //                        Usuario = user,
 //                        Grupo = gp
-                    )
-                    val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
-                    _postagens.value = _postagens.value + postagemAtualizada
-                    _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
+//                    )
+//                    val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
+//                    _postagens.value = _postagens.value + postagemAtualizada
+//                    _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
 //                }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
@@ -90,24 +90,24 @@ class PostagemViewModel : ViewModel() {
 //                val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
 //                val user = ApiService.usuarioInstance.buscarUsuario(idp)
 //                if (gp != null && user != null){
-                    val postagemAtualizada = Postagem(IdPostagem = idp,
-                        IdUsuario = idu,
-                        IdGrupo = idg,
-                        Conteudo = conteudo
+//                    val postagemAtualizada = Postagem(IdPostagem = idp,
+//                        IdUsuario = idu,
+//                        IdGrupo = idg,
+//                        Conteudo = conteudo
 //                        Usuario = user,
 //                        Grupo = gp
-                    )
-                    val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
-                    if (response.isSuccessful) {
-                        _postagens.value = _postagens.value.map {
-                            if (it.IdPostagem == idp) postagemAtualizada else it
-                        }
-                        _mensagem.value = "Postagem $idp atualizada."
-                        _postagemDetalhe.value = postagemAtualizada
+                    //)
+                    //val response = ApiService.postagemInstance.atualizarPostagem(idp, postagemAtualizada)
+                    //if (response.isSuccessful) {
+                        //_postagens.value = _postagens.value.map {
+                            //if (it.IdPostagem == idp) postagemAtualizada else it
+                        //}
+                        //_mensagem.value = "Postagem $idp atualizada."
+                        //_postagemDetalhe.value = postagemAtualizada
 //                }else {
 //                        _mensagem.value = "Erro ao atualizar postagem: ${response.code()}"
 //                    }
-                    }
+                    //}
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao atualizar postagem: ${e.message}"
             }
