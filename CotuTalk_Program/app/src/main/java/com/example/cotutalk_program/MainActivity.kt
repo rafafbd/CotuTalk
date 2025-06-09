@@ -416,14 +416,6 @@ fun BottomNavigationBar(navController: NavController) {
                         modifier = Modifier.size(30.dp)
                     )
                 }
-                IconButton(onClick = {navController.navigate("Notificacao")}) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_notification),
-                        contentDescription = "Notifications",
-                        tint = Color.White,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
                 IconButton(onClick = {navController.navigate("perfil")}) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_profile),
