@@ -110,6 +110,7 @@ class GrupoViewModel : ViewModel() {
                 _postagensGrupo.value = postagens
                 println("Postagens carregadas no viewmodel")
             } catch (e: Exception) {
+                _postagensGrupo.value = emptyList()
                 _mensagem.value = "Erro ao buscar postagens do grupo: ${e.message}"
                 println("Erro no buscarPostagensDoGrupo: ${mensagem.value}")
             }
