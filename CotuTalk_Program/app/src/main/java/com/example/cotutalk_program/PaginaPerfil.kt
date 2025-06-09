@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -60,17 +61,27 @@ fun paginaPerfil(navController: NavController, context: Context) {
     val nome = sharedPref.getString("Nome", "") ?: ""
     val biografia = sharedPref.getString("Biografia", "") ?: ""
     val imagePath = sharedPref.getString("ImagePath", "") ?: ""
-    val viewModel = UsuarioViewModel()
-    viewModel.buscarPostagensUsuario(id)
-    val postagens by viewModel.postsUsuario.collectAsState()
+
+    // Cria o viewModel usando Compose
+    val viewModel: UsuarioViewModel = viewModel()
+
+    // Chama a busca das postagens uma vez quando o id estiver disponível
+    LaunchedEffect(id) {
+        if (id != 0) {
+            viewModel.buscarPostagensUsuario(id)
+        }
+    }
+
+    val postagens by viewModel.postsUsuario.collectAsState(initial = emptyList())
+
     val postagensFormatadas = postagens.map { post ->
         Post(
             nome = nome,
             foto = imagePath,
             dataHorario = post?.dataCriacao.toString() ?: "Sem data",
             message = post?.conteudo ?: "",
-            grupo = post?.Grupo!!.Nome,
-            Id = post.IdPostagem
+            grupo = post?.Grupo?.Nome ?: "Sem grupo",
+            Id = post!!.IdPostagem
         )
     }
 
@@ -86,43 +97,44 @@ fun paginaPerfil(navController: NavController, context: Context) {
                     .background(roxo80)
                     .padding(paddingValues)
                     .padding(16.dp),
-                contentPadding = PaddingValues(bottom = 80.dp) // espaço para não sobrepor a bottom bar
+                contentPadding = PaddingValues(bottom = 80.dp) // espaço para bottom bar
             ) {
                 item {
-                // Perfil
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AsyncImage(
-                        model = "${ApiService.BASE_URL}img/${imagePath}",
-                        contentDescription = "foto do perfil",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(64.dp)
-                            .clip(CircleShape)
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Column {
-                        Text(
-                            nome,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
+                    // Perfil
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        AsyncImage(
+                            model = "${ApiService.BASE_URL}img/$imagePath",
+                            contentDescription = "foto do perfil",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .clip(CircleShape)
                         )
-                        Text(
-                            biografia,
-                            color = Color.Gray,
-                            fontSize = 12.sp
-                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Column {
+                            Text(
+                                nome,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                biografia,
+                                color = Color.Gray,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("27 Groups", color = Color.Gray)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    postagensFormatadas.forEach { post ->
+                        PostUI(post, navController)
                     }
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("27 Groups", color = Color.Gray)
-                Spacer(modifier = Modifier.height(16.dp))
-                postagensFormatadas.forEach { post ->
-                    PostUI(post, navController)
-                }
-            }
             }
         }
     )

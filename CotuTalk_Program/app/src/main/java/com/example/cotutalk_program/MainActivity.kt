@@ -35,6 +35,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -262,18 +263,33 @@ fun PostUI(post: Post, navController: NavController) {
 fun TelaPrincipal(navController: NavController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val viewModel = PostagemViewModel()
-    viewModel.listarPostagens()
+    val viewModel: PostagemViewModel = viewModel()
+    var postagensFormatadas = listOf<Post>()
+
+    // Chamada segura da API
+    LaunchedEffect(Unit) {
+        viewModel.listarPostagens()
+    }
+
     val postagens by viewModel.postagens.collectAsState()
-    val postagensFormatadas = postagens.map { post ->
-        Post(
-            nome = post.Usuario.nome,
-            foto = post.Usuario.imagePath,
-            dataHorario = post?.dataCriacao.toString() ?: "Sem data",
-            message = post?.conteudo ?: "",
-            grupo = post?.Grupo!!.Nome,
-            Id = post.IdPostagem
+
+    if (postagens.isEmpty()) {
+        Text(
+            text = "Nenhuma postagem encontrada.",
+            color = Color.White,
+            modifier = Modifier.padding(16.dp)
         )
+    } else {
+        postagensFormatadas = postagens.map { post ->
+            Post(
+                nome = post.Usuario.nome,
+                foto = post.Usuario.imagePath,
+                dataHorario = post?.dataCriacao.toString() ?: "Sem data",
+                message = post?.conteudo ?: "",
+                grupo = post?.Grupo!!.Nome,
+                Id = post.IdPostagem
+            )
+        }
     }
 
 //    ModalNavigationDrawer(
