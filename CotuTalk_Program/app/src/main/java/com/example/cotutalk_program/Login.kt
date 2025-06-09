@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
@@ -82,7 +83,7 @@ fun paginaLogin(navController: NavController) {
 
 @Composable
 fun CaixaLogin(navController: NavController){
-    val viewmodel = UsuarioViewModel()
+    val viewmodel: UsuarioViewModel = viewModel()
     val context = LocalContext.current
 
     var email by remember { mutableStateOf("cc24159@g.unicamp.br") }
@@ -167,7 +168,7 @@ fun CaixaLogin(navController: NavController){
                     .padding(end = 140.dp)
             )
 
-            Spacer(Modifier.height(180.dp))
+            Spacer(Modifier.height(50.dp))
 
             Column (
                 Modifier.fillMaxWidth(0.9f),

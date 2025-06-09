@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rafaf\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj": {}
+    "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rafaf\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj": {
+    "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rafaf\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj",
+        "projectUniqueName": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj",
         "projectName": "TWTodos",
-        "projectPath": "C:\\Users\\rafaf\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj",
-        "packagesPath": "C:\\Users\\rafaf\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rafaf\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\obj\\",
+        "projectPath": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\TWTodos.csproj",
+        "packagesPath": "C:\\Users\\u24150\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\rafaf\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\u24150\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -45,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -99,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

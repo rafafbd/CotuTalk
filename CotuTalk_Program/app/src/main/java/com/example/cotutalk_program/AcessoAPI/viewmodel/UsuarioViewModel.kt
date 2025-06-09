@@ -194,7 +194,7 @@ class UsuarioViewModel : ViewModel() {
                             apply()
                         }
                         val idPost: Int = 2
-                        navController.navigate("Resposta/${idPost}")
+                        navController.navigate("paginaGrupo/${idPost}")
                         //navController.navigate("Principal")
                     } else {
                         _mensagem.value = "Erro ao obter dados do usuário"

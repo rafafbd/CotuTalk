@@ -101,7 +101,6 @@ class GrupoViewModel : ViewModel() {
 //    }
 
     fun buscarPostagensDoGrupo(idGrupo: Int) {
-        println("📥 ViewModel: buscarPostagensDoGrupo($idGrupo)")
         viewModelScope.launch {
             try {
                 val postagens = ApiService.postagemInstance.listarPostagensGrupo(idGrupo)
@@ -109,6 +108,7 @@ class GrupoViewModel : ViewModel() {
                 println("Postagens carregadas no viewmodel")
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao buscar postagens do grupo: ${e.message}"
+                println("Erro no buscarPostagensDoGrupo: ${mensagem.value}")
             }
         }
     }

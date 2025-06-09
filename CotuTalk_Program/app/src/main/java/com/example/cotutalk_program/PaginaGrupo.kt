@@ -53,7 +53,7 @@ fun PaginaGrupo(navController: NavController, idGrupo: Int){
     val grupoViewModel: GrupoViewModel = viewModel(contexto as androidx.lifecycle.ViewModelStoreOwner)
 
 
-    LaunchedEffect(idGrupo) {
+    LaunchedEffect(Unit) {
         grupoViewModel.buscarGrupo(idGrupo)
         grupoViewModel.buscarPostagensDoGrupo(idGrupo)
     }
@@ -64,11 +64,11 @@ fun PaginaGrupo(navController: NavController, idGrupo: Int){
     val postagensFormatadas = postagens.mapNotNull { post ->
         try {
             Post(
-                nome = post.Usuario.nome,
-                foto = post.Usuario.imagePath,
+                nome = post.Usuario.nome ?: "Usuário desconhecido",
+                foto = post.Usuario.imagePath ?: "",
                 dataHorario = post.dataCriacao.toString(),
                 message = post.conteudo ?: "",
-                grupo = post.Grupo?.Nome ?: "Grupo desconhecido",
+                grupo = post.Grupo.Nome ?: "Grupo desconhecido",
                 Id = post.IdPostagem
             )
         } catch (e: Exception) {

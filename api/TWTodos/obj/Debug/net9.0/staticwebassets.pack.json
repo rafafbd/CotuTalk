@@ -1,64 +1,68 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\perfil.png",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\perfil.png",
       "PackagePath": "staticwebassets\\img\\perfil.png"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\robo.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\robo.webp",
       "PackagePath": "staticwebassets\\img\\robo.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748530714254.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748530714254.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748530714254.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864285640.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864285640.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748864285640.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864453373.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864453373.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748864453373.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864569858.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864569858.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748864569858.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864729043.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864729043.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748864729043.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864833143.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748864833143.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748864833143.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865246817.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865246817.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748865246817.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865361625.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865361625.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748865361625.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865464956.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748865464956.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748865464956.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748866856056.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1748866856056.webp",
       "PackagePath": "staticwebassets\\img\\upload_1748866856056.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
       "PackagePath": "staticwebassets\\img\\upload_1749132781979.webp"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417041413.jpg",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417041413.jpg",
       "PackagePath": "staticwebassets\\img\\upload_1749417041413.jpg"
     },
     {
-      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417177545.jpg",
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417177545.jpg",
       "PackagePath": "staticwebassets\\img\\upload_1749417177545.jpg"
+    },
+    {
+      "Id": "C:\\Users\\u24150\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749427289829.jpg",
+      "PackagePath": "staticwebassets\\img\\upload_1749427289829.jpg"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.TWTodos.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

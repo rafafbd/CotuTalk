@@ -33,5 +33,5 @@ interface PostagemApi {
     suspend fun listarPostagensUsuario(@Path("id") id : Int): List<Postagem>
 
     @GET("/postagensGrupo/{IdGrupo}")
-    suspend fun listarPostagensGrupo(@Path("id") id : Int): List<Postagem>
+    suspend fun listarPostagensGrupo(@Path("IdGrupo") id : Int): List<Postagem>
 }
