@@ -193,9 +193,9 @@ class UsuarioViewModel : ViewModel() {
                             putString("ImagePath", usuarioLogado.imagePath)
                             apply()
                         }
-                        //var idGrupo: Int = 7
-                        //navController.navigate("paginaPostar/${idGrupo}")
-                        navController.navigate("Principal")
+                        val idPost: Int = 2
+                        navController.navigate("Resposta/${idPost}")
+                        //navController.navigate("Principal")
                     } else {
                         _mensagem.value = "Erro ao obter dados do usuário"
                     }

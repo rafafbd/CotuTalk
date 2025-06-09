@@ -346,6 +346,18 @@ app.MapGet("/postagens", async (AppDbContext db) =>
     return Results.Ok(postagens);
 });
 
+// buscar uma postagem por id
+app.MapGet("/postagens/{id}", async (int id, AppDbContext db) =>
+{
+    var postagem = await db.Postagens.FindAsync(id);
+
+    if (postagem == null)
+        return Results.NotFound();
+
+    return Results.Ok(postagem);
+});
+
+/*
 app.MapGet("/postagensUI", async (AppDbContext db) =>
 {
     var postagens = await db.Postagens
@@ -412,6 +424,7 @@ app.MapGet("/postagensUI/grupo/{idGrupo:int}", async (int idGrupo, AppDbContext 
         ? Results.Ok(postagens)
         : Results.NotFound($"Nenhuma postagem encontrada para o grupo {idGrupo}");
 });
+*/
 
 // Deletar um post por ID
 app.MapDelete("/postagens/{id}", async (int id, AppDbContext db) =>

@@ -211,11 +211,14 @@ fun RespostaUI(resposta: Resposta, usuarioViewModel: UsuarioViewModel) {
                     color = Color.White,
                     fontSize = 14.sp
                 )
-                Text(
-                    text = resposta.DataComentario.toString(), // Pode formatar com DateTimeFormatter
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
+                resposta.DataComentario?.let {
+                    Text(
+                        text = resposta.DataComentario.toString(), // Pode formatar com DateTimeFormatter
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                    )
+                }
+
             }
         }
 

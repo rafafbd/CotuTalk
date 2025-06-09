@@ -18,7 +18,7 @@ interface PostagemApi {
     suspend fun listarPostagens(): List<Postagem>
 
     @GET("/postagens/{id}")
-    suspend fun buscarPostagem(@Path("id") id: Int): Postagem
+    suspend fun buscarPostagem(@Path("id") id: Int): Postagem?
 
     @POST("/postagens")
     suspend fun adicionarPostagem(@Body postagem: PostagemDTO) : Postagem
