@@ -1,6 +1,7 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.cotutalk_program.AcessoAPI.data.Curtida
 import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.data.PostagemDTO
@@ -62,7 +63,7 @@ class PostagemViewModel : ViewModel() {
         }
     }
 
-    fun adicionarPostagem(idu: Int, idg: Int, conteudo: String) {
+    fun adicionarPostagem(idu: Int, idg: Int, conteudo: String, navController: NavController) {
         coroutineScope.launch {
             try {
                 val gp = ApiService.grupoInstance.buscarGrupo(idg).body()
@@ -76,6 +77,7 @@ class PostagemViewModel : ViewModel() {
                     val postagemAtualizada = ApiService.postagemInstance.adicionarPostagem(novaPostagem)
                     _postagens.value = _postagens.value + postagemAtualizada
                     _mensagem.value = "Postagem criada com ID ${postagemAtualizada.IdPostagem}"
+                    navController.navigate("Principal")
                 }
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao criar usuário: ${e.message}"
@@ -177,6 +179,7 @@ class PostagemViewModel : ViewModel() {
                 val response = ApiService.respostaInstance.adicionarResposta(resposta)
                 if (response.isSuccessful) {
                     _respostaAdicionada.value = response.body()
+                    _respostasPostagem.value = _respostasPostagem.value + _respostaAdicionada.value!!
                 } else {
                     _mensagem.value  = "Erro ao adicionar resposta: ${response.code()}"
                 }

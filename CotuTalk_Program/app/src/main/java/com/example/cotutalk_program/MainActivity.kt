@@ -105,23 +105,6 @@ class MainActivity : ComponentActivity() {
                         TelaPrincipal(navController)
                     }
                     composable(
-                        route = "responder/{idPost}",
-                    ) { backStackEntry ->
-                        val idPost = backStackEntry.arguments?.getInt("idPost")
-
-                        val postagemViewModel = viewModel<PostagemViewModel>(backStackEntry)
-
-                        TelaRespostas(navController = navController, postModel = postagemViewModel, idPost = idPost!!)
-                    }
-//                    composable(
-//                        route = "Config/{loginRequest}",
-//                        arguments = listOf(navArgument("loginRequest") {type = NavType.StringType})
-//                        ) {
-//                        val loginRequest = it.arguments?.getString("loginRequest") ?: ""
-//                        paginaConfigurar(navController, loginRequest)
-//                    }
-
-                    composable(
                         route = "paginaPostar/{idGrupo}",
                         arguments = listOf(
                             navArgument("idGrupo") {
@@ -130,7 +113,6 @@ class MainActivity : ComponentActivity() {
                         )
                     ) { BackStackEntry ->
                         val idGrupo = BackStackEntry.arguments?.getInt("idGrupo")
-                        println("DEBUG NO COMPOSABLE: idGrupo recebido do argumento: $idGrupo")
                         if (idGrupo != null && idGrupo != 0) {
                             postar(navController, idGrupo)
                         }
@@ -138,11 +120,14 @@ class MainActivity : ComponentActivity() {
                     composable(route = "Pesquisa") {
                         Search(navController)
                     }
-                    composable(route = "Resposta/{idPost}") { backStackEntry ->
+                    composable(
+                        route = "Resposta/{idPost}",
+                        arguments = listOf( navArgument("idPost"){
+                            type = NavType.IntType
+                        } )
+                    ) { backStackEntry ->
                         val idPost = backStackEntry.arguments?.getInt("idPost")
-                        if (idPost != null){
-                            responder(navController, idPost)
-                        }
+                        responder(navController = navController, IdPostagem = idPost!!)
                     }
                     composable(route = "Verificar") {
                         paginaVerificar(navController)
@@ -152,6 +137,19 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = "perfil") {
                         PaginaPerfilPreview(navController)
+                    }
+                    composable(
+                        route = "paginaGrupo/{idGrupo}",
+                        arguments = listOf(
+                            navArgument("idGrupo") {
+                                type = NavType.IntType
+                            }
+                        )
+                    ) { BackStackEntry ->
+                        val idGrupo = BackStackEntry.arguments?.getInt("idGrupo")
+                        if (idGrupo != null && idGrupo != 0) {
+                            PaginaGrupo(navController, idGrupo)
+                        }
                     }
 
                 }
@@ -231,7 +229,7 @@ fun PostUI(post: Post, navController: NavController) {
             Text(post.comentarios.size.toString(), color = Color.LightGray)
 
             IconButton(
-                onClick = { navController.navigate("responder/${post.Id}") },
+                onClick = { navController.navigate("Resposta/${post.Id}") },
                 modifier = Modifier
                     .size(24.dp)
                     .padding(start = 2.dp)
@@ -259,74 +257,7 @@ fun PostUI(post: Post, navController: NavController) {
 
 
 @Composable
-fun principal(navController: NavController, postModel: PostagemViewModel) {
-    postModel.listarPostagens()
-    val context = LocalContext.current
-
-    Scaffold(
-        modifier = Modifier.background(roxo80),
-        bottomBar = {
-            //BottomNavigationBar(navController)
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(roxo80)
-                .padding(innerPadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(620.dp)
-                    .padding(16.dp)  // Adicionando padding à imagem
-            )
-            //Post(postModel.postagens)
-        }
-    }
-    Scaffold(
-        modifier = Modifier.background(roxo80),
-        bottomBar = {
-            BottomNavigationBar(navController)
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate("criarGrupo")
-                },
-                containerColor = Color(0xFF6C40BF), // roxo80 ou a cor que preferir
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Text(
-                    text = "+",
-                    fontSize = 30.sp,
-                    color = Color.White
-                )
-            }
-        },
-        floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(roxo80)
-                .padding(innerPadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(620.dp)
-                    .padding(16.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun TelaPrincipal(navController: NavHostController) {
+fun TelaPrincipal(navController: NavController) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val viewModel = PostagemViewModel()

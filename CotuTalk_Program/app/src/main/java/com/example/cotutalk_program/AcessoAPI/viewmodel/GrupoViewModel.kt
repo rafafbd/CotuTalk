@@ -1,8 +1,10 @@
 package com.example.cotutalk_program.AcessoAPI.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.cotutalk_program.AcessoAPI.data.Grupo
 import com.example.cotutalk_program.AcessoAPI.data.Membro
+import com.example.cotutalk_program.AcessoAPI.data.Postagem
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
+import androidx.lifecycle.viewModelScope
 //import java.time.LocalDateTime
 
 class GrupoViewModel : ViewModel() {
@@ -18,6 +21,9 @@ class GrupoViewModel : ViewModel() {
 
     private val _grupoDetalhe = MutableStateFlow<Grupo?>(null)
     val grupoDetalhe: StateFlow<Grupo?> = _grupoDetalhe
+
+    private val _postagensGrupo = MutableStateFlow<List<Postagem>>(emptyList())
+    val postagensGrupo: StateFlow<List<Postagem>> = _postagensGrupo
 
     private val _mensagem = MutableStateFlow("")
     val mensagem: StateFlow<String> = _mensagem
@@ -93,6 +99,21 @@ class GrupoViewModel : ViewModel() {
 //            }
 //        }
 //    }
+
+    fun buscarPostagensDoGrupo(idGrupo: Int) {
+        println("📥 ViewModel: buscarPostagensDoGrupo($idGrupo)")
+        viewModelScope.launch {
+            try {
+                val postagens = ApiService.postagemInstance.listarPostagensGrupo(idGrupo)
+                _postagensGrupo.value = postagens
+                println("Postagens carregadas no viewmodel")
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao buscar postagens do grupo: ${e.message}"
+            }
+        }
+    }
+
+
 //
 //    //HANDLE MEMBRO
 //    fun adicionarMembro(idMembro: Int, idUsuario: Int, idGrupo: Int, dt: LocalDateTime) {

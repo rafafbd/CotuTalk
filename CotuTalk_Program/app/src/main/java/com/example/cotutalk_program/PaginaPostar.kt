@@ -83,7 +83,8 @@ fun postar(navController: NavHostController, idgrupo: Int) {
                         postagemViewModel.adicionarPostagem(
                             idu = sharedPref.getInt("Id", 0),
                             idg = idgrupo,
-                            conteudo = postagem
+                            conteudo = postagem,
+                            navController = navController
                         )
                     }
                 }
