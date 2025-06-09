@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -130,18 +132,22 @@ fun CaixaLogin2(navController: NavController){
                 modifier = Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
-                BotaoEstilizado(
+            }
+            val context = LocalContext.current
+            BotaoEstilizado(
                     texto = "Enviar código",
                     click = {
                         val pattern = Regex("^cc\\d{5}@g\\.unicamp\\.br$")
                         if (!pattern.matches(email)) {
                             message = "*Email inválido"
                         } else {
+                            val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                putString("Email", email)
                             viewmodel.enviarEmail(email, navController, "NovaSenha")
-                        }
+                        } }
                     }
-                )
-            }
+            )
         }
     }
 }

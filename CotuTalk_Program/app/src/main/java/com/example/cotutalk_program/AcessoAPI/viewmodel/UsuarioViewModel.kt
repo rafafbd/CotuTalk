@@ -112,6 +112,51 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
+    fun atualizarUsuarioPorEmail(
+        email: String,
+        id: Int = -1,
+        nome: String = "",
+        novaSenha: String = "",
+        novaBiografia: String = "",
+        novaImagePath: String = "",
+        navController: NavController
+    ) {
+        coroutineScope.launch {
+            try {
+                // Buscar usuário atual para manter dados que não devem ser alterados
+                val usuarioAtual = _usuarios.value.find { it.email == email }
+                if (usuarioAtual == null) {
+                    _mensagem.value = "Usuário com e-mail $email não encontrado."
+                    return@launch
+                }
+
+                val usuarioAtualizado = Usuario(
+                    idUsuario = if (id != -1) id else usuarioAtual.idUsuario,
+                    nome = if (nome.isNotBlank()) nome else usuarioAtual.nome,
+                    email = email,
+                    senha = if (novaSenha.isNotBlank()) novaSenha else usuarioAtual.senha,
+                    biografia = if (novaBiografia.isNotBlank()) novaBiografia else usuarioAtual.biografia,
+                    imagePath = if (novaImagePath.isNotBlank()) novaImagePath else usuarioAtual.imagePath
+                )
+
+                val response = ApiService.usuarioInstance.atualizarUsuarioPorEmail(email, usuarioAtualizado)
+                if (response.isSuccessful) {
+                    _usuarios.value = _usuarios.value.map {
+                        if (it.email == email) usuarioAtualizado else it
+                    }
+                    _mensagem.value = "Usuário $email atualizado com sucesso."
+                    _usuarioDetalhe.value = usuarioAtualizado
+                    navController.navigate("Principal")
+                } else {
+                    _mensagem.value = "Erro ao atualizar usuário: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                _mensagem.value = "Erro ao atualizar usuário: ${e.message}"
+            }
+        }
+    }
+
+
     fun deletarUsuario(id: Int) {
         coroutineScope.launch {
             try {

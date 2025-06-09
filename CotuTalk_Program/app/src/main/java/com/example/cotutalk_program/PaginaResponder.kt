@@ -183,17 +183,16 @@ fun responder(navController: NavHostController, IdPostagem: Int) {
             // Postagem no topo
             oPost?.let {
                 usuario?.let {
-                    grupo?.let {
-                        PostUI(
-                            Post(
-                                nome = usuario.nome ?: "Nome Desconhecido", // Use Elvis operator para fallback
-                                foto = usuario.imagePath ?: "", // Use Elvis operator para fallback
-                                grupo = grupo.Nome ?: "Grupo Desconhecido", // Use Elvis operator para fallback
-                                message = oPost.conteudo ?: "Conteúdo Vazio", // Use Elvis operator para fallback
-                                dataHorario = oPost.dataCriacao?.toString() ?: "Data Desconhecida" // Use Elvis operator para fallback
-                            )
-                        )
-                    }
+                    PostUI(
+                        Post(
+                            Id = usuario!!.idUsuario.toInt(),
+                            nome = usuario!!.nome,
+                            foto = usuario!!.imagePath,
+                            grupo = grupo!!.Nome,
+                            message = oPost!!.conteudo,
+                            dataHorario = oPost!!.dataCriacao.toString()
+                        ), navController
+                    )
                 }
             }
 

@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\perfil.png",
+      "PackagePath": "staticwebassets\\img\\perfil.png"
+    },
+    {
       "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\robo.webp",
       "PackagePath": "staticwebassets\\img\\robo.webp"
     },
@@ -47,6 +51,14 @@
     {
       "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749132781979.webp",
       "PackagePath": "staticwebassets\\img\\upload_1749132781979.webp"
+    },
+    {
+      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417041413.jpg",
+      "PackagePath": "staticwebassets\\img\\upload_1749417041413.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Vinicius\\Documents\\GitHub\\CotuTalk\\api\\TWTodos\\wwwroot\\img\\upload_1749417177545.jpg",
+      "PackagePath": "staticwebassets\\img\\upload_1749417177545.jpg"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.TWTodos.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

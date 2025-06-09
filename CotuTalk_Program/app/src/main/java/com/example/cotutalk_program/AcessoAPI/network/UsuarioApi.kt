@@ -43,4 +43,11 @@ interface UsuarioApi {
 
     @GET("/postagensUsuario/{id}")
     suspend fun buscarPostsUsuario(@Path("id") id: Int): Response<List<Postagem>>
+
+    @PUT("/usuarios/email/{email}")
+    suspend fun atualizarUsuarioPorEmail(
+        @Path("email") email: String,
+        @Body usuario: Usuario
+    ): Response<Usuario>
+
 }
