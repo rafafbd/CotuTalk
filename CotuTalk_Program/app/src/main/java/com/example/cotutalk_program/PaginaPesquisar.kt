@@ -145,13 +145,13 @@ fun Search(navController: NavHostController) {
 
 
         // Logo
-        Image(
-            painter = painterResource(R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier
-                .alpha(0.5f)
-                .fillMaxSize(0.3f)
-        )
+//        Image(
+//            painter = painterResource(R.drawable.logo),
+//            contentDescription = "Logo",
+//            modifier = Modifier
+//                .alpha(0.5f)
+//                .fillMaxSize(0.3f)
+//        )
 
         BottomNavigationBar(navController)
     }
