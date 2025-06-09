@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.cotutalk_program.AcessoAPI.viewmodel.GrupoViewModel
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UserPreferences
@@ -42,7 +45,7 @@ import org.threeten.bp.LocalDateTime
 
 
 @Composable
-fun PaginaCriarGrupo(navController: NavHostController) {
+fun PaginaCriarGrupo(navController: NavController) {
     var nomeGrupo by remember { mutableStateOf("") }
     var descGrupo by remember { mutableStateOf("") }
     val userModel = UsuarioViewModel()
@@ -51,6 +54,7 @@ fun PaginaCriarGrupo(navController: NavHostController) {
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
+    val scrollState = rememberScrollState()
 
     Scaffold (
         bottomBar = { BottomNavigationBar(navController) }
@@ -59,7 +63,8 @@ fun PaginaCriarGrupo(navController: NavHostController) {
             Modifier
                 .background(roxo80)
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -114,18 +119,17 @@ fun PaginaCriarGrupo(navController: NavHostController) {
                         .fillMaxWidth(0.9f)
                 )
 
-                Spacer(Modifier.height(25.dp))
+                Spacer(Modifier.height(8.dp))
 
-
-
-                Spacer(Modifier.height(25.dp))
 
                 Box (Modifier.fillMaxWidth(0.9f)){
+                    Spacer(Modifier.height(8.dp))
                     BotaoEstilizado("Criar") {
                         grupoModel.adicionarGrupo(
                             nome = nomeGrupo,
                             descricao = descGrupo,
-                            dt = LocalDateTime.now()
+                            dt = LocalDateTime.now(),
+                            navController = navController
                         )
                     }
                 }

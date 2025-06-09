@@ -315,7 +315,7 @@ fun RespostaUI(
 
 
 @Composable
-fun BotaoEstilizado(texto: String, click: () -> Unit){
+fun BotaoEstilizado(texto: String, click: () -> Unit) {
     Button(
         onClick = click,
         colors = ButtonDefaults.buttonColors(
@@ -326,9 +326,10 @@ fun BotaoEstilizado(texto: String, click: () -> Unit){
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-    ){
+    ) {
         Text(text = texto, fontSize = 22.sp)
     }
+}
 
 //    @Composable
 //    fun AppDrawer(
@@ -424,4 +425,4 @@ fun BotaoEstilizado(texto: String, click: () -> Unit){
 //        }
 //    }
 //
-}
+

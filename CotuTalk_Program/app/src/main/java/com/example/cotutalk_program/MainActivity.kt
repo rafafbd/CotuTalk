@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,6 +67,7 @@ import com.example.cotutalk_program.AcessoAPI.data.PostagemUI
 import com.example.cotutalk_program.AcessoAPI.network.ApiService
 import com.example.cotutalk_program.AcessoAPI.viewmodel.PostagemViewModel
 import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
+import com.example.cotutalk_program.ui.theme.lilas20
 import com.jakewharton.threetenabp.AndroidThreeTen
 import kotlinx.coroutines.launch
 
@@ -274,19 +276,36 @@ fun TelaPrincipal(navController: NavController) {
         )
     }
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            SidebarMenu(navController)
-        },
-        gesturesEnabled = drawerState.isOpen
-    ) {
+//    ModalNavigationDrawer(
+//        drawerState = drawerState,
+//        drawerContent = {
+//            SidebarMenu(navController)
+//        },
+//        gesturesEnabled = drawerState.isOpen
+//    ) {
 
         Scaffold(
             modifier = Modifier.background(roxo80),
             bottomBar = {
                 BottomNavigationBar(navController)
-            }
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        navController.navigate("criarGrupo")
+                    },
+                    containerColor = lilas20,
+                    contentColor = Color.White,
+                    shape = CircleShape
+                ) {
+                    Text(
+                        text = "+",
+                        fontSize = 30.sp,
+                        color = Color.White
+                    )
+                }
+            },
+            floatingActionButtonPosition = FabPosition.End,
         ) { innerPadding ->
 
             LazyColumn(
@@ -333,7 +352,7 @@ fun TelaPrincipal(navController: NavController) {
                 // Lista de postagens
 
             }
-        }
+        //}
     }
 }
 

@@ -127,16 +127,6 @@ fun PaginaGrupo(navController: NavController, idGrupo: Int){
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(60.dp)
-                                .clip(CircleShape)
-                                .background(lilas20.copy(alpha = 0.5f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-
-                        }
-                        Spacer(modifier = Modifier.width(16.dp))
                         Text(
                             text = grupo?.Nome ?: "Nome do Grupo",
                             color = Color.White,
