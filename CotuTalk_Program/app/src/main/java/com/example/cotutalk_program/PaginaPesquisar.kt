@@ -128,7 +128,7 @@ fun Search(navController: NavHostController) {
 
                             Button(
                                 onClick = {
-                                    navController.navigate("paginaGrupo${grupo.IdGrupo}")
+                                    navController.navigate("paginaGrupo/${grupo.IdGrupo}")
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = lilas20,
@@ -145,13 +145,13 @@ fun Search(navController: NavHostController) {
 
 
         // Logo
-        Image(
-            painter = painterResource(R.drawable.logo),
-            contentDescription = "Logo",
-            modifier = Modifier
-                .alpha(0.5f)
-                .fillMaxSize(0.3f)
-        )
+//        Image(
+//            painter = painterResource(R.drawable.logo),
+//            contentDescription = "Logo",
+//            modifier = Modifier
+//                .alpha(0.5f)
+//                .fillMaxSize(0.3f)
+//        )
 
         BottomNavigationBar(navController)
     }
