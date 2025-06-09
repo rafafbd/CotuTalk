@@ -128,7 +128,7 @@ fun Search(navController: NavHostController) {
 
                             Button(
                                 onClick = {
-                                    navController.navigate("paginaGrupo${grupo.IdGrupo}")
+                                    navController.navigate("paginaGrupo/${grupo.IdGrupo}")
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = lilas20,
