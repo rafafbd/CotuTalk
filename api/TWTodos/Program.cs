@@ -212,6 +212,35 @@ app.MapPut("/usuarios/{id}", async (int id, UsuarioDTO dto, AppDbContext db) =>
     return Results.Ok(usuario);
 });
 
+app.MapPut("/usuarios/email/{email}", async (string email, Usuario dto, AppDbContext db) =>
+{
+    var usuario = await db.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+    if (usuario is null)
+        return Results.NotFound("Usuário não encontrado.");
+
+    if (dto.IdUsuario != -1)
+        usuario.IdUsuario = dto.IdUsuario;
+
+    if (!string.IsNullOrWhiteSpace(dto.Nome))
+        usuario.Nome = dto.Nome;
+
+    if (!string.IsNullOrWhiteSpace(dto.Email))
+        usuario.Email = dto.Email;
+
+    if (!string.IsNullOrWhiteSpace(dto.Senha))
+        usuario.Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
+
+    if (!string.IsNullOrWhiteSpace(dto.Biografia))
+        usuario.Biografia = dto.Biografia;
+
+    if (!string.IsNullOrWhiteSpace(dto.ImagePath))
+        usuario.ImagePath = dto.ImagePath;
+
+    await db.SaveChangesAsync();
+    return Results.Ok(usuario);
+});
+
+
 
 // Verifiar login
 // app.MapPost("/login", async (LoginRequest login, AppDbContext db) => {

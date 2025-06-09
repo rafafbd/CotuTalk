@@ -177,12 +177,13 @@ fun responder(navController: NavHostController, IdPostagem: Int) {
                 usuario?.let {
                     PostUI(
                         Post(
+                            Id = usuario!!.idUsuario.toInt(),
                             nome = usuario!!.nome,
                             foto = usuario!!.imagePath,
                             grupo = grupo!!.Nome,
                             message = oPost!!.conteudo,
                             dataHorario = oPost!!.dataCriacao.toString()
-                        )
+                        ), navController
                     )
                 }
 

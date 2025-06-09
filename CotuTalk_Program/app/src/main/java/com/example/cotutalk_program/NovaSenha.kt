@@ -1,5 +1,6 @@
 package com.example.cotutalk_program
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,11 +29,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.cotutalk_program.AcessoAPI.viewmodel.UsuarioViewModel
 import com.example.cotutalk_program.ui.theme.BotaoEstilizado
 import com.example.cotutalk_program.ui.theme.branco
 import com.example.cotutalk_program.ui.theme.roxo60
@@ -42,7 +46,7 @@ import com.example.cotutalk_program.ui.theme.roxo80
 
 @Preview
 @Composable
-fun NovaSenha(navController: Any) {
+fun NovaSenha(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -56,13 +60,14 @@ fun NovaSenha(navController: Any) {
             contentDescription = "Logo do app",
             modifier = Modifier.size(200.dp)
         )
-        CaixaLogin4()
+        CaixaLogin4(navController)
     }
 }
 
 
 @Composable
-fun CaixaLogin4(){
+fun CaixaLogin4(navController: NavController){
+    val viewmodel = UsuarioViewModel()
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     Box (
@@ -90,6 +95,7 @@ fun CaixaLogin4(){
             TextField(
                 value = email,
                 onValueChange = { email = it },
+                visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = roxo70,
@@ -140,13 +146,17 @@ fun CaixaLogin4(){
                 Modifier.fillMaxWidth(0.9f),
                 horizontalAlignment = Alignment.Start
             ) {
-                BotaoEstilizado(
+            val context = LocalContext.current
+            BotaoEstilizado(
                     texto = "Concluído",
-                    click = {  }
+                    click = {
+                        val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                        val emailUsuario = sharedPref.getString("Email", "")
+                        viewmodel.atualizarUsuarioPorEmail(email = emailUsuario.toString(), navController = navController, novaSenha = senha)
+                        navController.navigate("Principal")
+                    }
                 )
             }
-
         }
     }
-
 }
