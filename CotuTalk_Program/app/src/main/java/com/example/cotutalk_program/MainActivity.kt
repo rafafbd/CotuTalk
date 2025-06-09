@@ -339,19 +339,6 @@ fun TelaPrincipal(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(onClick = {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        }) {
-                            // Ícone comentado, pode descomentar se quiser
-                             Icon(
-                                 painter = painterResource(id = R.drawable.cardapio),
-                                 contentDescription = "Abrir menu lateral",
-                                 tint = Color.White,
-                                 modifier = Modifier.size(24.dp)
-                             )
-                        }
                         Image(
                             painter = painterResource(id = R.drawable.logo2),
                             contentDescription = "Logo",
