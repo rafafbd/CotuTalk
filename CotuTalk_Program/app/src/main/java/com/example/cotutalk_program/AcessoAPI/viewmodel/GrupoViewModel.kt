@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+
 //import java.time.LocalDateTime
 
 class GrupoViewModel : ViewModel() {
@@ -52,13 +54,14 @@ class GrupoViewModel : ViewModel() {
         }
     }
 
-    fun adicionarGrupo(nome: String, descricao: String, dt: LocalDateTime ) {
+    fun adicionarGrupo(nome: String, descricao: String, dt: LocalDateTime, navController: NavController) {
         coroutineScope.launch {
             try {
                 val novoGrupo = Grupo(IdGrupo = 0, Nome = nome, Descricao = descricao, DataCriacao = dt)
                 val grupoCriado = ApiService.grupoInstance.adicionarGrupo(novoGrupo)
                 _grupos.value = _grupos.value + grupoCriado
                 _mensagem.value = "Grupo criado com ID ${grupoCriado.IdGrupo}"
+                navController.navigate("Principal")
             } catch (e: Exception) {
                 _mensagem.value = "Erro ao adicionar grupo: ${e.message}"
             }
