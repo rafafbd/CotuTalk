@@ -171,6 +171,7 @@ fun responder(navController: NavController, IdPostagem: Int) {
             // Postagem no topo
 
 
+
             PostUI(
                 Post(
                     Id = oPost?.IdPostagem ?: 1,
@@ -182,6 +183,7 @@ fun responder(navController: NavController, IdPostagem: Int) {
                 ),
                 navController = navController
             )
+
 
 
             Spacer(Modifier.height(10.dp))
