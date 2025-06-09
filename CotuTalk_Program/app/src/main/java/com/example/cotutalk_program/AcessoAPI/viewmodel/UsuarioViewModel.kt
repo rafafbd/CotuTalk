@@ -80,7 +80,7 @@ class UsuarioViewModel : ViewModel() {
     fun adicionarUsuario(nome: String, email: String, senha: String, biografia : String, imagePath: String? = null, navController: NavController, context: Context) {
         coroutineScope.launch {
             try {
-                val path = imagePath ?: "perfil"
+                val path = imagePath ?: "perfil.png"
                 val novoUsuario = Usuario(idUsuario = 0, nome = nome, email = email, senha = senha, biografia = biografia, imagePath = path)
                 val usuarioCriado = ApiService.usuarioInstance.adicionarUsuario(novoUsuario)
                 _usuarios.value = _usuarios.value + usuarioCriado
