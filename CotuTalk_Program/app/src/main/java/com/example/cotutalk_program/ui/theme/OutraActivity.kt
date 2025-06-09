@@ -172,6 +172,8 @@ fun PostComApi(navController: NavController, post: Postagem, qtsCurtidas: Int){
         )
     }
 }
+
+/*
 @Composable
 fun RespostaUI(resposta: Resposta, usuarioViewModel: UsuarioViewModel) {
     val context = LocalContext.current
@@ -240,7 +242,76 @@ fun RespostaUI(resposta: Resposta, usuarioViewModel: UsuarioViewModel) {
         )
     }
 }
+*/
 
+@Composable
+fun RespostaUI(
+    resposta: Resposta,
+    usuarioViewModel: UsuarioViewModel // Recebe o ViewModel
+) {
+    val context = LocalContext.current
+
+    val usuario by usuarioViewModel.usuarioDetalhe.collectAsState()
+
+    LaunchedEffect(resposta.IdUsuario) {
+        usuarioViewModel.buscarUsuario(resposta.IdUsuario)
+    }
+
+    val nomeAutorDisplay = usuario?.nome ?: "Carregando..."
+    val fotoAutorDisplay = usuario?.imagePath ?: "perfil.png"
+
+    // Lógica para o placeholder/erro da imagem
+    val defaultProfileResId = R.drawable.defaultprofile // Caminho para seu drawable padrão
+
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)) {
+        Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            // AsyncImage para carregar a imagem, com fallback para o drawable local
+            AsyncImage(
+                model = "${ApiService.BASE_URL}img/${fotoAutorDisplay}",
+                contentDescription = "foto do autor da resposta",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape),
+                error = painterResource(id = defaultProfileResId),
+                placeholder = painterResource(id = defaultProfileResId)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                Text(
+                    text = "@$nomeAutorDisplay",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+
+                resposta.DataComentario?.let {
+                    Text(
+                        text = resposta.DataComentario.toString(),
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = resposta.Conteudo ?: "Conteúdo da resposta não disponível",
+            color = Color.White,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 52.dp, end = 8.dp)
+        )
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            color = Color.Gray,
+            thickness = 1.dp
+        )
+    }
+}
 
 
 @Composable

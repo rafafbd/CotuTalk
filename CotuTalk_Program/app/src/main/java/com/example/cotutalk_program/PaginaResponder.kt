@@ -44,6 +44,7 @@ import com.example.cotutalk_program.Post
 import com.example.cotutalk_program.PostUI
 import org.threeten.bp.LocalDateTime
 import android.util.Log
+import androidx.navigation.NavController
 
 class PaginaResponder : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,41 +136,28 @@ fun responder(navController: NavHostController , IdPostagem : Int) {
 
 }*/
 @Composable
-fun responder(navController: NavHostController, IdPostagem: Int) {
+fun responder(navController: NavController, IdPostagem: Int) {
     val grupoViewModel = remember { GrupoViewModel() }
     val postagemViewModel = remember { PostagemViewModel() }
     val usuarioViewModel = remember { UsuarioViewModel() } // Supondo que você tenha esse ViewModel
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
 
-    val usuarioId = sharedPref.getInt("userId", 0)
+    val usuarioId = sharedPref.getInt("Id", 0)
 
-    // Lendo dados via StateFlow
+    postagemViewModel.buscarPostagem(IdPostagem)
+    postagemViewModel.buscarRespostasPorPostagem(IdPostagem)
+
     val oPost by postagemViewModel.postagemDetalhe.collectAsState()
+
+    oPost?.let { grupoViewModel.buscarGrupo(it.IdGrupo) }
+    oPost?.let { usuarioViewModel.buscarUsuario(it.IdUsuario) }
+
     val respostas by postagemViewModel.respostasPostagem.collectAsState()
     val usuario by usuarioViewModel.usuarioDetalhe.collectAsState()
     val grupo by grupoViewModel.grupoDetalhe.collectAsState()
 
     var resposta by remember { mutableStateOf("") }
-
-    LaunchedEffect(IdPostagem) {
-        Log.d("ResponderScreen", "LaunchedEffect(IdPostagem) - Buscando postagem e respostas para Id: $IdPostagem")
-        postagemViewModel.buscarPostagem(IdPostagem)
-        postagemViewModel.buscarRespostasPorPostagem(IdPostagem)
-    }
-
-    LaunchedEffect(oPost) {
-        val post = oPost
-        Log.d("ResponderScreen", "LaunchedEffect(oPost) - oPost mudou para: $post")
-        if (post != null) {
-            Log.d("ResponderScreen", "oPost não é nulo. Buscando grupo (${post.IdGrupo}) e usuário (${post.IdUsuario}).")
-            grupoViewModel.buscarGrupo(post.IdGrupo)
-            usuarioViewModel.buscarUsuario(post.IdUsuario)
-        } else {
-            Log.d("ResponderScreen", "oPost ainda é nulo. Aguardando...")
-        }
-    }
-
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
@@ -181,33 +169,36 @@ fun responder(navController: NavHostController, IdPostagem: Int) {
                 .padding(innerPadding)
         ) {
             // Postagem no topo
-            oPost?.let {
-                usuario?.let {
-                    PostUI(
-                        Post(
-                            Id = usuario!!.idUsuario.toInt(),
-                            nome = usuario!!.nome,
-                            foto = usuario!!.imagePath,
-                            grupo = grupo!!.Nome,
-                            message = oPost!!.conteudo,
-                            dataHorario = oPost!!.dataCriacao.toString()
-                        ), navController
-                    )
-                }
-            }
+
+
+            PostUI(
+                Post(
+                    Id = oPost?.IdPostagem ?: 1,
+                    nome = usuario?.nome ?: "Nome Desconhecido",
+                    foto = usuario?.imagePath ?: "",
+                    grupo = grupo?.Nome ?: "Grupo Desconhecido",
+                    message = oPost?.conteudo ?: "Conteúdo Vazio",
+                    dataHorario = oPost?.dataCriacao?.toString() ?: "Data Desconhecida"
+                ),
+                navController = navController
+            )
+
 
             Spacer(Modifier.height(10.dp))
 
-            // Respostas em lista rolável
-            respostas?.let{
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 10.dp)
-                ) {
-                    items(respostas) { respostaItem ->
-                        RespostaUI(resposta = respostaItem, usuarioViewModel = usuarioViewModel)
+            respostas?.let { listaDeRespostas ->
+                if (listaDeRespostas.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 10.dp)
+                    ) {
+                        items(listaDeRespostas) { respostaItem ->
+                            RespostaUI(resposta = respostaItem, usuarioViewModel = usuarioViewModel)
+                        }
                     }
+                } else {
+                    Text("Nenhuma resposta ainda.")
                 }
             }
 
